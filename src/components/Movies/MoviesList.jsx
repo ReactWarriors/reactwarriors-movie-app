@@ -11,11 +11,8 @@ export default class MovieList extends Component {
     };
   }
 
-  componentDidMount() {
-    // const sort_by = this.props.filters.sort_by
-    const {
-      filters: { sort_by }
-    } = this.props;
+  getMovies = filters => {
+    const { sort_by } = filters;
     const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
     fetch(link)
       .then(response => {
@@ -26,11 +23,57 @@ export default class MovieList extends Component {
           movies: data.results
         });
       });
+  };
+
+  componentDidMount() {
+    // const sort_by = this.props.filters.sort_by
+    // const {
+    //   filters: { sort_by }
+    // } = this.props;
+    // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
+    // fetch(link)
+    //   .then(response => {
+    //     return response.json();
+    //   })
+    //   .then(data => {
+    //     this.setState({
+    //       movies: data.results
+    //     });
+    //   });
+    this.getMovies(this.props.filters);
+  }
+
+  // componentWillReceiveProps(nextProps) {
+  //   console.log("props", this.props, "nextProps", nextProps);
+  //   if (nextProps.filters.sort_by !== this.props.filters.sort_by) {
+  //     // const {
+  //     //   filters: { sort_by }
+  //     // } = nextProps;
+  //     // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
+  //     // fetch(link)
+  //     //   .then(response => {
+  //     //     return response.json();
+  //     //   })
+  //     //   .then(data => {
+  //     //     this.setState({
+  //     //       movies: data.results
+  //     //     });
+  //     //   });
+  //     this.getMovies(nextProps.filters);
+  //   }
+  // }
+
+  componentDidUpdate(prevProps) {
+    console.log("componentDidUpdate", prevProps);
+    if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
+      this.getMovies(this.props.filters);
+    }
   }
 
   render() {
     const { movies } = this.state;
-    console.log("filters", this.props.filters);
+    // console.log("filters", this.props.filters);
+    console.log("render");
     return (
       <div className="row">
         {movies.map(movie => {
