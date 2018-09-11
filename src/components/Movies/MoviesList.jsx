@@ -12,7 +12,11 @@ export default class MovieList extends Component {
   }
 
   componentDidMount() {
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU`;
+    // const sort_by = this.props.filters.sort_by
+    const {
+      filters: { sort_by }
+    } = this.props;
+    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
     fetch(link)
       .then(response => {
         return response.json();
@@ -26,6 +30,7 @@ export default class MovieList extends Component {
 
   render() {
     const { movies } = this.state;
+    console.log("filters", this.props.filters);
     return (
       <div className="row">
         {movies.map(movie => {

@@ -3,7 +3,29 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 
 export default class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      filters: {
+        sort_by: "popularity.desc"
+      }
+    };
+  }
+
+  onChangeFilters = event => {
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        [name]: value
+      }
+    }));
+  };
+
   render() {
+    const { filters } = this.state;
     return (
       <div className="container">
         <div className="row mt-4">
@@ -11,12 +33,15 @@ export default class App extends React.Component {
             <div className="card" style={{ width: "100%" }}>
               <div className="card-body">
                 <h3>Фильтры:</h3>
-                <Filters />
+                <Filters
+                  filters={filters}
+                  onChangeFilters={this.onChangeFilters}
+                />
               </div>
             </div>
           </div>
           <div className="col-8">
-            <MoviesList />
+            <MoviesList filters={filters} />
           </div>
         </div>
       </div>
