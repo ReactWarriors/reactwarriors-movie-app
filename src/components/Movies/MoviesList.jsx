@@ -11,9 +11,9 @@ export default class MovieList extends Component {
     };
   }
 
-  getMovies = filters => {
+  getMovies = (filters, page) => {
     const { sort_by } = filters;
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
+    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`;
     fetch(link)
       .then(response => {
         return response.json();
@@ -40,7 +40,7 @@ export default class MovieList extends Component {
     //       movies: data.results
     //     });
     //   });
-    this.getMovies(this.props.filters);
+    this.getMovies(this.props.filters, this.props.page);
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -64,16 +64,20 @@ export default class MovieList extends Component {
   // }
 
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate", prevProps);
+    console.log("componentDidUpdate", prevProps.page, this.props.page);
     if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
-      this.getMovies(this.props.filters);
+      this.props.onChangePage(1);
+      this.getMovies(this.props.filters, 1);
+    }
+
+    if (this.props.page !== prevProps.page) {
+      this.getMovies(this.props.filters, this.props.page);
     }
   }
 
   render() {
     const { movies } = this.state;
     // console.log("filters", this.props.filters);
-    console.log("render");
     return (
       <div className="row">
         {movies.map(movie => {
