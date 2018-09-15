@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import MovieItem from "./MovieItem";
 import { API_URL, API_KEY_3 } from "../../api/api";
+import _ from "lodash";
+import queryString from "query-string";
 
-export default class MovieList extends Component {
+export default class MovieList extends React.Component {
   constructor() {
     super();
 
@@ -12,13 +14,34 @@ export default class MovieList extends Component {
   }
 
   getMovies = (filters, page) => {
-    const { sort_by } = filters;
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`;
+    const { sort_by, primary_release_year } = filters;
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      language: "ru-RU",
+      sort_by: sort_by,
+      page: page,
+      primary_release_year: primary_release_year
+    };
+
+    // const getQueryStringParams = object => {
+    //   let string = "";
+    //   for (let key in object) {
+    //     string = string + `&${key}=${object[key]}`;
+    //   }
+    //   return "?" + string.substring(1, string.length);
+    // };
+
+    // getQueryStringParams(queryString);
+    const link = `${API_URL}/discover/movie?${queryString.stringify(
+      queryStringParams
+    )}`;
+    // const _this = this;
     fetch(link)
       .then(response => {
         return response.json();
       })
       .then(data => {
+        // this.props.chagnePagion(data.total_pages);
         this.setState({
           movies: data.results
         });
@@ -26,46 +49,31 @@ export default class MovieList extends Component {
   };
 
   componentDidMount() {
-    // const sort_by = this.props.filters.sort_by
-    // const {
-    //   filters: { sort_by }
-    // } = this.props;
-    // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
-    // fetch(link)
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       movies: data.results
-    //     });
-    //   });
     this.getMovies(this.props.filters, this.props.page);
   }
 
   // componentWillReceiveProps(nextProps) {
-  //   console.log("props", this.props, "nextProps", nextProps);
-  //   if (nextProps.filters.sort_by !== this.props.filters.sort_by) {
-  //     // const {
-  //     //   filters: { sort_by }
-  //     // } = nextProps;
-  //     // const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
-  //     // fetch(link)
-  //     //   .then(response => {
-  //     //     return response.json();
-  //     //   })
-  //     //   .then(data => {
-  //     //     this.setState({
-  //     //       movies: data.results
-  //     //     });
-  //     //   });
-  //     this.getMovies(nextProps.filters);
+  //   if (nextProps.activeTab !== this.props.activeTab) {
+  //     this.setState({
+  //       tab: nextProps.activeTab
+  //     });
   //   }
   // }
 
+  // static getDerrivedStateFromProps(props, state) {
+  //   return {
+  //     tab: props.activeTab
+  //   };
+  // }
+
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate", prevProps.page, this.props.page);
-    if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
+    if (
+      !_.isEqual(this.props.filters, prevProps.filters)
+      // this.props.filters !== prevProps.filters
+      // this.props.filters.sort_by !== prevProps.filters.sort_by ||
+      // this.props.filters.primary_release_year !==
+      //   prevProps.filters.primary_release_year
+    ) {
       this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1);
     }
@@ -77,7 +85,6 @@ export default class MovieList extends Component {
 
   render() {
     const { movies } = this.state;
-    // console.log("filters", this.props.filters);
     return (
       <div className="row">
         {movies.map(movie => {
