@@ -14,7 +14,7 @@ export default class MovieList extends React.Component {
   }
 
   getMovies = (filters, page) => {
-    const { sort_by, primary_release_year } = filters;
+    const { sort_by, primary_release_year, with_genres } = filters;
     const queryStringParams = {
       api_key: API_KEY_3,
       language: "ru-RU",
@@ -22,6 +22,9 @@ export default class MovieList extends React.Component {
       page: page,
       primary_release_year: primary_release_year
     };
+
+    if (with_genres.length > 0)
+      queryStringParams.with_genres = with_genres.join(",");
 
     // const getQueryStringParams = object => {
     //   let string = "";
@@ -35,13 +38,15 @@ export default class MovieList extends React.Component {
     const link = `${API_URL}/discover/movie?${queryString.stringify(
       queryStringParams
     )}`;
-    // const _this = this;
     fetch(link)
       .then(response => {
         return response.json();
       })
       .then(data => {
-        // this.props.chagnePagion(data.total_pages);
+        this.props.onChangePagination({
+          page: data.page,
+          total_pages: data.total_pages
+        });
         this.setState({
           movies: data.results
         });
@@ -74,7 +79,7 @@ export default class MovieList extends React.Component {
       // this.props.filters.primary_release_year !==
       //   prevProps.filters.primary_release_year
     ) {
-      this.props.onChangePage(1);
+      this.props.onChangePagination({ page: 1 });
       this.getMovies(this.props.filters, 1);
     }
 
