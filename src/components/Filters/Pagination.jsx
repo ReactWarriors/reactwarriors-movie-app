@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import classNames from "classnames";
 
-export default class Pagination extends Component {
+export default class Pagination extends React.PureComponent {
   nextPage = () => {
     this.props.onChangePagination({
       page: this.props.page + 1,
@@ -9,7 +9,7 @@ export default class Pagination extends Component {
     });
   };
 
-  prevPage = () => {
+  prevPage = page => event => {
     this.props.onChangePagination({
       page: this.props.page - 1,
       total_pages: this.props.total_pages
@@ -18,6 +18,7 @@ export default class Pagination extends Component {
 
   render() {
     const { page, total_pages } = this.props;
+    console.log("Pagination render");
     return (
       <nav className="d-flex align-items-center">
         <ul className="pagination mb-0 mr-3">
@@ -26,7 +27,7 @@ export default class Pagination extends Component {
               disabled: page === 1
             })}
           >
-            <span className="page-link" onClick={this.prevPage}>
+            <span className="page-link" onClick={this.prevPage(page)}>
                Назад
             </span>
           </li>

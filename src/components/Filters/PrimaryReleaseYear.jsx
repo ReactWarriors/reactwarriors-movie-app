@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import UISelect from "../UIComponents/UISelect";
+import _ from "lodash";
 
-export default class PrimaryReleaseYear extends React.Component {
+export default class PrimaryReleaseYear extends React.PureComponent {
   static propTypes = {
     primary_release_year: PropTypes.string.isRequired,
     onChangeFilters: PropTypes.func.isRequired
@@ -28,25 +30,29 @@ export default class PrimaryReleaseYear extends React.Component {
     ]
   };
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return _.isEqual(nextProps, this.props) ? false : true;
+  // }
+
   render() {
     const { primary_release_year, onChangeFilters, options } = this.props;
+    console.log("PrimaryReleaseYear render");
     return (
-      <div className="form-group">
-        <label htmlFor="primary_release_year">Год релиза:</label>
-        <select
-          id="primary_release_year"
-          className="form-control"
-          name="primary_release_year"
-          value={primary_release_year}
-          onChange={onChangeFilters}
-        >
-          {options.map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
+      <UISelect
+        id="primary_release_year"
+        name="primary_release_year"
+        value={primary_release_year}
+        onChange={onChangeFilters}
+        label={LabelText}
+      >
+        {options.map(option => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </UISelect>
     );
   }
 }
+
+const LabelText = () => <p>Год релиза:</p>;

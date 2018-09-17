@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { API_KEY_3, API_URL } from "../../api/api";
 
-class Genres extends Component {
+class Genres extends React.Component {
   constructor() {
     super();
 
@@ -46,6 +46,7 @@ class Genres extends Component {
   render() {
     const { genresList } = this.state;
     const { with_genres } = this.props;
+    console.log("Genres render");
     return (
       <React.Fragment>
         <div>
