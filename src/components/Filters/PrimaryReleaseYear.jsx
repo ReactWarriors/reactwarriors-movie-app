@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UISelect from "../UIComponents/UISelect";
-import _ from "lodash";
 
 export default class PrimaryReleaseYear extends React.PureComponent {
   static propTypes = {
@@ -30,8 +29,15 @@ export default class PrimaryReleaseYear extends React.PureComponent {
     ]
   };
 
+  // PureComponent
   // shouldComponentUpdate(nextProps, nextState) {
-  //   return _.isEqual(nextProps, this.props) ? false : true;
+  //   // console.log("this.props", this.props);
+  //   // console.log("nextProps", nextProps);
+  //   if (!_.isEqual(nextProps, this.props)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
   // }
 
   render() {
@@ -43,7 +49,7 @@ export default class PrimaryReleaseYear extends React.PureComponent {
         name="primary_release_year"
         value={primary_release_year}
         onChange={onChangeFilters}
-        label={LabelText}
+        labelText="Год релиза:"
       >
         {options.map(option => (
           <option key={option.value} value={option.value}>
@@ -54,5 +60,3 @@ export default class PrimaryReleaseYear extends React.PureComponent {
     );
   }
 }
-
-const LabelText = () => <p>Год релиза:</p>;

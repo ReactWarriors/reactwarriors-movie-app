@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UILabel from "./UILabel";
 import _ from "lodash";
 
 export default class UISelect extends React.Component {
@@ -9,23 +8,11 @@ export default class UISelect extends React.Component {
     onChange: PropTypes.func.isRequired
   };
 
+  // PureComponent
   // shouldComponentUpdate(nextProps, nextState) {
-  //   // if (_.isEqual(nextProps, this.props)) {
-  //   //   return false
-  //   // } else {
-  //   //   return true
-  //   // }
-  //   console.log(nextProps, this.props);
-  //   return _.isEqual(nextProps, this.props) ? false : true;
-  // }
-
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   console.log("this.props", this.props);
-  //   console.log("nextProps", nextProps);
-  //   if (
-  //     nextProps.value !== this.props.value ||
-  //     nextProps.id !== this.props.id
-  //   ) {
+  //   // console.log("this.props", this.props);
+  //   // console.log("nextProps", nextProps);
+  //   if (!_.isEqual(nextProps, this.props)) {
   //     return true;
   //   } else {
   //     return false;
@@ -33,13 +20,11 @@ export default class UISelect extends React.Component {
   // }
 
   render() {
-    const { id, name, value, onChange, label } = this.props;
-    // console.log("UISelect render");
-    console.log(typeof this.props.children);
-    console.log(this.props.children);
+    const { id, name, value, onChange, labelText, children } = this.props;
+    console.log("UISelect render");
     return (
       <div className="form-group">
-        <UILabel id={id}>{label}</UILabel>
+        <label htmlFor={id}>{labelText}</label>;
         <select
           id={id}
           className="form-control"
@@ -47,7 +32,7 @@ export default class UISelect extends React.Component {
           value={value}
           onChange={onChange}
         >
-          {this.props.children}
+          {children}
         </select>
       </div>
     );

@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import classNames from "classnames";
 
-export default class Pagination extends React.PureComponent {
+export default class Pagination extends React.Component {
   nextPage = () => {
     this.props.onChangePagination({
       page: this.props.page + 1,
@@ -18,7 +18,6 @@ export default class Pagination extends React.PureComponent {
 
   render() {
     const { page, total_pages } = this.props;
-    console.log("Pagination render");
     return (
       <nav className="d-flex align-items-center">
         <ul className="pagination mb-0 mr-3">
