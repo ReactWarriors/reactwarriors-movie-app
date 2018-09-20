@@ -29,20 +29,8 @@ export default class PrimaryReleaseYear extends React.PureComponent {
     ]
   };
 
-  // PureComponent
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   // console.log("this.props", this.props);
-  //   // console.log("nextProps", nextProps);
-  //   if (!_.isEqual(nextProps, this.props)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
   render() {
     const { primary_release_year, onChangeFilters, options } = this.props;
-    console.log("PrimaryReleaseYear render");
     return (
       <UISelect
         id="primary_release_year"
