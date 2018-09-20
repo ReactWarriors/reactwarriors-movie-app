@@ -1,6 +1,7 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
+import Header from "./Header/Header";
 
 export default class App extends React.Component {
   constructor() {
@@ -38,28 +39,31 @@ export default class App extends React.Component {
   render() {
     const { filters, page, total_pages } = this.state;
     return (
-      <div className="container">
-        <div className="row mt-4">
-          <div className="col-4">
-            <div className="card" style={{ width: "100%" }}>
-              <div className="card-body">
-                <h3>Фильтры:</h3>
-                <Filters
-                  page={page}
-                  total_pages={total_pages}
-                  filters={filters}
-                  onChangeFilters={this.onChangeFilters}
-                  onChangePagination={this.onChangePagination}
-                />
+      <div>
+        <Header />
+        <div className="container">
+          <div className="row mt-4">
+            <div className="col-4">
+              <div className="card w-100">
+                <div className="card-body">
+                  <h3>Фильтры:</h3>
+                  <Filters
+                    page={page}
+                    total_pages={total_pages}
+                    filters={filters}
+                    onChangeFilters={this.onChangeFilters}
+                    onChangePagination={this.onChangePagination}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-8">
-            <MoviesList
-              filters={filters}
-              page={page}
-              onChangePagination={this.onChangePagination}
-            />
+            <div className="col-8">
+              <MoviesList
+                filters={filters}
+                page={page}
+                onChangePagination={this.onChangePagination}
+              />
+            </div>
           </div>
         </div>
       </div>
