@@ -12,7 +12,8 @@
     "query-string": "^6.1.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
-    "react-scripts": "1.1.5"
+    "react-scripts": "1.1.5",
+    "reactstrap": "^6.4.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
