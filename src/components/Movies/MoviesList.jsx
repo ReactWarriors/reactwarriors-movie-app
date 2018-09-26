@@ -26,15 +26,6 @@ export default class MovieList extends React.Component {
     if (with_genres.length > 0)
       queryStringParams.with_genres = with_genres.join(",");
 
-    // const getQueryStringParams = object => {
-    //   let string = "";
-    //   for (let key in object) {
-    //     string = string + `&${key}=${object[key]}`;
-    //   }
-    //   return "?" + string.substring(1, string.length);
-    // };
-
-    // getQueryStringParams(queryString);
     const link = `${API_URL}/discover/movie?${queryString.stringify(
       queryStringParams
     )}`;
@@ -57,28 +48,8 @@ export default class MovieList extends React.Component {
     this.getMovies(this.props.filters, this.props.page);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.activeTab !== this.props.activeTab) {
-  //     this.setState({
-  //       tab: nextProps.activeTab
-  //     });
-  //   }
-  // }
-
-  // static getDerrivedStateFromProps(props, state) {
-  //   return {
-  //     tab: props.activeTab
-  //   };
-  // }
-
   componentDidUpdate(prevProps) {
-    if (
-      !_.isEqual(this.props.filters, prevProps.filters)
-      // this.props.filters !== prevProps.filters
-      // this.props.filters.sort_by !== prevProps.filters.sort_by ||
-      // this.props.filters.primary_release_year !==
-      //   prevProps.filters.primary_release_year
-    ) {
+    if (!_.isEqual(this.props.filters, prevProps.filters)) {
       this.props.onChangePagination({ page: 1 });
       this.getMovies(this.props.filters, 1);
     }
