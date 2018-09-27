@@ -7,6 +7,7 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
+export const AppContext = React.createContext();
 export default class App extends React.Component {
   constructor() {
     super();
@@ -72,38 +73,41 @@ export default class App extends React.Component {
   render() {
     const { filters, page, total_pages, user } = this.state;
     return (
-      <div>
-        <Header
-          user={user}
-          updateUser={this.updateUser}
-          updateSessionId={this.updateSessionId}
-        />
-        <div className="container">
-          <div className="row mt-4">
-            <div className="col-4">
-              <div className="card w-100">
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <Filters
-                    page={page}
-                    total_pages={total_pages}
-                    filters={filters}
-                    onChangeFilters={this.onChangeFilters}
-                    onChangePagination={this.onChangePagination}
-                  />
+      <AppContext.Provider
+        value={{
+          user: user,
+          updateUser: this.updateUser
+        }}
+      >
+        <div>
+          <Header user={user} updateSessionId={this.updateSessionId} />
+          <div className="container">
+            <div className="row mt-4">
+              <div className="col-4">
+                <div className="card w-100">
+                  <div className="card-body">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      page={page}
+                      total_pages={total_pages}
+                      filters={filters}
+                      onChangeFilters={this.onChangeFilters}
+                      onChangePagination={this.onChangePagination}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-8">
-              <MoviesContainer
-                filters={filters}
-                page={page}
-                onChangePagination={this.onChangePagination}
-              />
+              <div className="col-8">
+                <MoviesContainer
+                  filters={filters}
+                  page={page}
+                  onChangePagination={this.onChangePagination}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AppContext.Provider>
     );
   }
 }
