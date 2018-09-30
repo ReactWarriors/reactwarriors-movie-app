@@ -48,10 +48,11 @@ class Genres extends React.Component {
     const { with_genres } = this.props;
     return (
       <React.Fragment>
+        <div className="mb-2">Жанры:</div>
         <div>
           <button
             type="button"
-            className="btn btn-outline-dark mb-2"
+            className="btn btn-outline-dark mb-1"
             onClick={this.resetGenres}
           >
             Показать все жанры

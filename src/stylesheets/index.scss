@@ -5,3 +5,8 @@ body {
 .invalid-feedback {
   display: block;
 }
+
+.card-img--height {
+  max-height: 161.84px;
+  object-fit: cover;
+}

@@ -20,7 +20,9 @@ export default class Filters extends React.Component {
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
         />
-        <Genres with_genres={with_genres} onChangeFilters={onChangeFilters} />
+        <div className="mb-3">
+          <Genres with_genres={with_genres} onChangeFilters={onChangeFilters} />
+        </div>
         <Pagination
           page={page}
           total_pages={total_pages}
