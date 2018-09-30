@@ -179,11 +179,14 @@ class LoginForm extends React.Component {
   }
 }
 
-export default props => {
-  console.log(props);
-  return (
-    <AppContext.Consumer>
-      {context => <LoginForm updateUser={context.updateUser} {...props} />}
-    </AppContext.Consumer>
-  );
-};
+export default props => (
+  <AppContext.Consumer>
+    {({ updateUser, updateSessionId }) => (
+      <LoginForm
+        updateUser={updateUser}
+        updateSessionId={updateSessionId}
+        {...props}
+      />
+    )}
+  </AppContext.Consumer>
+);

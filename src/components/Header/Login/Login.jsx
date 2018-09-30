@@ -28,7 +28,7 @@ export default class Login extends React.Component {
         </button>
         <Modal isOpen={this.state.showModal} toggle={this.toggleModal}>
           <ModalBody>
-            <LoginForm updateSessionId={this.props.updateSessionId} />
+            <LoginForm />
           </ModalBody>
         </Modal>
       </div>
