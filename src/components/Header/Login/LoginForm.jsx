@@ -1,7 +1,7 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
-import { AppContext } from "../../App";
 import classNames from "classnames";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
 class LoginForm extends React.Component {
   state = {
@@ -189,14 +189,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default props => (
-  <AppContext.Consumer>
-    {({ updateUser, updateSessionId }) => (
-      <LoginForm
-        updateUser={updateUser}
-        updateSessionId={updateSessionId}
-        {...props}
-      />
-    )}
-  </AppContext.Consumer>
-);
+export default AppContextHOC(LoginForm);
