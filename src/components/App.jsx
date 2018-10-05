@@ -3,10 +3,10 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
-import MoviesPage from "./pages/MoviesPage/MoviesPage"
-import MoviePage from "./pages/MoviePage/MoviePage"
+import MoviesPage from "./pages/MoviesPage/MoviesPage";
+import MoviePage from "./pages/MoviePage/MoviePage";
 import Cookies from "universal-cookie";
-import { BrowserRouter, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const cookies = new Cookies();
 
@@ -17,7 +17,7 @@ export default class App extends React.Component {
 
     this.state = {
       user: null,
-      session_id: null,
+      session_id: null
     };
   }
 
@@ -72,12 +72,12 @@ export default class App extends React.Component {
         >
           <div>
             <Header user={user} />
-            <Link to="/movie">go to movie</Link>
-            <Route exact path="/" component={MoviesPage}/>
-            <Route path="/movie" component={MoviePage}/>
+            <Route exact path="/" component={MoviesPage} />
+            <Route path="/movie/:id" component={MoviePage} />
+
             {/*
               "/" - MoviesPage
-              "/movie" - Movie
+              "/movie/1" - Movie with id = 1
             */}
           </div>
         </AppContext.Provider>
