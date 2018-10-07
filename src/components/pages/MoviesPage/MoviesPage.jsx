@@ -3,7 +3,6 @@ import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 
-
 export default class MoviesPage extends React.Component {
   constructor() {
     super();
@@ -40,31 +39,31 @@ export default class MoviesPage extends React.Component {
   render() {
     const { filters, page, total_pages } = this.state;
     return (
-          <div className="container">
-            <div className="row mt-4">
-              <div className="col-4">
-                <div className="card w-100">
-                  <div className="card-body">
-                    <h3>Фильтры:</h3>
-                    <Filters
-                      page={page}
-                      total_pages={total_pages}
-                      filters={filters}
-                      onChangeFilters={this.onChangeFilters}
-                      onChangePagination={this.onChangePagination}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-8">
-                <MoviesList
-                  filters={filters}
+      <div className="container">
+        <div className="row mt-4">
+          <div className="col-4">
+            <div className="card w-100">
+              <div className="card-body">
+                <h3>Фильтры:</h3>
+                <Filters
                   page={page}
+                  total_pages={total_pages}
+                  filters={filters}
+                  onChangeFilters={this.onChangeFilters}
                   onChangePagination={this.onChangePagination}
                 />
               </div>
             </div>
           </div>
+          <div className="col-8">
+            <MoviesList
+              filters={filters}
+              page={page}
+              onChangePagination={this.onChangePagination}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 }
