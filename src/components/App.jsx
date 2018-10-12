@@ -8,31 +8,28 @@ import MoviePage from "./pages/MoviePage/MoviePage";
 import Cookies from "universal-cookie";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import AccountFavorites from "./pages/AccountPage/AccountFavorites";
+import { actionCreatorUpdateAuth } from "../";
 
 const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 export default class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      user: null,
-      session_id: cookies.get("session_id"),
-      isAuth: false
-    };
-  }
-
   updateAuth = (user, session_id) => {
-    cookies.set("session_id", session_id, {
-      path: "/",
-      maxAge: 2592000
-    });
-    this.setState({
-      session_id,
-      user,
-      isAuth: true
-    });
+    this.props.store.dispatch(
+      actionCreatorUpdateAuth({
+        user,
+        session_id
+      })
+    );
+    // cookies.set("session_id", session_id, {
+    //   path: "/",
+    //   maxAge: 2592000
+    // });
+    // this.setState({
+    //   session_id,
+    //   user,
+    //   isAuth: true
+    // });
   };
 
   onLogOut = () => {
@@ -45,19 +42,23 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
-    if (this.state.session_id) {
-      fetchApi(
-        `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-          this.state.session_id
-        }`
-      ).then(user => {
-        this.updateAuth(user, this.state.session_id);
-      });
-    }
+    this.props.store.subscribe(() => {
+      console.log("change", this.props.store.getState());
+      this.forceUpdate();
+    });
+    // if (this.state.session_id) {
+    //   fetchApi(
+    //     `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
+    //       this.state.session_id
+    //     }`
+    //   ).then(user => {
+    //     this.updateAuth(user, this.state.session_id);
+    //   });
+    // }
   }
 
   render() {
-    const { user, session_id, isAuth } = this.state;
+    const { user, session_id, isAuth } = this.props.store.getState();
     return isAuth || !session_id ? (
       <BrowserRouter>
         <AppContext.Provider
