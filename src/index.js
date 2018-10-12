@@ -4,5 +4,11 @@ import App from "./components/App";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./stylesheets/index.css";
 import store from "./store/store";
+import { Provider } from "react-redux";
 
-ReactDOM.render(<App store={store} />, document.getElementById("root"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
