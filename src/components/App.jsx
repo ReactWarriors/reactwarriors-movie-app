@@ -12,6 +12,7 @@ import {
   actionCreatorLogOut
 } from "../actions/actions";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 export const AppContext = React.createContext();
 
@@ -24,7 +25,7 @@ class App extends React.Component {
           session_id
         }
       }).then(user => {
-        this.props.updateAuth(user, session_id);
+        this.props.updateAuth({ user, session_id });
       });
     }
   }
@@ -58,23 +59,24 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
-    session_id: state.session_id,
-    isAuth: state.isAuth
+    user: state.authentification.user,
+    session_id: state.authentification.session_id,
+    isAuth: state.authentification.isAuth
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    updateAuth: (user, session_id) =>
-      dispatch(
-        actionCreatorUpdateAuth({
-          user,
-          session_id
-        })
-      ),
-    onLogOut: () => dispatch(actionCreatorLogOut())
-  };
+  return bindActionCreators(
+    {
+      updateAuth: actionCreatorUpdateAuth,
+      onLogOut: actionCreatorLogOut
+    },
+    dispatch
+  );
+  // {
+  //   updateAuth: bindActionCreators(actionCreatorUpdateAuth, dispatch),
+  //   onLogOut: bindActionCreators(actionCreatorLogOut, dispatch)
+  // };
 };
 
 export default connect(
