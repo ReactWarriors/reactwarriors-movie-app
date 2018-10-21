@@ -1,8 +1,9 @@
 import CallApi from "../api/api";
-
+import * as constants from "../constants/constants";
+console.log(constants);
 export const actionCreatorUpdateAuth = payload => {
   return {
-    type: "UPDATE_AUTH",
+    type: constants.UPDATE_AUTH,
     payload
   };
 };
@@ -14,7 +15,7 @@ export const actionCreatorLogOut = () => {
 };
 
 export const actionCreatorUpdateMovies = movies => ({
-  type: "UPDATE_MOVIES",
+  type: constants.UPDATE_MOVIES,
   payload: movies
 });
 
