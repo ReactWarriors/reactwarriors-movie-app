@@ -1,7 +1,9 @@
 import React from "react";
-import CallApi, { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
+import CallApi from "../../../api/api";
 import classNames from "classnames";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import { actionCreatorUpdateAuth } from "../../../actions/actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class LoginForm extends React.Component {
   state = {
@@ -172,4 +174,18 @@ class LoginForm extends React.Component {
   }
 }
 
-export default AppContextHOC(LoginForm);
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      updateAuth: actionCreatorUpdateAuth
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  () => {
+    return {};
+  },
+  mapDispatchToProps
+)(LoginForm);

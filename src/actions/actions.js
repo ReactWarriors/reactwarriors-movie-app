@@ -7,14 +7,6 @@ export const actionCreatorUpdateAuth = payload => {
   };
 };
 
-// export const actionCreatorUpdateAuth = payload => dispatch => {
-//   console.log(dispatch);
-//   return dispatch({
-//     type: "UPDATE_AUTH",
-//     payload
-//   });
-// };
-
 export const actionCreatorLogOut = () => {
   return {
     type: "LOGOUT"
@@ -27,8 +19,7 @@ export const actionCreatorUpdateMovies = movies => ({
 });
 
 export const actionCreatorGetMovies = params => {
-  return (dispatch, text) => {
-    console.log("dispatch", dispatch, text);
+  return dispatch => {
     dispatch({
       type: "FETCHING_MOVIES"
     });

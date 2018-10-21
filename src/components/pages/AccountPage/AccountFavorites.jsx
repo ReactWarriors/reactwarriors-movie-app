@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import AppContextHOC from "../../HOC/AppContextHOC";
 import { Redirect } from "react-router-dom";
-import CallApi from "../../../api/api";
+// import CallApi from "../../../api/api";
+import { connect } from "react-redux";
 
 class AccountFavorites extends Component {
   render() {
@@ -13,4 +13,10 @@ class AccountFavorites extends Component {
   }
 }
 
-export default AppContextHOC(AccountFavorites);
+const mapStateToProps = state => {
+  return {
+    isAuth: state.authentification.isAuth
+  };
+};
+
+export default connect(mapStateToProps)(AccountFavorites);

@@ -5,9 +5,11 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import { fetchApi, API_URL, API_KEY_3 } from "../../api/api";
-import AppContextHOC from "../HOC/AppContextHOC";
+import CallApi from "../../api/api";
 import { Link } from "react-router-dom";
+import { actionCreatorLogOut } from "../../actions/actions";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class UserMenu extends Component {
   state = {
@@ -21,15 +23,10 @@ class UserMenu extends Component {
   };
 
   handleLogOut = () => {
-    fetchApi(`${API_URL}/authentication/session?api_key=${API_KEY_3}`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify({
+    CallApi.delete("/authentication/session", {
+      body: {
         session_id: this.props.session_id
-      })
+      }
     }).then(() => {
       this.props.onLogOut();
     });
@@ -66,4 +63,23 @@ class UserMenu extends Component {
   }
 }
 
-export default AppContextHOC(UserMenu);
+const mapStateToProps = state => {
+  return {
+    user: state.authentification.user,
+    session_id: state.authentification.session_id
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      onLogOut: actionCreatorLogOut
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserMenu);

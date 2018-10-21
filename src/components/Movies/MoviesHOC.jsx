@@ -1,5 +1,4 @@
 import React from "react";
-import CallApi from "../../api/api";
 import _ from "lodash";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -12,7 +11,6 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-  console.log("mapDispatchToProps", dispatch);
   return bindActionCreators(
     {
       getMovies: actionCreatorGetMovies
@@ -20,8 +18,6 @@ const mapDispatchToProps = dispatch => {
     dispatch
   );
 };
-
-// getMovies: () => dispatch(actionCreatorGetMovies())
 
 export default Component =>
   connect(

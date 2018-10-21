@@ -1,11 +1,9 @@
 import React from "react";
-import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import CallApi from "../api/api";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import AccountFavorites from "./pages/AccountPage/AccountFavorites";
 import {
   actionCreatorUpdateAuth,
@@ -13,8 +11,6 @@ import {
 } from "../actions/actions";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-
-export const AppContext = React.createContext();
 
 class App extends React.Component {
   componentDidMount() {
@@ -31,25 +27,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, session_id, isAuth, updateAuth, onLogOut } = this.props;
+    const { user, session_id, isAuth } = this.props;
     return isAuth || !session_id ? (
       <BrowserRouter>
-        <AppContext.Provider
-          value={{
-            user,
-            session_id,
-            isAuth,
-            updateAuth,
-            onLogOut
-          }}
-        >
-          <div>
-            <Header user={user} />
-            <Route exact path="/" component={MoviesPage} />
-            <Route path="/movie/:id" component={MoviePage} />
-            <Route path="/account/favorites" component={AccountFavorites} />
-          </div>
-        </AppContext.Provider>
+        <div>
+          <Header user={user} />
+          <Route exact path="/" component={MoviesPage} />
+          <Route path="/movie/:id" component={MoviePage} />
+          <Route path="/account/favorites" component={AccountFavorites} />
+        </div>
       </BrowserRouter>
     ) : (
       <p>...Loading</p>
@@ -73,10 +59,6 @@ const mapDispatchToProps = dispatch => {
     },
     dispatch
   );
-  // {
-  //   updateAuth: bindActionCreators(actionCreatorUpdateAuth, dispatch),
-  //   onLogOut: bindActionCreators(actionCreatorLogOut, dispatch)
-  // };
 };
 
 export default connect(
