@@ -8,7 +8,7 @@ const initialState = {
   isAuth: false
 };
 
-const reducerAuthentification = (state = initialState, action) => {
+const reducerAuthentication = (state = initialState, action) => {
   switch (action.type) {
     case "UPDATE_AUTH":
       cookies.set("session_id", action.payload.session_id, {
@@ -34,4 +34,4 @@ const reducerAuthentification = (state = initialState, action) => {
   }
 };
 
-export default reducerAuthentification;
+export default reducerAuthentication;

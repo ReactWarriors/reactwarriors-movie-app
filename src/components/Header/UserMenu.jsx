@@ -65,8 +65,8 @@ class UserMenu extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.authentification.user,
-    session_id: state.authentification.session_id
+    user: state.authentication.user,
+    session_id: state.authentication.session_id
   };
 };
 

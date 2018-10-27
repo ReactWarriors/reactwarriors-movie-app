@@ -15,7 +15,7 @@ class AccountFavorites extends Component {
 
 const mapStateToProps = state => {
   return {
-    isAuth: state.authentification.isAuth
+    isAuth: state.authentication.isAuth
   };
 };
 

@@ -1,9 +1,9 @@
-import reducerAuthentification from "./reducerAuthentification";
+import reducerAuthentication from "./reducerAuthentication";
 import reducerMovies from "./reducerMovies";
 import { combineReducers } from "redux";
 
 const reducers = combineReducers({
-  authentification: reducerAuthentification,
+  authentication: reducerAuthentication,
   movies: reducerMovies
 });
 

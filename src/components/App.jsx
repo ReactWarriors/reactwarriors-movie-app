@@ -45,9 +45,9 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.authentification.user,
-    session_id: state.authentification.session_id,
-    isAuth: state.authentification.isAuth
+    user: state.authentication.user,
+    session_id: state.authentication.session_id,
+    isAuth: state.authentication.isAuth
   };
 };
 
