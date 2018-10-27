@@ -9,6 +9,6 @@ export const actionCreatorUpdateAuth = payload => {
 
 export const actionCreatorLogOut = () => {
   return {
-    type: "LOGOUT"
+    type: constants.LOGOUT
   };
 };
