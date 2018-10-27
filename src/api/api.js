@@ -33,6 +33,7 @@ export default class CallApi {
     const { params = {} } = options;
     const queryStringParams = {
       api_key: API_KEY_3,
+      language: "ru-RU",
       ...params
     };
     // url = "/discover/movie"
@@ -43,13 +44,13 @@ export default class CallApi {
     // primary_release_year: primary_release_year
     //}
     return fetchApi(
-      `${API_URL}${url}?${queryString.stringify(queryStringParams)}`,
-      {
-        mode: "cors",
-        headers: {
-          "Content-type": "application/json"
-        }
-      }
+      `${API_URL}${url}?${queryString.stringify(queryStringParams)}`
+      // {
+      //   mode: "cors",
+      //   headers: {
+      //     "Content-type": "application/json"
+      //   }
+      // }
     );
   }
   static post(url, options = {}) {

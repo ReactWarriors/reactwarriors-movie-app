@@ -5,10 +5,7 @@ import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import { BrowserRouter, Route } from "react-router-dom";
 import AccountFavorites from "./pages/AccountPage/AccountFavorites";
-import {
-  actionCreatorUpdateAuth,
-  actionCreatorLogOut
-} from "../actions/actions";
+import * as actionsAuthentication from "../actions/actionsAuthentication";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
@@ -30,12 +27,12 @@ class App extends React.Component {
     const { user, session_id, isAuth } = this.props;
     return isAuth || !session_id ? (
       <BrowserRouter>
-        <div>
+        <React.Fragment>
           <Header user={user} />
           <Route exact path="/" component={MoviesPage} />
           <Route path="/movie/:id" component={MoviePage} />
           <Route path="/account/favorites" component={AccountFavorites} />
-        </div>
+        </React.Fragment>
       </BrowserRouter>
     ) : (
       <p>...Loading</p>
@@ -54,8 +51,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      updateAuth: actionCreatorUpdateAuth,
-      onLogOut: actionCreatorLogOut
+      updateAuth: actionsAuthentication.actionCreatorUpdateAuth,
+      onLogOut: actionsAuthentication.actionCreatorLogOut
     },
     dispatch
   );

@@ -7,7 +7,7 @@ import {
 } from "reactstrap";
 import CallApi from "../../api/api";
 import { Link } from "react-router-dom";
-import { actionCreatorLogOut } from "../../actions/actions";
+import { actionCreatorLogOut } from "../../actions/actionsAuthentication";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 

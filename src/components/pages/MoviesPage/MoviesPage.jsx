@@ -1,42 +1,26 @@
 import React from "react";
 import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
+import { connect } from "react-redux";
+import * as actionsMovies from "../../../actions/actionsMovies";
+import { bindActionCreators } from "redux";
 
-export default class MoviesPage extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "2018",
-        with_genres: []
-      },
-      page: 1,
-      total_pages: ""
-    };
-  }
-
+class MoviesPage extends React.Component {
   onChangeFilters = event => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        [name]: value
-      }
-    }));
+    this.props.updateFilter({
+      [event.target.name]: event.target.value
+    });
   };
 
-  onChangePagination = ({ page, total_pages = this.state.total_pages }) => {
-    this.setState({
+  onChangePagination = ({ page, total_pages }) => {
+    this.props.updatePagination({
       page,
       total_pages
     });
   };
 
   render() {
-    const { filters, page, total_pages } = this.state;
+    const { filters, page, total_pages } = this.props;
     return (
       <div className="container">
         <div className="row mt-4">
@@ -66,3 +50,26 @@ export default class MoviesPage extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    page: state.movies.pagination.page,
+    total_pages: state.movies.pagination.total_pages,
+    filters: state.movies.filters
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      updateFilter: actionsMovies.actionCreatorUpdateFilter,
+      updatePagination: actionsMovies.actionCreatorUpdatePagination
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MoviesPage);

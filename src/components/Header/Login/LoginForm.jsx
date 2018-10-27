@@ -1,7 +1,7 @@
 import React from "react";
 import CallApi from "../../../api/api";
 import classNames from "classnames";
-import { actionCreatorUpdateAuth } from "../../../actions/actions";
+import { actionCreatorUpdateAuth } from "../../../actions/actionsAuthentication";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
