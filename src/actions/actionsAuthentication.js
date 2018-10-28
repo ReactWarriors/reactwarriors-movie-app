@@ -1,9 +1,13 @@
 import * as constants from "../constants/constants";
 
-export const actionCreatorUpdateAuth = payload => {
+export const actionCreatorUpdateAuth = ({ user, session_id, isAuth }) => {
   return {
     type: constants.UPDATE_AUTH,
-    payload
+    payload: {
+      user,
+      session_id,
+      isAuth
+    }
   };
 };
 

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actionsAuthentication actionCreatorUpdateAuth 1`] = `
+Object {
+  "payload": Object {
+    "isAuth": true,
+    "session_id": "1",
+    "user": "1",
+  },
+  "type": "UPDATE_AUTH",
+}
+`;
