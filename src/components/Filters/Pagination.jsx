@@ -36,9 +36,11 @@ export default class Pagination extends React.Component {
             </span>
           </li>
         </ul>
-        <span>
-          {page} of {total_pages}
-        </span>
+        {total_pages > 0 && (
+          <span>
+            {page} of {total_pages}
+          </span>
+        )}
       </nav>
     );
   }

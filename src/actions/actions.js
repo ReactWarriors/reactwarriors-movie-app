@@ -1,6 +1,6 @@
 import CallApi from "../api/api";
 import * as constants from "../constants/constants";
-console.log(constants);
+
 export const actionCreatorUpdateAuth = payload => {
   return {
     type: constants.UPDATE_AUTH,
@@ -19,18 +19,48 @@ export const actionCreatorUpdateMovies = movies => ({
   payload: movies
 });
 
-export const actionCreatorGetMovies = params => {
+export const actionCreatorUpdateFilters = event => {
+  return {
+    type: constants.UPDATE_FILTERS,
+    payload: {
+      [event.target.name]: event.target.value
+    }
+  };
+};
+
+export const actionCreatorUpdatePagination = ({ page, total_pages }) => {
+  return {
+    type: constants.UPDATE_PAGINATION,
+    payload: {
+      page,
+      total_pages
+    }
+  };
+};
+
+export const actionCreatorGetMovies = (filters, page) => {
+  const { sort_by, primary_release_year, with_genres } = filters;
+  const queryStringParams = {
+    language: "ru-RU",
+    sort_by: sort_by,
+    page: page,
+    primary_release_year: primary_release_year
+  };
+
+  if (with_genres.length > 0)
+    queryStringParams.with_genres = with_genres.join(",");
+
   return dispatch => {
     dispatch({
       type: "FETCHING_MOVIES"
     });
     CallApi.get("/discover/movie", {
-      params: params
+      params: queryStringParams
     })
-      .then(data => {
+      .then(response => {
         dispatch({
           type: "UPDATE_MOVIES",
-          payload: data.results
+          payload: response
         });
       })
       .catch(error => {
