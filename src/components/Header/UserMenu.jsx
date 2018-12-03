@@ -5,7 +5,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import { AppContext } from "../App";
+import AppContextHOC from "../HOC/AppContextHOC";
 import { fetchApi, API_URL, API_KEY_3 } from "../../api/api";
 
 class UserMenu extends Component {
@@ -62,16 +62,4 @@ class UserMenu extends Component {
   }
 }
 
-const UserMenuContainer = props => {
-  return (
-    <AppContext.Consumer>
-      {context => {
-        return <UserMenu {...context} {...props} />;
-      }}
-    </AppContext.Consumer>
-  );
-};
-
-UserMenuContainer.displayName = "UserContainer";
-
-export default UserMenuContainer;
+export default AppContextHOC(UserMenu);

@@ -28,5 +28,8 @@
   },
   "eslint": {
     "extends": "react-app"
+  },
+  "resolutions": {
+    "**/event-stream": "^4.0.1"
   }
 }
