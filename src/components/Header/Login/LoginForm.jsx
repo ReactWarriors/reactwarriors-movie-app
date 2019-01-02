@@ -2,55 +2,19 @@ import React from "react";
 import CallApi from "../../../api/api";
 import classNames from "classnames";
 import AppContextHOC from "../../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
 
+@AppContextHOC
+@inject(({ loginFormStore }) => ({
+  loginFormStore
+}))
+@observer
 class LoginForm extends React.Component {
-  state = {
-    username: "evgeniypodgaetskiy",
-    password: "temp1992",
-    errors: {},
-    submitting: false
-  };
-
-  onChange = e => {
-    const name = e.target.name;
-    const value = e.target.value;
-    this.setState(prevState => ({
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        base: null,
-        [name]: null
-      }
-    }));
-  };
-
-  handleBlur = (event) => {
-    const errors = this.validateFields();
-    const name = event.target.name
-    if (errors[name]) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          [name]: errors[name]
-        }
-      }));
-    }
-  };
-
-  validateFields = () => {
-    const errors = {};
-
-    if (this.state.username === "") {
-      errors.username = "Not empty";
-    }
-
-    return errors;
-  };
-
   onSubmit = () => {
     this.setState({
       submitting: true
     });
+    let session_id = null;
     CallApi.get("/authentication/token/new")
       .then(data => {
         return CallApi.post("/authentication/token/validate_with_login", {
@@ -69,7 +33,7 @@ class LoginForm extends React.Component {
         });
       })
       .then(data => {
-        this.props.updateSessionId(data.session_id);
+        session_id = data.session_id;
         return CallApi.get("/account", {
           params: {
             session_id: data.session_id
@@ -82,7 +46,7 @@ class LoginForm extends React.Component {
             submitting: false
           },
           () => {
-            this.props.updateUser(user);
+            this.props.updateAuth({ user, session_id });
           }
         );
       })
@@ -113,11 +77,20 @@ class LoginForm extends React.Component {
 
   getClassForInput = key =>
     classNames("form-control", {
-      invalid: this.state.errors[key]
+      invalid: this.props.loginFormStore.errors[key]
     });
 
   render() {
-    const { username, password, errors, submitting } = this.state;
+    const {
+      loginFormStore: {
+        username,
+        password,
+        errors,
+        submitting,
+        onChange,
+        onBlur
+      }
+    } = this.props;
     return (
       <div className="form-login-container">
         <form className="form-login">
@@ -133,8 +106,8 @@ class LoginForm extends React.Component {
               placeholder="Пользователь"
               name="username"
               value={username}
-              onChange={this.onChange}
-              onBlur={this.handleBlur}
+              onChange={onChange}
+              onBlur={onBlur}
             />
             {errors.username && (
               <div className="invalid-feedback">{errors.username}</div>
@@ -149,7 +122,8 @@ class LoginForm extends React.Component {
               placeholder="Пароль"
               name="password"
               value={password}
-              onChange={this.onChange}
+              onChange={onChange}
+              onBlur={onBlur}
             />
             {errors.password && (
               <div className="invalid-feedback">{errors.password}</div>
@@ -172,4 +146,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default AppContextHOC(LoginForm);
+export default LoginForm;

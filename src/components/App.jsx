@@ -10,31 +10,19 @@ const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 
-const hoc = c => c
-
-@hoc        
 class App extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      user: null,
-      session_id: null
-    };
-  }
-
-  updateUser = user => {
-    this.setState({
-      user
-    });
+  state = {
+    user: null,
+    session_id: null
   };
 
-  updateSessionId = session_id => {
+  updateAuth = ({ user, session_id }) => {
     cookies.set("session_id", session_id, {
       path: "/",
       maxAge: 2592000
     });
     this.setState({
+      user,
       session_id
     });
   };
@@ -53,8 +41,7 @@ class App extends React.Component {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       ).then(user => {
-        this.updateUser(user);
-        this.updateSessionId(session_id);
+        this.updateAuth({ user, session_id });
       });
     }
   }
@@ -67,8 +54,7 @@ class App extends React.Component {
           value={{
             user,
             session_id,
-            updateUser: this.updateUser,
-            updateSessionId: this.updateSessionId,
+            updateAuth: this.updateAuth,
             onLogOut: this.onLogOut
           }}
         >
@@ -83,4 +69,4 @@ class App extends React.Component {
   }
 }
 
-export default App
+export default App;
