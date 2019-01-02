@@ -1,12 +1,12 @@
 import React from "react";
-import CallApi, { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
+import CallApi from "../../../api/api";
 import classNames from "classnames";
 import AppContextHOC from "../../HOC/AppContextHOC";
 
 class LoginForm extends React.Component {
   state = {
-    username: "",
-    password: "",
+    username: "evgeniypodgaetskiy",
+    password: "temp1992",
     errors: {},
     submitting: false
   };
@@ -24,14 +24,14 @@ class LoginForm extends React.Component {
     }));
   };
 
-  handleBlur = () => {
-    console.log("on blur");
+  handleBlur = (event) => {
     const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
+    const name = event.target.name
+    if (errors[name]) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          ...errors
+          [name]: errors[name]
         }
       }));
     }
@@ -60,21 +60,6 @@ class LoginForm extends React.Component {
             request_token: data.request_token
           }
         });
-        // fetchApi(
-        //   `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-        //   {
-        //     method: "POST",
-        //     mode: "cors",
-        //     headers: {
-        //       "Content-type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //       username: this.state.username,
-        //       password: this.state.password,
-        //       request_token: data.request_token
-        //     })
-        //   }
-        // );
       })
       .then(data => {
         return CallApi.post("/authentication/session/new", {
@@ -82,19 +67,6 @@ class LoginForm extends React.Component {
             request_token: data.request_token
           }
         });
-        // fetchApi(
-        //   `${API_URL}/authentication/session/new?api_key=${API_KEY_3}`,
-        //   {
-        //     method: "POST",
-        //     mode: "cors",
-        //     headers: {
-        //       "Content-type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //       request_token: data.request_token
-        //     })
-        //   }
-        // );
       })
       .then(data => {
         this.props.updateSessionId(data.session_id);
@@ -103,11 +75,6 @@ class LoginForm extends React.Component {
             session_id: data.session_id
           }
         });
-        // fetchApi(
-        //   `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-        //     data.session_id
-        //   }`
-        // );
       })
       .then(user => {
         this.setState(
@@ -120,7 +87,6 @@ class LoginForm extends React.Component {
         );
       })
       .catch(error => {
-        console.log("error", error);
         this.setState({
           submitting: false,
           errors: {
