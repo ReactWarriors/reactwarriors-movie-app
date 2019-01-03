@@ -1,5 +1,6 @@
 import { observable, action, configure } from "mobx";
 import CallApi from "../api/api";
+import { userStore } from "./userStore";
 
 configure({ enforceActions: "always" });
 
@@ -85,10 +86,10 @@ class LoginFormStore {
       })
       .then(user => {
         this.updateSubmitting(false);
-        return {
+        userStore.updateAuth({
           user,
           session_id
-        };
+        });
         // callback({ user, session_id });
       })
       .catch(error => {
