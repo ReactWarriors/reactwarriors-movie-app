@@ -1,5 +1,4 @@
 import React from "react";
-import CallApi from "../../../api/api";
 import classNames from "classnames";
 import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
@@ -10,68 +9,26 @@ import { inject, observer } from "mobx-react";
 }))
 @observer
 class LoginForm extends React.Component {
-  onSubmit = () => {
-    this.setState({
-      submitting: true
-    });
-    let session_id = null;
-    CallApi.get("/authentication/token/new")
-      .then(data => {
-        return CallApi.post("/authentication/token/validate_with_login", {
-          body: {
-            username: this.state.username,
-            password: this.state.password,
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        return CallApi.post("/authentication/session/new", {
-          body: {
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        session_id = data.session_id;
-        return CallApi.get("/account", {
-          params: {
-            session_id: data.session_id
-          }
-        });
-      })
-      .then(user => {
-        this.setState(
-          {
-            submitting: false
-          },
-          () => {
-            this.props.updateAuth({ user, session_id });
-          }
-        );
-      })
-      .catch(error => {
-        this.setState({
-          submitting: false,
-          errors: {
-            base: error.status_message
-          }
-        });
-      });
-  };
-
   onLogin = e => {
     e.preventDefault();
-    const errors = this.validateFields();
+    const errors = this.props.loginFormStore.validateFields();
     if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
-        }
-      }));
+      // this.setState(prevState => ({
+      //   errors: {
+      //     ...prevState.errors,
+      //     ...errors
+      //   }
+      // }));
+      this.props.loginFormStore.updateErrors(errors);
     } else {
-      this.onSubmit();
+      // const callback = ({ user, session_id }) => {
+      //   this.props.updateAuth({ user, session_id });
+      //   // this.props.toggleLoginForm
+      // };
+      this.props.loginFormStore.onSubmit().then(data => {
+        console.log(data);
+        // this.props.updateAuth({ user, session_id });
+      });
     }
   };
 
