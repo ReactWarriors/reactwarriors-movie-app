@@ -12,7 +12,8 @@ export default class MovieList extends Component {
   }
 
   componentDidMount() {
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU`;
+    const {filters: {sort_by}} = this.props;
+    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}`;
     fetch(link)
       .then(response => {
         return response.json();
