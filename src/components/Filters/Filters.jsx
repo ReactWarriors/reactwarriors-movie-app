@@ -3,7 +3,6 @@ import React from "react";
 export default class Filters extends React.Component {
   render() {
     const {filters: {sort_by}, page, onChangeFilters, onChangePage} = this.props;
-    console.log(page);
     return (
       <form className="mb-3">
         <div className="form-group">

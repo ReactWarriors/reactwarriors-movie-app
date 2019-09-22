@@ -53,6 +53,7 @@ export default class App extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
+              onChangePage={this.onChangePage}
             />
           </div>
         </div>
