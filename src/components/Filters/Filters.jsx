@@ -5,7 +5,7 @@ import Pagination from "../Pagination";
 
 export default class Filters extends React.Component {
   render() {
-    const {filters: {sort_by, primary_release_year}, page, total_pages, onChangeFilters, onChangePage} = this.props;
+    const {filters: {sort_by, primary_release_year}, page, total_pages, onChangeFilters, onChangePage, onReset} = this.props;
     return (
       <form className="mb-3">
         <SortBy
@@ -21,6 +21,14 @@ export default class Filters extends React.Component {
           total_pages={total_pages}
           onChangePage={onChangePage}
         />
+        <p className="mt-3">
+          <button
+            type="reset"
+            className="btn btn-danger btn-block"
+            onClick={onReset}
+          >Clear filters
+          </button>
+        </p>
       </form>
     );
   }

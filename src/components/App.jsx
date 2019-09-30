@@ -38,6 +38,15 @@ export default class App extends React.Component {
     })
   };
 
+  onReset = () => {
+    this.setState({
+      filters: {
+        sort_by: 'popularity.desc',
+        primary_release_year: '2019'
+      }
+    })
+  };
+
   render() {
     const {filters, page, total_pages} = this.state;
 
@@ -52,6 +61,7 @@ export default class App extends React.Component {
                   filters={filters}
                   page={page}
                   total_pages={total_pages}
+                  onReset={this.onReset}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
                 />
