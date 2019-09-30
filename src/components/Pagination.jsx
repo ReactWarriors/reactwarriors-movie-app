@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class Pagination extends React.Component {
+
   render() {
-    const {page, onChangePage} = this.props;
+    const {page, total_pages, onChangePage} = this.props;
 
     return (
       <div className="btn-group">
@@ -14,6 +15,7 @@ export default class Pagination extends React.Component {
           onClick={() => onChangePage(page - 1)}
         >Prev
         </button>
+        <p className="mr-4 mb-0">{page} из {total_pages}</p>
         <button
           type="button"
           className="btn btn-secondary"

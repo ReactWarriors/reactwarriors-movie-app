@@ -11,7 +11,8 @@ export default class App extends React.Component {
         sort_by: 'popularity.desc',
         primary_release_year: '2019'
       },
-      page: 1
+      page: 1,
+      total_pages: ''
     }
   }
 
@@ -31,8 +32,14 @@ export default class App extends React.Component {
     });
   };
 
+  onChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  };
+
   render() {
-    const {filters, page} = this.state;
+    const {filters, page, total_pages} = this.state;
 
     return (
       <div className="container">
@@ -44,6 +51,7 @@ export default class App extends React.Component {
                 <Filters
                   filters={filters}
                   page={page}
+                  total_pages={total_pages}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
                 />
@@ -54,6 +62,7 @@ export default class App extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
+              onChange={this.onChange}
               onChangePage={this.onChangePage}
             />
           </div>

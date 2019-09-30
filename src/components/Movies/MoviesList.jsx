@@ -20,8 +20,14 @@ export default class MovieList extends Component {
       })
       .then(data => {
         this.setState({
-          movies: data.results
+          movies: data.results,
         });
+        this.props.onChange({
+          target: {
+            name: 'total_pages',
+            value: data.total_pages
+          }
+        })
       });
   };
 
