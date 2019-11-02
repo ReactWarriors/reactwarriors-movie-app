@@ -91,7 +91,6 @@ export default class App extends React.Component {
               page={page}
               onChange={this.onChange}
               onChangePage={this.onChangePage}
-
             />
           </div>
         </div>
