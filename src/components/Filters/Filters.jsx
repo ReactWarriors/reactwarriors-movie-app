@@ -2,10 +2,11 @@ import React from "react";
 import SortBy from "./SortBy";
 import ReleaseYear from "./ReleaseYear";
 import Pagination from "../Pagination";
+import Genres from "./Genres";
 
 export default class Filters extends React.Component {
   render() {
-    const {filters: {sort_by, primary_release_year}, page, total_pages, onChangeFilters, onChangePage, onReset} = this.props;
+    const {filters: {sort_by, primary_release_year}, page, total_pages, getCheckedGenres, onChangeFilters, onChangePage, onReset} = this.props;
     return (
       <form className="mb-3">
         <SortBy
@@ -16,10 +17,8 @@ export default class Filters extends React.Component {
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
         />
-        <Pagination
-          page={page}
-          total_pages={total_pages}
-          onChangePage={onChangePage}
+        <Genres
+          getCheckedGenres={getCheckedGenres}
         />
         <p className="mt-3">
           <button
@@ -29,6 +28,11 @@ export default class Filters extends React.Component {
           >Clear filters
           </button>
         </p>
+        <Pagination
+          page={page}
+          total_pages={total_pages}
+          onChangePage={onChangePage}
+        />
       </form>
     );
   }

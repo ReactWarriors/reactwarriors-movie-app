@@ -9,7 +9,8 @@ export default class App extends React.Component {
     this.state = {
       filters: {
         sort_by: 'popularity.desc',
-        primary_release_year: '2019'
+        primary_release_year: '2019',
+        genres: []
       },
       page: 1,
       total_pages: ''
@@ -23,7 +24,7 @@ export default class App extends React.Component {
     };
     this.setState({
       filters: newFilters
-    })
+    });
   };
 
   onChangePage = (page) => {
@@ -42,9 +43,23 @@ export default class App extends React.Component {
     this.setState({
       filters: {
         sort_by: 'popularity.desc',
-        primary_release_year: '2019'
+        primary_release_year: '2019',
+        genres: []
       }
     })
+  };
+
+  getCheckedGenres = (e) => {
+    const updateFilters = {...this.state.filters};
+    if(e.target.checked) {
+      updateFilters.genres.push(e.target.value);
+    } else {
+      let index = updateFilters.genres.indexOf(e.target.value);
+      updateFilters.genres.splice(index, 1);
+    }
+    this.setState({
+      filters: updateFilters
+    });
   };
 
   render() {
@@ -61,6 +76,8 @@ export default class App extends React.Component {
                   filters={filters}
                   page={page}
                   total_pages={total_pages}
+                  onChange={this.onChange}
+                  getCheckedGenres={this.getCheckedGenres}
                   onReset={this.onReset}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
@@ -74,6 +91,7 @@ export default class App extends React.Component {
               page={page}
               onChange={this.onChange}
               onChangePage={this.onChangePage}
+
             />
           </div>
         </div>

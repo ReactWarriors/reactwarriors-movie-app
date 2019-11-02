@@ -30,6 +30,5 @@ ReleaseYear.defaultProps = {
 };
 
 ReleaseYear.propTypes = {
-  primary_release_year: PropTypes.string.isRequired,
   onChangeFilters: PropTypes.func.isRequired
 };

@@ -47,6 +47,5 @@ SortBy.defaultProps = {
 };
 
 SortBy.propTypes = {
-  sort_by: PropTypes.string.isRequired,
   onChangeFilters: PropTypes.func.isRequired
 };
