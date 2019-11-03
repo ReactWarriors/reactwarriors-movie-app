@@ -17,16 +17,6 @@ export default class App extends React.Component {
     }
   }
 
-  onChangeFilters = (e) => {
-    const newFilters = {
-      ...this.state.filters,
-      [e.target.name]: e.target.value
-    };
-    this.setState({
-      filters: newFilters
-    });
-  };
-
   onChangePage = (page) => {
     this.setState({
       page
@@ -49,21 +39,27 @@ export default class App extends React.Component {
     })
   };
 
-  getCheckedGenres = (e) => {
-    const updateFilters = {...this.state.filters};
+  onChangeFilters = (e) => {
+    const updatedGenres = this.state.filters.genres;
     if(e.target.checked) {
-      updateFilters.genres.push(e.target.value);
+      updatedGenres.push(e.target.value);
     } else {
-      let index = updateFilters.genres.indexOf(e.target.value);
-      updateFilters.genres.splice(index, 1);
+      let index = updatedGenres.indexOf(e.target.value);
+      updatedGenres.splice(index, 1);
     }
+    const newFilters = {
+      ...this.state.filters,
+      [e.target.name]: e.target.value,
+      genres: updatedGenres
+    };
     this.setState({
-      filters: updateFilters
+      filters: newFilters
     });
   };
 
   render() {
     const {filters, page, total_pages} = this.state;
+    console.log(this.state.filters.genres)
 
     return (
       <div className="container">
@@ -77,7 +73,6 @@ export default class App extends React.Component {
                   page={page}
                   total_pages={total_pages}
                   onChange={this.onChange}
-                  getCheckedGenres={this.getCheckedGenres}
                   onReset={this.onReset}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}

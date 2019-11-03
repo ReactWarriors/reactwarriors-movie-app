@@ -6,7 +6,7 @@ import Genres from "./Genres";
 
 export default class Filters extends React.Component {
   render() {
-    const {filters: {sort_by, primary_release_year}, page, total_pages, getCheckedGenres, onChangeFilters, onChangePage, onReset} = this.props;
+    const {filters: {sort_by, primary_release_year}, page, total_pages, onChangeFilters, onChangePage, onReset} = this.props;
     return (
       <form className="mb-3">
         <SortBy
@@ -18,7 +18,7 @@ export default class Filters extends React.Component {
           onChangeFilters={onChangeFilters}
         />
         <Genres
-          getCheckedGenres={getCheckedGenres}
+          onChangeFilters={onChangeFilters}
         />
         <p className="mt-3">
           <button

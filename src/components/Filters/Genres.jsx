@@ -28,7 +28,7 @@ export default class Genres extends React.Component {
   }
 
   render() {
-    const {getCheckedGenres} = this.props;
+    const {onChangeFilters} = this.props;
     const {genres} = this.state;
 
     return (
@@ -44,7 +44,7 @@ export default class Genres extends React.Component {
                 name="genres_checked"
                 value={item.id}
                 id={item.id}
-                onChange={getCheckedGenres}
+                onChange={onChangeFilters}
               />
               <label className="form-check-label" htmlFor={item.id}>
                 {item.name}
