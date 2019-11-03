@@ -59,7 +59,6 @@ export default class App extends React.Component {
 
   render() {
     const {filters, page, total_pages} = this.state;
-    console.log(this.state.filters.genres)
 
     return (
       <div className="container">
