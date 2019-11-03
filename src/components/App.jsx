@@ -40,7 +40,7 @@ export default class App extends React.Component {
   };
 
   onChangeFilters = (e) => {
-    const updatedGenres = this.state.filters.genres;
+    const updatedGenres = [...this.state.filters.genres];
     if(e.target.checked) {
       updatedGenres.push(e.target.value);
     } else {
