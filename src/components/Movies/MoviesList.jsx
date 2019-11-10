@@ -12,8 +12,8 @@ export default class MovieList extends Component {
   }
 
   getMovies = (filters, page) => {
-    const {sort_by, primary_release_year, genres} = filters;
-    const genres_list = genres.join(',');
+    const {sort_by, primary_release_year, with_genres} = filters;
+    const genres_list = with_genres.join(',');
     const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&primary_release_year=${primary_release_year}&page=${page}&with_genres=${genres_list}`;
     fetch(link)
       .then(response => {
@@ -38,8 +38,13 @@ export default class MovieList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const {filters: {sort_by, primary_release_year, genres}, filters, onChangePage, page} = this.props;
-    if(sort_by !== prevProps.filters.sort_by || primary_release_year !== prevProps.filters.primary_release_year || genres.length !== prevProps.filters.genres.length) {
+    const {
+      filters: {sort_by, primary_release_year, with_genres},
+      filters,
+      onChangePage,
+      page
+    } = this.props;
+    if(sort_by !== prevProps.filters.sort_by || primary_release_year !== prevProps.filters.primary_release_year || with_genres.length !== prevProps.filters.with_genres.length) {
       onChangePage(1);
       this.getMovies(filters, 1);
     }

@@ -6,7 +6,15 @@ import Genres from "./Genres";
 
 export default class Filters extends React.Component {
   render() {
-    const {filters: {sort_by, primary_release_year}, page, total_pages, onChangeFilters, onChangePage, onReset} = this.props;
+    const {
+      filters: {sort_by, primary_release_year, with_genres},
+      page,
+      total_pages,
+      onChangeFilters,
+      onChangePage,
+      onReset
+    } = this.props;
+
     return (
       <form className="mb-3">
         <SortBy
@@ -18,6 +26,7 @@ export default class Filters extends React.Component {
           onChangeFilters={onChangeFilters}
         />
         <Genres
+          with_genres={with_genres}
           onChangeFilters={onChangeFilters}
         />
         <p className="mt-3">

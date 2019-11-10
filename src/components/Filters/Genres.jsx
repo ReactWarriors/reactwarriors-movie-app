@@ -11,7 +11,7 @@ export default class Genres extends React.Component {
   }
 
   getGenres = () => {
-    const link_genres = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=en-US`;
+    const link_genres = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-Ru`;
     fetch(link_genres)
       .then(response => {
         return response.json();
@@ -23,12 +23,29 @@ export default class Genres extends React.Component {
       })
   };
 
+  onChangeGenres = (event) => {
+    const {with_genres, onChangeFilters} = this.props;
+    const updatedGenres = [...with_genres];
+
+    if(event.target.checked) {
+      updatedGenres.push(event.target.value);
+    } else {
+      let index = updatedGenres.indexOf(event.target.value);
+      updatedGenres.splice(index, 1);
+    }
+    onChangeFilters({
+      target: {
+        name: "with_genres",
+        value: updatedGenres
+      }
+    })
+  };
+
   componentDidMount() {
     this.getGenres();
   }
 
   render() {
-    const {onChangeFilters} = this.props;
     const {genres} = this.state;
 
     return (
@@ -41,10 +58,10 @@ export default class Genres extends React.Component {
               <input
                 className="form-check-input"
                 type="checkbox"
-                name="genres_checked"
+                name="with_genres"
                 value={item.id}
                 id={item.id}
-                onChange={onChangeFilters}
+                onChange={this.onChangeGenres}
               />
               <label className="form-check-label" htmlFor={item.id}>
                 {item.name}

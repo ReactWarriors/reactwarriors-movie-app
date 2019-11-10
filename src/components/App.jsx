@@ -10,7 +10,7 @@ export default class App extends React.Component {
       filters: {
         sort_by: 'popularity.desc',
         primary_release_year: '2019',
-        genres: []
+        with_genres: []
       },
       page: 1,
       total_pages: ''
@@ -23,9 +23,9 @@ export default class App extends React.Component {
     });
   };
 
-  onChange = (e) => {
+  onChange = (event) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     })
   };
 
@@ -39,22 +39,15 @@ export default class App extends React.Component {
     })
   };
 
-  onChangeFilters = (e) => {
-    const updatedGenres = [...this.state.filters.genres];
-    if(e.target.checked) {
-      updatedGenres.push(e.target.value);
-    } else {
-      let index = updatedGenres.indexOf(e.target.value);
-      updatedGenres.splice(index, 1);
-    }
-    const newFilters = {
-      ...this.state.filters,
-      [e.target.name]: e.target.value,
-      genres: updatedGenres
-    };
-    this.setState({
-      filters: newFilters
-    });
+  onChangeFilters = event => {
+    const name = event.target.name;
+    const value = event.target. value;
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        [name]: value
+      }
+    }))
   };
 
   render() {
