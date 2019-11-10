@@ -34,7 +34,7 @@ export default class App extends React.Component {
       filters: {
         sort_by: 'popularity.desc',
         primary_release_year: '2019',
-        genres: []
+        with_genres: []
       }
     })
   };
