@@ -1,7 +1,7 @@
 import React from "react";
 import SortBy from "./SortBy";
 import ReleaseYear from "./ReleaseYear";
-import Pagination from "../Pagination";
+import Pagination from "./Pagination";
 import Genres from "./Genres";
 
 export default class Filters extends React.Component {

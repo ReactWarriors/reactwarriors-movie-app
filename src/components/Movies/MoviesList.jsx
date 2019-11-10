@@ -23,12 +23,7 @@ export default class MovieList extends Component {
         this.setState({
           movies: data.results
         });
-        this.props.onChange({
-          target: {
-            name: 'total_pages',
-            value: data.total_pages
-          }
-        })
+        this.props.onChangeTotalPages(data.total_pages);
       });
   };
 
