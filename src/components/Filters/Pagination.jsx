@@ -7,21 +7,21 @@ export default class Pagination extends React.Component {
     const {page, total_pages, onChangePage} = this.props;
 
     return (
-      <div className="btn-group">
+      <div className="mt-3 mb-3">
         <button
           type="button"
           className="btn btn-secondary mr-4"
           disabled={page === 1}
           onClick={() => onChangePage(page - 1)}
-        >Пред.
+        >Предыдущая
         </button>
-        <p className="mr-4 mb-0">{page} из {total_pages}</p>
         <button
           type="button"
           className="btn btn-secondary"
           onClick={() => onChangePage(page + 1)}
-        >След.
+        >Следующая
         </button>
+        <p className="mr-4 mb-0">{page} из {total_pages}</p>
       </div>
     )
   }

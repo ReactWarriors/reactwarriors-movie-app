@@ -17,6 +17,14 @@ export default class Filters extends React.Component {
 
     return (
       <form className="mb-3">
+        <p className="mb-3 mt-3">
+          <button
+            type="reset"
+            className="btn btn-danger btn-block"
+            onClick={onReset}
+          >Очистить фильтры
+          </button>
+        </p>
         <SortBy
           sort_by={sort_by}
           onChangeFilters={onChangeFilters}
@@ -29,14 +37,6 @@ export default class Filters extends React.Component {
           with_genres={with_genres}
           onChangeFilters={onChangeFilters}
         />
-        <p className="mt-3">
-          <button
-            type="reset"
-            className="btn btn-danger btn-block"
-            onClick={onReset}
-          >Clear filters
-          </button>
-        </p>
         <Pagination
           page={page}
           total_pages={total_pages}

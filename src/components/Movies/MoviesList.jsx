@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import MovieItem from "./MovieItem";
 import { API_URL, API_KEY_3 } from "../../api/api";
+import Loader from '../Loader';
 
 export default class MovieList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      movies: []
+      movies: [],
+      isLoading: true
     };
   }
 
@@ -30,6 +32,9 @@ export default class MovieList extends Component {
   componentDidMount() {
     const {filters, page} = this.props;
     this.getMovies(filters, page);
+    this.setState({
+      isLoading: false
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -49,9 +54,10 @@ export default class MovieList extends Component {
   }
 
   render() {
-    const { movies } = this.state;
+    const { movies, isLoading } = this.state;
     return (
       <div className="row">
+        <Loader isLoading={isLoading} />
         {movies.map(movie => {
           return (
             <div key={movie.id} className="col-6 mb-4">

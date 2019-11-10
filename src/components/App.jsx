@@ -35,7 +35,9 @@ export default class App extends React.Component {
         sort_by: 'popularity.desc',
         primary_release_year: '2019',
         with_genres: []
-      }
+      },
+      page: 1,
+      total_pages: ''
     })
   };
 
