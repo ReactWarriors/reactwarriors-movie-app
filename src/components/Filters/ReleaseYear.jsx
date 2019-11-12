@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 
 export default class ReleaseYear extends React.Component {
 
+  getYears = () => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for(let i = 0; i < 10; i++) {
+      years.push(currentYear - i);
+    }
+    return years;
+  };
+
   render() {
-    const {primary_release_year, onChangeFilters, options} = this.props;
+    const {primary_release_year, onChangeFilters} = this.props;
 
     return (
       <div className="form-group">
@@ -16,7 +25,7 @@ export default class ReleaseYear extends React.Component {
           value={primary_release_year}
           onChange={onChangeFilters}
         >
-          {options.map(option => (
+          {this.getYears().map(option => (
             <option key={option} value={option}>{option}</option>
           ))}
         </select>
@@ -24,10 +33,6 @@ export default class ReleaseYear extends React.Component {
     )
   }
 }
-
-ReleaseYear.defaultProps = {
-  options: [2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2000]
-};
 
 ReleaseYear.propTypes = {
   onChangeFilters: PropTypes.func.isRequired
