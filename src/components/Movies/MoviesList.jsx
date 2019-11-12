@@ -46,9 +46,15 @@ export default class MovieList extends Component {
     if(filters !== prevProps.filters) {
       onChangePage(1);
       this.getMovies(filters, 1);
+      this.setState({
+        isLoading: false
+      })
     }
     if(page !== prevProps.page) {
       this.getMovies(filters, page);
+      this.setState({
+        isLoading: false
+      })
     }
   }
 
