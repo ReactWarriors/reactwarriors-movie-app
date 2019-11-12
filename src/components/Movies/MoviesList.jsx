@@ -31,7 +31,8 @@ export default class MovieList extends Component {
       })
       .then(data => {
         this.setState({
-          movies: data.results
+          movies: data.results,
+          isLoading: false
         });
         this.props.onChangeTotalPages(data.total_pages);
       });
@@ -40,9 +41,6 @@ export default class MovieList extends Component {
   componentDidMount() {
     const {filters, page} = this.props;
     this.getMovies(filters, page);
-    this.setState({
-      isLoading: false
-    })
   }
 
   componentDidUpdate(prevProps) {
@@ -52,17 +50,17 @@ export default class MovieList extends Component {
       page
     } = this.props;
     if(filters !== prevProps.filters) {
+      this.setState({
+        isLoading: true
+      });
       onChangePage(1);
       this.getMovies(filters, 1);
-      this.setState({
-        isLoading: false
-      })
     }
     if(page !== prevProps.page) {
-      this.getMovies(filters, page);
       this.setState({
-        isLoading: false
-      })
+        isLoading: true
+      });
+      this.getMovies(filters, page);
     }
   }
 
@@ -70,14 +68,18 @@ export default class MovieList extends Component {
     const { movies, isLoading } = this.state;
     return (
       <div className="row">
-        <Loader isLoading={isLoading} />
-        {movies.map(movie => {
-          return (
-            <div key={movie.id} className="col-6 mb-4">
-              <MovieItem item={movie} />
-            </div>
-          );
-        })}
+        {isLoading ? <Loader /> :
+          <>
+            {movies.map(movie => {
+              return (
+                <div key={movie.id} className="col-6 mb-4">
+                  <MovieItem item={movie}/>
+                </div>
+              );
+            })
+            }
+          </>
+        }
       </div>
     );
   }
