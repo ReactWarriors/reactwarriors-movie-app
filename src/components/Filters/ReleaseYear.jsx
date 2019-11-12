@@ -25,8 +25,8 @@ export default class ReleaseYear extends React.Component {
           value={primary_release_year}
           onChange={onChangeFilters}
         >
-          {this.getYears().map(option => (
-            <option key={option} value={option}>{option}</option>
+          {this.getYears().map(item => (
+            <option key={item} value={item}>{item}</option>
           ))}
         </select>
       </div>

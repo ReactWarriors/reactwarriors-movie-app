@@ -26,19 +26,27 @@ export default class Genres extends React.Component {
   onChangeGenres = (event) => {
     const {with_genres, onChangeFilters} = this.props;
     const updatedGenres = [...with_genres];
+    const value = event.target.value;
 
-    if(event.target.checked) {
-      updatedGenres.push(event.target.value);
+    if(with_genres.indexOf(value) === -1) {
+      updatedGenres.push(value);
+      this.isChecked(true);
     } else {
-      let index = updatedGenres.indexOf(event.target.value);
+      let index = updatedGenres.indexOf(value);
       updatedGenres.splice(index, 1);
+      this.isChecked(false);
     }
+
     onChangeFilters({
       target: {
         name: "with_genres",
         value: updatedGenres
       }
     })
+  };
+
+  isChecked = (result) => {
+    return result
   };
 
   componentDidMount() {
@@ -49,7 +57,6 @@ export default class Genres extends React.Component {
     const {genres} = this.state;
 
     return (
-
       <div>
         <h6>Жанры:</h6>
         {genres.map(item => {
@@ -62,6 +69,7 @@ export default class Genres extends React.Component {
                 value={item.id}
                 id={item.id}
                 onChange={this.onChangeGenres}
+                checked={this.isChecked()}
               />
               <label className="form-check-label" htmlFor={item.id}>
                 {item.name}

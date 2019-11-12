@@ -19,9 +19,9 @@ export default class MovieList extends Component {
     const queryStringParams = {
       api_key: API_KEY_3,
       language: "ru-RU",
-      sort_by: sort_by,
-      primary_release_year: primary_release_year,
-      page: page,
+      sort_by,
+      primary_release_year,
+      page,
       with_genres: with_genres.join(',')
     };
     const link = `${API_URL}/discover/movie?${queryString.stringify(queryStringParams)}`;
