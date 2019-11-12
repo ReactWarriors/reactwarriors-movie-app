@@ -15,8 +15,16 @@ export default class MovieList extends Component {
 
   getMovies = (filters, page) => {
     const {sort_by, primary_release_year, with_genres} = filters;
-    const genres_list = with_genres.join(',');
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&primary_release_year=${primary_release_year}&page=${page}&with_genres=${genres_list}`;
+    const queryString = require('query-string');
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      language: "ru-RU",
+      sort_by: sort_by,
+      primary_release_year: primary_release_year,
+      page: page,
+      with_genres: with_genres.join(',')
+    };
+    const link = `${API_URL}/discover/movie?${queryString.stringify(queryStringParams)}`;
     fetch(link)
       .then(response => {
         return response.json();
