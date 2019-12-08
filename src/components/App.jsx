@@ -2,15 +2,19 @@ import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 
+const initialFilters = {
+  sort_by: "popularity.desc",
+  primary_release_year: "primary_release_year",
+  with_genres: []
+};
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      filters: {
-        sort_by: "popularity.desc"
-      },
-      page: 1
+      filters: initialFilters,
+      page: 1,
     }
   }
 
@@ -32,8 +36,33 @@ export default class App extends React.Component {
     })
   };
 
+  updateTotalPages = value => {
+    this.setState({
+      total_pages: value
+    })
+  };
+
+  onChangeGenres = genresArr => {
+    this.setState(state => {
+      return {
+        filters: {
+          ...state.filters,
+          with_genres: genresArr
+        }
+      }
+    })
+  };
+
+  onResetFilters = () => {
+    this.setState({
+      filters: initialFilters,
+      page: 1
+    })
+  };
+
+
   render() {
-    const {filters, page} = this.state;
+    const {filters, page, genres} = this.state;
 
     return (
       <div className="container">
@@ -45,8 +74,11 @@ export default class App extends React.Component {
                 <Filters
                   filters={filters}
                   page={page}
+                  genres={genres}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
+                  onChangeGenres={this.onChangeGenres}
+                  onResetFilters={this.onResetFilters}
                 />
               </div>
             </div>
@@ -56,6 +88,7 @@ export default class App extends React.Component {
               filters={filters}
               page={page}
               onChangePage={this.onChangePage}
+              updateTotalPages={this.updateTotalPages}
             />
           </div>
         </div>
