@@ -53,7 +53,7 @@ export default class SortBy extends Component {
 
 
     return (
-      <div className="form-group">
+      <div className="form-group pt-1">
         <label htmlFor="sort_by">Сортировать по:</label>
         <select
           id="sort_by"

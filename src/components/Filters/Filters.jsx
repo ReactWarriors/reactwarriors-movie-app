@@ -1,6 +1,6 @@
 import React from "react";
 import SortBy from './SortBy';
-import CheckboxList from "./CheckboxList";
+import Genres from "./Genres/Genres";
 
 export default class Filters extends React.Component {
   render() {
@@ -8,28 +8,28 @@ export default class Filters extends React.Component {
       filters: {sort_by, primary_release_year, with_genres},
       onChangeFilters,
       onResetFilters,
-      onChangeGenres
     } = this.props;
+
 
     return (
       <form>
+        <button
+          type="button"
+          className="btn btn-primary my-2"
+          onClick={onResetFilters}
+        >
+          Сбросить
+        </button>
         <SortBy
           sort_by={sort_by}
           primary_release_year={primary_release_year}
           onResetFilters={onResetFilters}
           onChangeFilters={onChangeFilters}
         />
-        <CheckboxList
-          onChangeGenres={onChangeGenres}
+        <Genres
+          onChangeFilters={onChangeFilters}
           with_genres={with_genres}
         />
-        <button
-          type="button"
-          className="btn btn-primary"
-          onClick={onResetFilters}
-        >
-          Сбросить
-        </button>
       </form>
     );
   }
