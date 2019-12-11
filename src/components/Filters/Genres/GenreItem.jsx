@@ -1,6 +1,6 @@
 import React from 'react';
 
-class CheckboxItem extends React.Component {
+class GenreItem extends React.Component {
   render() {
     const {item, checked, onChange} = this.props;
 
@@ -10,9 +10,10 @@ class CheckboxItem extends React.Component {
           className="form-check-input"
           type="checkbox"
           id={item.id}
+          value={item.id}
           name={item.name}
           onChange={onChange}
-          checked={!!checked}
+          checked={Boolean(checked)}
         />
         <label
           className="form-check-label"
@@ -26,4 +27,4 @@ class CheckboxItem extends React.Component {
   }
 }
 
-export default CheckboxItem;
+export default GenreItem;
