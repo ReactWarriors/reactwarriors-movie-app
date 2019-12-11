@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import queryString from "query-string";
 import MovieItem from "./MovieItem";
 import {API_URL, API_KEY_3} from "../../api/api";
-import Pagination from "./Pagination";
 
 export default class MovieList extends Component {
   constructor(props) {
@@ -10,11 +9,16 @@ export default class MovieList extends Component {
 
     this.state = {
       movies: [],
-      total_pages: 1,
+      loading: false
     };
   }
 
   getMovies = (filters, page) => {
+
+    this.setState({
+      loading: true
+    });
+
     const {sort_by, primary_release_year, with_genres} = filters;
     const queryStringParams = {
       api_key: API_KEY_3,
@@ -23,6 +27,7 @@ export default class MovieList extends Component {
       page,
       primary_release_year
     };
+
     if (with_genres.length > 0) {
       queryStringParams.with_genres = with_genres.join(",")
     }
@@ -33,13 +38,14 @@ export default class MovieList extends Component {
       .then(data => {
         this.setState({
           movies: data.results,
-          total_pages: data.total_pages,
+          loading: false
         });
+        this.props.onChangeTotalPages(data.total_pages);
       });
   };
 
   componentDidMount() {
-    this.getMovies(this.props.filters, this.props.primary_release_year, this.props.page);
+    this.getMovies(this.props.filters, this.props.page);
   }
 
   componentDidUpdate(prevProps) {
@@ -54,26 +60,21 @@ export default class MovieList extends Component {
   }
 
   render() {
-    const {movies, total_pages} = this.state;
-    const {page, onChangePage} = this.props;
+    const {movies} = this.state;
 
     return (
       <div className="row">
-        {movies.map(movie => {
-          return (
-            <div key={movie.id} className="col-6 mb-4">
-              <MovieItem item={movie}/>
-            </div>
-          );
-        })}
-        {!movies.length && <div className="mx-auto mt-4">Ничего не найдено</div>}
         {
-          !!movies.length &&
-          <Pagination
-            page={page}
-            total_pages={total_pages}
-            onChangePage={onChangePage}
-          />
+          this.state.loading
+            ? <div className="loader">Loading...</div>
+            : [movies.map(movie => {
+              return (
+                <div key={movie.id} className="col-6 mb-4">
+                  <MovieItem item={movie}/>
+                </div>
+              );
+            }),
+              !movies.length && <div className="mx-auto mt-4">Ничего не найдено</div>]
         }
       </div>
     );
