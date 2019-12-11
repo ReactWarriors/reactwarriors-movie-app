@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import queryString from "query-string";
 import MovieItem from "./MovieItem";
 import {API_URL, API_KEY_3} from "../../api/api";
 import Pagination from "./Pagination";
@@ -15,12 +16,20 @@ export default class MovieList extends Component {
 
   getMovies = (filters, page) => {
     const {sort_by, primary_release_year, with_genres} = filters;
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      language: "ru-RU",
+      sort_by,
+      page,
+      primary_release_year
+    };
+    if (with_genres.length > 0) {
+      queryStringParams.with_genres = with_genres.join(",")
+    }
 
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres}`;
+    const link = `${API_URL}/discover/movie?${queryString.stringify(queryStringParams)}`;
     fetch(link)
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
         this.setState({
           movies: data.results,
