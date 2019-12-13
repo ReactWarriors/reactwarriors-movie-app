@@ -11,6 +11,10 @@ class CheckboxList extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.getGenres();
+  }
+
   getGenres = () => {
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-Ru`;
     fetch(link)
@@ -34,16 +38,12 @@ class CheckboxList extends React.Component {
     })
   };
 
-  componentDidMount() {
-    this.getGenres();
-  }
-
   render() {
     const {genres} = this.state;
     const {with_genres} = this.props;
 
     return (
-      <div className="form-group">
+      <div className="form-group mb-1">
         <div className="mb-2">Жанры:</div>
         <div className="form-check">
           {

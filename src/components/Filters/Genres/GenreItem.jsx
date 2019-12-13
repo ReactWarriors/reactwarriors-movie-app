@@ -13,7 +13,7 @@ class GenreItem extends React.Component {
           value={item.id}
           name={item.name}
           onChange={onChange}
-          checked={Boolean(checked)}
+          checked={checked}
         />
         <label
           className="form-check-label"
