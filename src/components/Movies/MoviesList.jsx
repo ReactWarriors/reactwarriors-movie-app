@@ -74,7 +74,7 @@ export default class MovieList extends Component {
                 </div>
               );
             }),
-              !movies.length && <div className="mx-auto mt-4">Ничего не найдено</div>]
+              !movies.length && <div className="mx-auto mt-4" key="notFounded">Ничего не найдено</div>]
         }
       </div>
     );
