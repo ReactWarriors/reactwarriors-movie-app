@@ -1,7 +1,6 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
-import Pagination from "./Filters/Pagination";
 
 const initialFilters = {
   sort_by: "popularity.desc",
@@ -55,11 +54,11 @@ export default class App extends React.Component {
     const {filters, page, total_pages, genres} = this.state;
 
     return (
-      <div className="container">
-        <div className="row mt-4">
+      <div className="container pt-1">
+        <div className="row">
           <div className="col-4">
             <div className="card sticky-top">
-              <div className="card-body">
+              <div className="card-body py-1">
                 <h3>Фильтры:</h3>
                 <Filters
                   filters={filters}
@@ -69,11 +68,6 @@ export default class App extends React.Component {
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
                   onResetFilters={this.onResetFilters}
-                />
-                <Pagination
-                  page={page}
-                  total_pages={total_pages}
-                  onChangePage={this.onChangePage}
                 />
               </div>
             </div>

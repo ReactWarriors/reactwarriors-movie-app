@@ -1,13 +1,17 @@
 import React from "react";
 import SortBy from './SortBy';
 import Genres from "./Genres/Genres";
+import Pagination from "./Pagination";
 
-export default class Filters extends React.Component {
+export default class Filters extends React.PureComponent {
   render() {
     const {
       filters: {sort_by, primary_release_year, with_genres},
       onChangeFilters,
       onResetFilters,
+      page,
+      total_pages,
+      onChangePage
     } = this.props;
 
 
@@ -15,7 +19,7 @@ export default class Filters extends React.Component {
       <form>
         <button
           type="button"
-          className="btn btn-primary my-2"
+          className="btn btn-primary my-1"
           onClick={onResetFilters}
         >
           Сбросить
@@ -29,6 +33,11 @@ export default class Filters extends React.Component {
         <Genres
           onChangeFilters={onChangeFilters}
           with_genres={with_genres}
+        />
+        <Pagination
+          page={page}
+          total_pages={total_pages}
+          onChangePage={onChangePage}
         />
       </form>
     );
