@@ -1,13 +1,25 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+const getYears = () => {
+  const years = [{label: "По году", value: "primary_release_year"}];
+  for (let i = 2025; i > 1949; i = i - 1) {
+    years.push(
+      {
+        label: i,
+        value: i
+      }
+    );
+  }
+  return years;
+};
+
 export default class SortBy extends Component {
   static propTypes = {
     sort_by: PropTypes.string.isRequired,
     onChangeFilters: PropTypes.func.isRequired
   };
 
-  // defaultProps если options используются только в этом компоненте
   static defaultProps = {
     options: [
       {
@@ -26,19 +38,27 @@ export default class SortBy extends Component {
         label: "Рейтинг по возростанию",
         value: "vote_average.asc"
       }
-    ]
+    ],
+    years: getYears()
   };
 
   render() {
-    const { sort_by, onChangeFilters, options } = this.props;
+    const {
+      sort_by,
+      onChangeFilters,
+      options,
+      years,
+      primary_release_year
+    } = this.props;
+
 
     return (
-      <div className="form-group">
+      <div className="form-group mb-1">
         <label htmlFor="sort_by">Сортировать по:</label>
         <select
           id="sort_by"
           name="sort_by"
-          className="form-control"
+          className="form-control my-2"
           value={sort_by}
           onChange={onChangeFilters}
         >
@@ -50,10 +70,24 @@ export default class SortBy extends Component {
               {option.label}
             </option>
           ))}
-          {/*<option value="popularity.desc">Популярные по убыванию</option>*/}
-          {/*<option value="popularity.asc">Популярные по возростанию</option>*/}
-          {/*<option value="vote_average.desc">Рейтинг по убыванию</option>*/}
-          {/*<option value="vote_average.asc">Рейтинг по возростанию</option>*/}
+        </select>
+        <select
+          id="primary_release_year"
+          name="primary_release_year"
+          className="form-control my-2"
+          value={primary_release_year}
+          onChange={onChangeFilters}
+        >
+          {
+            years.map(option => (
+              <option
+                key={option.value}
+                value={option.value}
+              >
+                {option.label}
+              </option>
+            ))
+          }
         </select>
       </div>
     )

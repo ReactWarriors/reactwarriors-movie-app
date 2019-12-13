@@ -2,15 +2,20 @@ import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 
+const initialFilters = {
+  sort_by: "popularity.desc",
+  primary_release_year: "primary_release_year",
+  with_genres: [],
+};
+
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      filters: {
-        sort_by: "popularity.desc"
-      },
-      page: 1
+      filters: initialFilters,
+      page: 1,
+      total_pages: 1,
     }
   }
 
@@ -32,21 +37,37 @@ export default class App extends React.Component {
     })
   };
 
+  onChangeTotalPages = value => {
+    this.setState({
+      total_pages: value
+    })
+  };
+
+  onResetFilters = () => {
+    this.setState({
+      filters: initialFilters,
+      page: 1
+    })
+  };
+
   render() {
-    const {filters, page} = this.state;
+    const {filters, page, total_pages, genres} = this.state;
 
     return (
-      <div className="container">
-        <div className="row mt-4">
+      <div className="container pt-1">
+        <div className="row">
           <div className="col-4">
-            <div className="card" style={{width: "100%"}}>
-              <div className="card-body">
+            <div className="card sticky-top">
+              <div className="card-body py-1">
                 <h3>Фильтры:</h3>
                 <Filters
                   filters={filters}
                   page={page}
+                  total_pages={total_pages}
+                  genres={genres}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
+                  onResetFilters={this.onResetFilters}
                 />
               </div>
             </div>
@@ -56,6 +77,7 @@ export default class App extends React.Component {
               filters={filters}
               page={page}
               onChangePage={this.onChangePage}
+              onChangeTotalPages={this.onChangeTotalPages}
             />
           </div>
         </div>
