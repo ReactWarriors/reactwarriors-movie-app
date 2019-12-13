@@ -1,6 +1,7 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
+import Header from "./Header/Header";
 
 const initialFilters = {
   sort_by: "popularity.desc",
@@ -54,31 +55,34 @@ export default class App extends React.Component {
     const {filters, page, total_pages, genres} = this.state;
 
     return (
-      <div className="container pt-1">
-        <div className="row">
-          <div className="col-4">
-            <div className="card sticky-top">
-              <div className="card-body py-1">
-                <h3>Фильтры:</h3>
-                <Filters
-                  filters={filters}
-                  page={page}
-                  total_pages={total_pages}
-                  genres={genres}
-                  onChangeFilters={this.onChangeFilters}
-                  onChangePage={this.onChangePage}
-                  onResetFilters={this.onResetFilters}
-                />
+      <div>
+        <Header/>
+        <div className="container pt-1">
+          <div className="row">
+            <div className="col-4">
+              <div className="card sticky-top">
+                <div className="card-body py-1">
+                  <h3>Фильтры:</h3>
+                  <Filters
+                    filters={filters}
+                    page={page}
+                    total_pages={total_pages}
+                    genres={genres}
+                    onChangeFilters={this.onChangeFilters}
+                    onChangePage={this.onChangePage}
+                    onResetFilters={this.onResetFilters}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-8">
-            <MoviesList
-              filters={filters}
-              page={page}
-              onChangePage={this.onChangePage}
-              onChangeTotalPages={this.onChangeTotalPages}
-            />
+            <div className="col-8">
+              <MoviesList
+                filters={filters}
+                page={page}
+                onChangePage={this.onChangePage}
+                onChangeTotalPages={this.onChangeTotalPages}
+              />
+            </div>
           </div>
         </div>
       </div>
