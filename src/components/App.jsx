@@ -15,6 +15,7 @@ export default class App extends React.Component {
 
     this.state = {
       user: null,
+      session_id: null,
       filters: initialFilters,
       page: 1,
       total_pages: 1,
@@ -24,6 +25,12 @@ export default class App extends React.Component {
   updateUser = user => {
     this.setState({
       user
+    });
+  };
+
+  updateSessionId = session_id => {
+    this.setState({
+      session_id
     });
   };
 
@@ -59,12 +66,14 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {filters, page, total_pages, genres} = this.state;
+    const {filters, page, total_pages, genres, user} = this.state;
 
     return (
       <div>
         <Header
           updateUser={this.updateUser}
+          user={user}
+          updateSessionId={this.updateSessionId}
         />
         <div className="container pt-1">
           <div className="row">
