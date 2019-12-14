@@ -1,4 +1,5 @@
 import React from "react";
+import Login from "./Login/Login";
 
 class Header extends React.Component {
   render() {
@@ -10,6 +11,7 @@ class Header extends React.Component {
               <a className="nav-link">Home</a>
             </li>
           </ul>
+          < Login/>
         </div>
       </nav>
     );
