@@ -33,7 +33,9 @@ export default class Login extends React.Component {
           toggle={this.toggleModal}
         >
           <ModalBody>
-            <LoginForm/>
+            <LoginForm
+              updateUser={this.props.updateUser}
+            />
           </ModalBody>
         </Modal>
       </div>

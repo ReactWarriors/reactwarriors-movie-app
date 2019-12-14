@@ -14,11 +14,18 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
+      user: null,
       filters: initialFilters,
       page: 1,
       total_pages: 1,
     }
   }
+
+  updateUser = user => {
+    this.setState({
+      user
+    });
+  };
 
   onChangeFilters = event => {
     const value = event.target.value;
@@ -56,7 +63,9 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <Header/>
+        <Header
+          updateUser={this.updateUser}
+        />
         <div className="container pt-1">
           <div className="row">
             <div className="col-4">

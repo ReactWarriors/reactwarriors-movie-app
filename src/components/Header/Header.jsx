@@ -11,7 +11,9 @@ class Header extends React.Component {
               <a className="nav-link">Home</a>
             </li>
           </ul>
-          < Login/>
+          < Login
+            updateUser={this.props.updateUser}
+          />
         </div>
       </nav>
     );
