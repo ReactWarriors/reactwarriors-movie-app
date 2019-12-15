@@ -1,5 +1,5 @@
 import React from "react";
-import {API_URL, API_KEY_3} from "../../../api/api";
+import {API_URL, API_KEY_3, fetchApi} from "../../../api/api";
 
 export default class LoginForm extends React.Component {
 
@@ -47,26 +47,7 @@ export default class LoginForm extends React.Component {
   };
 
   onSubmit = () => {
-    const fetchApi = (url, options = {}) => {
-      return new Promise((resolve, reject) => {
-        fetch(url, options)
-          .then(response => {
-            if (response.status < 400) {
-              return response.json();
-            } else {
-              throw response;
-            }
-          })
-          .then(data => {
-            resolve(data);
-          })
-          .catch(response => {
-            response.json().then(error => {
-              reject(error);
-            });
-          });
-      });
-    };
+
     this.setState({
       submitting: true
     });
