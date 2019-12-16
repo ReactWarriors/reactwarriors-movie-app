@@ -88,7 +88,7 @@ class LoginForm extends React.Component {
         this.props.updateSessionId(data.session_id);
         return fetchApi(
           `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-            data.session_id
+          data.session_id
           }`
         );
       })

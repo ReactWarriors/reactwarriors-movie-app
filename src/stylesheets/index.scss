@@ -1,7 +1,7 @@
 $error: #dc3545;
 
 body {
-  background: #fdfdfd; 
+  background: #fdfdfd;
 }
 
 .invalid-feedback {
@@ -14,5 +14,5 @@ body {
 }
 
 input.invalid {
-  border-color: $error
+  border-color: $error;
 }

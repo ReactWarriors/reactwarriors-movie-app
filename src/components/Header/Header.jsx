@@ -10,7 +10,9 @@ class Header extends React.Component {
         <div className="container">
           <ul className="navbar-nav">
             <li className="nav-item active">
-              <a className="nav-link">Home</a>
+              <a href="/" className="nav-link">
+                Home
+              </a>
             </li>
           </ul>
           {user ? <UserMenu /> : <Login />}
