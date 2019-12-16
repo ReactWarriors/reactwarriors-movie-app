@@ -1,5 +1,5 @@
 import React from "react";
-import CallApi, { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
+import CallApi from "../../../api/api";
 import classNames from "classnames";
 import AppContextHOC from "../../HOC/AppContextHOC";
 

@@ -1,12 +1,10 @@
 import React from "react";
-import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import Cookies from "universal-cookie";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import AccountFavorites from "./pages/AccountPage/AccountFavorites";
 
 const cookies = new Cookies();
@@ -48,7 +46,7 @@ export default class App extends React.Component {
     if (this.state.session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-          this.state.session_id
+        this.state.session_id
         }`
       ).then(user => {
         this.updateAuth(user, this.state.session_id);
@@ -82,7 +80,7 @@ export default class App extends React.Component {
         </AppContext.Provider>
       </BrowserRouter>
     ) : (
-      <p>...Loading</p>
-    );
+        <p>...Loading</p>
+      );
   }
 }
