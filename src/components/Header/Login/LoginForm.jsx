@@ -87,15 +87,19 @@ class LoginForm extends React.Component {
         this.props.updateSessionId(data.session_id);
         return fetchApi(
           `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-            data.session_id
+          data.session_id
           }`
         );
       })
       .then(user => {
-        this.props.updateUser(user);
-        this.setState({
-          submitting: false
-        });
+        this.setState(
+          {
+            submitting: false
+          },
+          () => {
+            this.props.updateUser(user);
+          }
+        );
       })
       .catch(error => {
         console.log("error", error);
@@ -123,6 +127,11 @@ class LoginForm extends React.Component {
     }
   };
 
+  getClassForInput = key =>
+    classNames("form-control", {
+      invalid: this.state.errors[key]
+    });
+
   render() {
     const { username, password, errors, submitting } = this.state;
     return (
@@ -135,7 +144,7 @@ class LoginForm extends React.Component {
             <label htmlFor="username">Пользователь</label>
             <input
               type="text"
-              className="form-control"
+              className={this.getClassForInput("username")}
               id="username"
               placeholder="Пользователь"
               name="username"
@@ -151,7 +160,7 @@ class LoginForm extends React.Component {
             <label htmlFor="password">Пароль</label>
             <input
               type="password"
-              className="form-control"
+              className={this.getClassForInput("username")}
               id="password"
               placeholder="Пароль"
               name="password"
