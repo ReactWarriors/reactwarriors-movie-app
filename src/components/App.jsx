@@ -1,12 +1,9 @@
 import React from "react";
-import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import CallApi from "../api/api";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
-import Cookies from "universal-cookie";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import AccountFavorites from "./pages/AccountPage/AccountFavorites";
 import {
   actionCreatorUpdateAuth,
@@ -14,7 +11,6 @@ import {
 } from "../actions/actions";
 import { connect } from "react-redux";
 
-const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 class App extends React.Component {
@@ -71,8 +67,8 @@ class App extends React.Component {
         </AppContext.Provider>
       </BrowserRouter>
     ) : (
-      <p>...Loading</p>
-    );
+        <p>...Loading</p>
+      );
   }
 }
 
