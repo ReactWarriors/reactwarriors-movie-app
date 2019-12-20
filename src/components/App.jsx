@@ -7,6 +7,9 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
+export const AppContext = React.createContext();
+
+
 const initialFilters = {
   sort_by: "popularity.desc",
   primary_release_year: "primary_release_year",
@@ -91,41 +94,43 @@ export default class App extends React.Component {
     const {filters, page, total_pages, genres, user} = this.state;
 
     return (
-      <div>
-        <Header
-          updateUser={this.updateUser}
-          user={user}
-          updateSessionId={this.updateSessionId}
-        />
-        <div className="container pt-1">
-          <div className="row">
-            <div className="col-4">
-              <div className="card sticky-top">
-                <div className="card-body py-1">
-                  <h3>Фильтры:</h3>
-                  <Filters
-                    filters={filters}
-                    page={page}
-                    total_pages={total_pages}
-                    genres={genres}
-                    onChangeFilters={this.onChangeFilters}
-                    onChangePage={this.onChangePage}
-                    onResetFilters={this.onResetFilters}
-                  />
+      <AppContext.Provider value={user}>
+        <div>
+          <Header
+            updateUser={this.updateUser}
+            user={user}
+            updateSessionId={this.updateSessionId}
+          />
+          <div className="container pt-1">
+            <div className="row">
+              <div className="col-4">
+                <div className="card sticky-top">
+                  <div className="card-body py-1">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      filters={filters}
+                      page={page}
+                      total_pages={total_pages}
+                      genres={genres}
+                      onChangeFilters={this.onChangeFilters}
+                      onChangePage={this.onChangePage}
+                      onResetFilters={this.onResetFilters}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-8">
-              <MoviesContainer
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                onChangeTotalPages={this.onChangeTotalPages}
-              />
+              <div className="col-8">
+                <MoviesContainer
+                  filters={filters}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  onChangeTotalPages={this.onChangeTotalPages}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AppContext.Provider>
     );
   }
 }

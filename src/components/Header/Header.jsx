@@ -16,9 +16,7 @@ class Header extends React.Component {
           </ul>
           {
             user
-              ? <User
-                  user={user}
-                />
+              ? <User/>
               : <Login
                   updateUser={updateUser}
                   updateSessionId={updateSessionId}
