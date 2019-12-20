@@ -94,10 +94,14 @@ export default class App extends React.Component {
     const {filters, page, total_pages, genres, user} = this.state;
 
     return (
-      <AppContext.Provider value={user}>
+      <AppContext.Provider
+        value={{
+          user: user,
+          updateUser: this.updateUser
+        }}
+      >
         <div>
           <Header
-            updateUser={this.updateUser}
             user={user}
             updateSessionId={this.updateSessionId}
           />

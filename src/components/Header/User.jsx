@@ -18,11 +18,11 @@ class User extends React.Component {
   }
 }
 
-const UserContainer = () => {
+const UserContainer = props => {
   return (
     <AppContext.Consumer>
       {(context) => {
-        return <User user={context}/>
+        return <User user={context.user} {...props}/>
       }}
     </AppContext.Consumer>
   )
