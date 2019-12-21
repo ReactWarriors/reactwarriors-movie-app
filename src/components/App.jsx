@@ -4,29 +4,14 @@ import CallApi from "../api/api";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import { BrowserRouter, Route } from "react-router-dom";
-import AccountFavorites from "./pages/AccountPage/AccountFavorites";
 import {
   actionCreatorUpdateAuth,
   actionCreatorLogOut
 } from "../actions/actions";
 import { connect } from "react-redux";
 
-
 export const AppContext = React.createContext();
 class App extends React.Component {
-  // updateAuth = (user, session_id) => {
-  //   this.props.store.dispatch(
-  //     actionCreatorUpdateAuth({
-  //       user,
-  //       session_id
-  //     })
-  //   );
-  // };
-
-  // onLogOut = () => {
-  //   this.props.store.dispatch(actionCreatorLogOut());
-  // };
-
   componentDidMount() {
     const { session_id } = this.props;
     if (session_id) {
@@ -35,21 +20,19 @@ class App extends React.Component {
           session_id
         }
       }).then(user => {
-        this.props.updateAuth(user, session_id);
+        this.props.updateAuth({ user, session_id });
       });
     }
   }
 
   render() {
-    console.log(this.props);
-    const { user, session_id, isAuth, updateAuth, onLogOut } = this.props;
-    return isAuth || !session_id ? (
+    const { user, session_id, updateAuth, onLogOut } = this.props;
+    return (
       <BrowserRouter>
         <AppContext.Provider
           value={{
             user,
             session_id,
-            isAuth,
             updateAuth,
             onLogOut
           }}
@@ -58,31 +41,23 @@ class App extends React.Component {
             <Header user={user} />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
-            <Route path="/account/favorites" component={AccountFavorites} />
-            {/*
-              "/" - MoviesPage
-              "/movie/1" - Movie with id = 1
-            */}
           </div>
         </AppContext.Provider>
       </BrowserRouter>
-    ) : (
-        <p>...Loading</p>
-      );
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
-    session_id: state.session_id,
-    isAuth: state.isAuth
+    user: state.authReducer.user,
+    session_id: state.authReducer.session_id
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    updateAuth: (user, session_id) =>
+    updateAuth: ({ user, session_id }) =>
       dispatch(
         actionCreatorUpdateAuth({
           user,
@@ -93,7 +68,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

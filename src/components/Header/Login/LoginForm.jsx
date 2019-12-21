@@ -82,7 +82,7 @@ class LoginForm extends React.Component {
             submitting: false
           },
           () => {
-            this.props.updateAuth(user, session_id);
+            this.props.updateAuth({ user, session_id });
           }
         );
       })

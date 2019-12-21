@@ -48,17 +48,12 @@ class UserMenu extends Component {
           <img
             width="40"
             className="rounded-circle"
-            src={`https://secure.gravatar.com/avatar/${
-              user.avatar.gravatar.hash
-            }.jpg?s=64"`}
+            src={`https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}.jpg?s=64"`}
             alt=""
             onClick={this.toggleDropdown}
           />
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem>
-            <Link to="/account/favorites">Избранные</Link>
-          </DropdownItem>
           <DropdownItem onClick={this.handleLogOut}>Выйти</DropdownItem>
         </DropdownMenu>
       </Dropdown>

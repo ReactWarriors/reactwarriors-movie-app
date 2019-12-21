@@ -1,7 +1,10 @@
-export const actionCreatorUpdateAuth = payload => {
+export const actionCreatorUpdateAuth = ({ user, session_id }) => {
   return {
     type: "UPDATE_AUTH",
-    payload
+    payload: {
+      user,
+      session_id
+    }
   };
 };
 
