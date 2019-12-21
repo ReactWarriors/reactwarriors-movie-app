@@ -1,11 +1,11 @@
 import React from "react";
-import Login from "./Login/Login";
 import UserMenu from "./UserMenu";
 import { Link } from "react-router-dom";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class Header extends React.Component {
   render() {
-    const { user } = this.props;
+    const { user, toggleLoginModal } = this.props;
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
@@ -16,11 +16,21 @@ class Header extends React.Component {
               </Link>
             </li>
           </ul>
-          {user ? <UserMenu /> : <Login />}
+          {user ? (
+            <UserMenu />
+          ) : (
+            <button
+              className="btn btn-success"
+              type="button"
+              onClick={toggleLoginModal}
+            >
+              Login
+            </button>
+          )}
         </div>
       </nav>
     );
   }
 }
 
-export default Header;
+export default AppContextHOC(Header);

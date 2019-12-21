@@ -13,3 +13,9 @@ export const actionCreatorLogOut = () => {
     type: "LOGOUT"
   };
 };
+
+export const actionCreatorToggleLoginModal = () => {
+  return {
+    type: "TOGGLE_LOGIN_MODAL"
+  };
+};

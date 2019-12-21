@@ -4,7 +4,8 @@ const cookies = new Cookies();
 
 const initialState = {
   user: null,
-  session_id: cookies.get("session_id")
+  session_id: cookies.get("session_id"),
+  showLoginModal: false
 };
 
 const authReducer = (state = initialState, action) => {
@@ -25,6 +26,11 @@ const authReducer = (state = initialState, action) => {
         ...state,
         session_id: null,
         user: null
+      };
+    case "TOGGLE_LOGIN_MODAL":
+      return {
+        ...state,
+        showLoginModal: !state.showLoginModal
       };
     default:
       return state;

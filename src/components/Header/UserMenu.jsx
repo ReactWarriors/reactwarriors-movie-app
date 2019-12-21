@@ -7,7 +7,6 @@ import {
 } from "reactstrap";
 import { fetchApi, API_URL, API_KEY_3 } from "../../api/api";
 import AppContextHOC from "../HOC/AppContextHOC";
-import { Link } from "react-router-dom";
 
 class UserMenu extends Component {
   state = {

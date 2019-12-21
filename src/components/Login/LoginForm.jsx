@@ -1,7 +1,7 @@
 import React from "react";
-import CallApi from "../../../api/api";
+import CallApi from "../../api/api";
 import classNames from "classnames";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import AppContextHOC from "../HOC/AppContextHOC";
 
 class LoginForm extends React.Component {
   state = {
@@ -83,6 +83,7 @@ class LoginForm extends React.Component {
           },
           () => {
             this.props.updateAuth({ user, session_id });
+            this.props.toggleLoginModal();
           }
         );
       })

@@ -1,12 +1,14 @@
 import React from "react";
 import Header from "./Header/Header";
 import CallApi from "../api/api";
+import Login from "./Login/Login";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import { BrowserRouter, Route } from "react-router-dom";
 import {
   actionCreatorUpdateAuth,
-  actionCreatorLogOut
+  actionCreatorLogOut,
+  actionCreatorToggleLoginModal
 } from "../actions/actions";
 import { connect } from "react-redux";
 
@@ -26,7 +28,14 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, session_id, updateAuth, onLogOut } = this.props;
+    const {
+      user,
+      session_id,
+      updateAuth,
+      onLogOut,
+      showLoginModal,
+      toggleLoginModal
+    } = this.props;
     return (
       <BrowserRouter>
         <AppContext.Provider
@@ -34,11 +43,14 @@ class App extends React.Component {
             user,
             session_id,
             updateAuth,
-            onLogOut
+            onLogOut,
+            showLoginModal,
+            toggleLoginModal
           }}
         >
           <div>
-            <Header user={user} />
+            <Header />
+            {showLoginModal && <Login />}
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
           </div>
@@ -51,7 +63,8 @@ class App extends React.Component {
 const mapStateToProps = state => {
   return {
     user: state.authReducer.user,
-    session_id: state.authReducer.session_id
+    session_id: state.authReducer.session_id,
+    showLoginModal: state.authReducer.showLoginModal
   };
 };
 
@@ -64,7 +77,8 @@ const mapDispatchToProps = dispatch => {
           session_id
         })
       ),
-    onLogOut: () => dispatch(actionCreatorLogOut())
+    onLogOut: () => dispatch(actionCreatorLogOut()),
+    toggleLoginModal: () => dispatch(actionCreatorToggleLoginModal())
   };
 };
 
