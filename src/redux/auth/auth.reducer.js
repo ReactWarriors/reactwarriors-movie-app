@@ -12,7 +12,7 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.UPDATE_AUTH:
+    case types.FETCH_SUCCESS_AUTH:
       cookies.set("session_id", action.payload.session_id, {
         path: "/",
         maxAge: 2592000
