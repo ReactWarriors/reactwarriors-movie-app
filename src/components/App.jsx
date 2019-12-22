@@ -6,14 +6,26 @@ import MoviesPage from "./pages/MoviesPage/MoviesPage";
 import MoviePage from "./pages/MoviePage/MoviePage";
 import { BrowserRouter, Route } from "react-router-dom";
 import {
-  actionCreatorUpdateAuth,
-  actionCreatorLogOut,
-  actionCreatorToggleLoginModal
+  updateAuth,
+  onLogOut,
+  toggleLoginModal,
+  updateFavoriteMovies
 } from "../actions/actions";
 import { connect } from "react-redux";
 
 export const AppContext = React.createContext();
+
 class App extends React.Component {
+  getFavoriteMovies = ({ user, session_id }) => {
+    CallApi.get(`/account/${user.id}/favorite/movies`, {
+      params: {
+        session_id: session_id
+      }
+    }).then(data => {
+      this.props.updateFavoriteMovies(data.results);
+    });
+  };
+
   componentDidMount() {
     const { session_id } = this.props;
     if (session_id) {
@@ -23,6 +35,7 @@ class App extends React.Component {
         }
       }).then(user => {
         this.props.updateAuth({ user, session_id });
+        this.getFavoriteMovies({ user, session_id });
       });
     }
   }
@@ -68,18 +81,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateAuth: ({ user, session_id }) =>
-      dispatch(
-        actionCreatorUpdateAuth({
-          user,
-          session_id
-        })
-      ),
-    onLogOut: () => dispatch(actionCreatorLogOut()),
-    toggleLoginModal: () => dispatch(actionCreatorToggleLoginModal())
-  };
+const mapDispatchToProps = {
+  updateAuth,
+  onLogOut,
+  toggleLoginModal,
+  updateFavoriteMovies
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
