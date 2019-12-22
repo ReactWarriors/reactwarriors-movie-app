@@ -1,7 +1,4 @@
 import * as types from "./auth.types";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
 
 const initialState = {
   user: null,
@@ -13,17 +10,12 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_SUCCESS_AUTH:
-      cookies.set("session_id", action.payload.session_id, {
-        path: "/",
-        maxAge: 2592000
-      });
       return {
         ...state,
         user: action.payload.user,
         session_id: action.payload.session_id
       };
     case types.LOGOUT:
-      cookies.remove("session_id");
       return {
         ...state,
         session_id: null,
