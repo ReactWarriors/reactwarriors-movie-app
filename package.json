@@ -10,12 +10,12 @@
     "query-string": "^6.1.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-redux": "^5.0.7",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1",
+    "react-redux": "^7.1.3",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "^3.3.0",
     "reactstrap": "^6.4.0",
-    "redux": "^4.0.0",
+    "redux": "^4.0.4",
     "universal-cookie": "^3.0.4"
   },
   "scripts": {
@@ -38,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "redux-devtools-extension": "^2.13.8"
   }
 }
