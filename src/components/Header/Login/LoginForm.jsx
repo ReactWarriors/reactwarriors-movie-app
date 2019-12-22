@@ -108,10 +108,14 @@ class LoginForm extends React.Component {
         );
       })
       .then(user => {
-        this.props.updateUser(user);
-        this.setState({
-          submitting: false
-        });
+        this.setState(
+          {
+            submitting: false
+          },
+          () => {
+            this.props.updateUser(user);
+          }
+        );
       })
       .catch(error => {
         this.setState({
@@ -140,6 +144,9 @@ class LoginForm extends React.Component {
     }
   };
 
+  getClassInput = key => classNames("form-control", {
+    "is-invalid": this.state.errors[key],
+  });
 
   render() {
     const {username, password, repeatpassword, errors, submitting} = this.state;
@@ -154,7 +161,7 @@ class LoginForm extends React.Component {
             <label htmlFor="username">Пользователь</label>
             <input
               type="text"
-              className={classNames('form-control', {'is-invalid': errors.username})}
+              className={this.getClassInput("username")}
               id="username"
               placeholder="Пользователь"
               name="username"
@@ -170,7 +177,7 @@ class LoginForm extends React.Component {
             <label htmlFor="password">Пароль</label>
             <input
               type="password"
-              className={classNames('form-control', {'is-invalid': errors.password})}
+              className={this.getClassInput("password")}
               id="password"
               placeholder="Пароль"
               name="password"
@@ -186,7 +193,7 @@ class LoginForm extends React.Component {
             <label htmlFor="password">Повторите пароль</label>
             <input
               type="password"
-              className={classNames('form-control', {'is-invalid': errors.repeatpassword})}
+              className={this.getClassInput("repeatpassword")}
               id="repeatpassword"
               placeholder="Повторите пароль"
               name="repeatpassword"
