@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import {API_URL, API_KEY_3, fetchApi} from "../../../api/api";
+import {API_KEY_3, API_URL, fetchApi} from "../../../api/api";
 import {AppContext} from "../../App";
 
 
@@ -30,38 +30,34 @@ class LoginForm extends React.Component {
 
   handleBlur = event => {
     const {name} = event.target;
-    const errors = this.validateFields(name);
+    const errors = this.validateFields();
+    const error = errors[name];
 
-    if (Object.keys(errors).length > 0) {
+    if (error) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          ...errors
+          [name]: error
         }
       }));
     }
   };
 
-  validateFields = name => {
+  validateFields = () => {
     const errors = {};
 
-    switch (name) {
-      case "username":
-        if (this.state.username === "") {
-          errors.username = "Not empty";
-        }
-        break;
-      case "password":
-        if (this.state.password.length < 5) {
-          errors.password = 'Required! Must be 5 characters or more';
-        }
-        break;
-      case "repeatpassword":
-        if (this.state.repeatpassword !== this.state.password) {
-          errors.repeatpassword = "Must be equal password"
-        }
-        break;
+    if (this.state.username === "") {
+      errors.username = "Not empty";
     }
+
+    if (this.state.password.length < 5) {
+      errors.password = 'Required! Must be 5 characters or more';
+    }
+
+    if (this.state.repeatpassword !== this.state.password) {
+      errors.repeatpassword = "Must be equal password"
+        }
+
     return errors;
   };
 
