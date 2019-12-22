@@ -226,6 +226,7 @@ export default props => {
         <LoginForm
           updateUser={context.updateUser}
           session_id={context.session_id}
+          updateSessionId={context.updateSessionId}
           {...props}
         />
       )}

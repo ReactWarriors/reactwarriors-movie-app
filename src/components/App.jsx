@@ -99,6 +99,7 @@ export default class App extends React.Component {
           user,
           updateUser: this.updateUser,
           session_id,
+          updateSessionId: this.updateSessionId
         }}
       >
         <div>
