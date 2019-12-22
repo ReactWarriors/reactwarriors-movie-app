@@ -91,13 +91,14 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {filters, page, total_pages, genres, user} = this.state;
+    const {filters, page, total_pages, genres, user, session_id} = this.state;
 
     return (
       <AppContext.Provider
         value={{
-          user: user,
-          updateUser: this.updateUser
+          user,
+          updateUser: this.updateUser,
+          session_id,
         }}
       >
         <div>
