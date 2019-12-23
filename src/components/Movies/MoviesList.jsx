@@ -12,7 +12,7 @@ export default class MovieList extends Component {
     };
   }
 
-  getMovies = (filters, page) => {
+  getMovies = (filters, page, onChangeTotalPages) => {
     const { sort_by } = filters;
     const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`;
     fetch(link)
@@ -20,29 +20,37 @@ export default class MovieList extends Component {
         return response.json();
       })
       .then(data => {
-        // console.log("data.total_pages", data.total_pages);
-        // console.log("data.page", data.page);
         this.setState({
           movies: data.results,
           page: data.page,
           totalPages: data.total_pages,
         });
+        return data.total_pages;
+      })
+      .then(total_pages => {
+        onChangeTotalPages(total_pages);
       });
   };
 
   componentDidMount() {
-    this.getMovies(this.props.filters);
+    this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
-      console.log("this.state.totalPages1", this.state.totalPages);
-      this.props.onChangePage(1, this.state.totalPages);
-      this.getMovies(this.props.filters, 1);
+      //console.log("this.state.totalPages1", this.state.totalPages);
+
+      this.props.onChangePage([1, this.state.totalPages]);
+      this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
     }
 
     if (this.props.page !== prevProps.page) {
-      this.getMovies(this.props.filters, this.props.page);
+      this.getMovies(
+        this.props.filters,
+        this.props.page,
+        this.props.onChangeTotalPages
+      );
+      console.log("this.state.totalPages2", this.state.totalPages);
       //this.props.onChangePage(this.props.page, this.state.totalPages);
     }
   }

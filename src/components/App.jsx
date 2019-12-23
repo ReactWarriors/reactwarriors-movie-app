@@ -16,7 +16,7 @@ export default class App extends React.Component {
   }
 
   onChangeFilters = event => {
-    console.log("onChangeFilters", this);
+    //console.log("onChangeFilters", this);
 
     const value = event.target.value;
     const name = event.target.name;
@@ -28,9 +28,13 @@ export default class App extends React.Component {
     }));
   };
 
-  onChangePage = (page, totalPages) => {
-    console.log("page", page);
-    console.log("totalPages", totalPages);
+  onChangeTotalPages = totalPages => {
+    this.setState({
+      totalPages,
+    });
+  };
+
+  onChangePage = page => {
     this.setState({
       // page: page
       page,
@@ -63,8 +67,9 @@ export default class App extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
-              totalPages={totalPages}
+              //totalPages={totalPages}
               onChangePage={this.onChangePage}
+              onChangeTotalPages={this.onChangeTotalPages}
             />
           </div>
         </div>
