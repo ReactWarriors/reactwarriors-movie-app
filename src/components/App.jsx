@@ -3,7 +3,45 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 
 export default class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      filters: {
+        sort_by: "popularity.desc",
+      },
+      page: 1,
+      totalPages: 1,
+    };
+  }
+
+  onChangeFilters = event => {
+    console.log("onChangeFilters", this);
+
+    const value = event.target.value;
+    const name = event.target.name;
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        [name]: value,
+      },
+    }));
+  };
+
+  onChangePage = (page, totalPages) => {
+    console.log("page", page);
+    console.log("totalPages", totalPages);
+    this.setState({
+      // page: page
+      page,
+    });
+  };
+
   render() {
+    const { filters, page, totalPages } = this.state;
+
+    // console.log("filters", filters);
+
     return (
       <div className="container">
         <div className="row mt-4">
@@ -11,12 +49,23 @@ export default class App extends React.Component {
             <div className="card" style={{ width: "100%" }}>
               <div className="card-body">
                 <h3>Фильтры:</h3>
-                <Filters />
+                <Filters
+                  page={page}
+                  totalPages={totalPages}
+                  filters={filters}
+                  onChangeFilters={this.onChangeFilters}
+                  onChangePage={this.onChangePage}
+                />
               </div>
             </div>
           </div>
           <div className="col-8">
-            <MoviesList />
+            <MoviesList
+              filters={filters}
+              page={page}
+              totalPages={totalPages}
+              onChangePage={this.onChangePage}
+            />
           </div>
         </div>
       </div>
