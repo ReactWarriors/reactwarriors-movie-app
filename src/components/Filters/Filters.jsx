@@ -1,6 +1,6 @@
 import React from "react";
 import SortBy from './SortBy';
-import GenresContainer from "./Genres/GenresContainer";
+import Genres from "./Genres/Genres";
 import Pagination from "./Pagination";
 
 export default class Filters extends React.PureComponent {
@@ -30,7 +30,7 @@ export default class Filters extends React.PureComponent {
           onResetFilters={onResetFilters}
           onChangeFilters={onChangeFilters}
         />
-        <GenresContainer
+        <Genres
           onChangeFilters={onChangeFilters}
           with_genres={with_genres}
         />

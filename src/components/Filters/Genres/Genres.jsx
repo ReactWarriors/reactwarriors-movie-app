@@ -1,7 +1,7 @@
 import React from "react";
 import GenreItem from "./GenreItem";
 import PropTypes from "prop-types";
-import MoviesList from "../../Movies/MoviesList";
+import GenresHOC from "./GenresHOC";
 
 
 const Genres = ({genres, with_genres, onChangeGenres}) => (
@@ -23,15 +23,15 @@ const Genres = ({genres, with_genres, onChangeGenres}) => (
   </div>
 );
 
-MoviesList.defaultProps = {
+Genres.defaultProps = {
   genres: [],
   with_genres: []
 };
 
-MoviesList.propTypes = {
+Genres.propTypes = {
   genres: PropTypes.array.isRequired,
   with_genres: PropTypes.array.isRequired,
   onChangeGenres: PropTypes.func
 };
 
-export default Genres;
+export default GenresHOC(Genres);
