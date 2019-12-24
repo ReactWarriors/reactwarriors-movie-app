@@ -1,6 +1,5 @@
 import React from "react";
-import queryString from "query-string";
-import {API_KEY_3, API_URL} from "../../api/api";
+import CallApi from "../../api/api";
 
 export default Component =>
   class MoviesHOC extends React.Component {
@@ -21,7 +20,6 @@ export default Component =>
 
       const {sort_by, primary_release_year, with_genres} = filters;
       const queryStringParams = {
-        api_key: API_KEY_3,
         language: "ru-RU",
         sort_by,
         page,
@@ -32,9 +30,9 @@ export default Component =>
         queryStringParams.with_genres = with_genres.join(",")
       }
 
-      const link = `${API_URL}/discover/movie?${queryString.stringify(queryStringParams)}`;
-      fetch(link)
-        .then(response => response.json())
+      CallApi.get("/discover/movie", {
+        params: queryStringParams
+      })
         .then(data => {
           this.setState({
             movies: data.results,
