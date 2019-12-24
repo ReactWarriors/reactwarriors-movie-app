@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./Login/Login";
-import User from "./User";
+import UserMenu from "./Login/UserMenu";
 
 class Header extends React.Component {
 
@@ -16,7 +16,7 @@ class Header extends React.Component {
           </ul>
           {
             user
-              ? <User/>
+              ? <UserMenu/>
               : <Login/>
           }
 
