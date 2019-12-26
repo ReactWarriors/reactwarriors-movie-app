@@ -1,36 +1,25 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 import LoginForm from "./LoginForm";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
 
-export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      showModal: false
-    };
-  }
-
-  toggleModal = () => {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal
-    }))
-  };
-
+class Login extends React.Component {
   render() {
+    const {showModal, toggleModal} = this.props;
+
     return (
       <div>
         <button
           className="btn btn-success"
           type="button"
-          onClick={this.toggleModal}
+          onClick={toggleModal}
         >
           Login
         </button>
         <Modal
-          isOpen={this.state.showModal}
-          toggle={this.toggleModal}
+          isOpen={showModal}
+          toggle={toggleModal}
         >
           <ModalBody>
             <LoginForm/>
@@ -40,3 +29,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default AppContextHOC(Login);
