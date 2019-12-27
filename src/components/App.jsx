@@ -26,6 +26,7 @@ export default class App extends React.Component {
       filters: initialFilters,
       page: 1,
       total_pages: 1,
+      showModal: false
     }
   }
 
@@ -43,8 +44,13 @@ export default class App extends React.Component {
           this.updateSessionId(session_id);
         })
     }
-
   }
+
+  toggleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal
+    }))
+  };
 
   updateUser = user => {
     this.setState({
@@ -102,7 +108,16 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {filters, page, total_pages, genres, user, session_id} = this.state;
+    const {
+      filters,
+      page,
+      total_pages,
+      genres,
+      user,
+      session_id,
+      showModal
+    } = this.state;
+
 
     return (
       <AppContext.Provider
@@ -111,7 +126,8 @@ export default class App extends React.Component {
           updateUser: this.updateUser,
           session_id,
           updateSessionId: this.updateSessionId,
-          onLogOut: this.onLogOut
+          onLogOut: this.onLogOut,
+          showModal
         }}
       >
         <div>
@@ -141,8 +157,10 @@ export default class App extends React.Component {
                 <MoviesList
                   filters={filters}
                   page={page}
+                  session_id={session_id}
                   onChangePage={this.onChangePage}
                   onChangeTotalPages={this.onChangeTotalPages}
+                  toggleModal={this.toggleModal}
                 />
               </div>
             </div>
