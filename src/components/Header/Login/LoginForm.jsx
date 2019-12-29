@@ -97,6 +97,7 @@ class LoginForm extends React.Component {
           },
           () => {
             this.props.updateUser(user);
+            this.props.updateAccountId(user.id);
           }
         );
       })
