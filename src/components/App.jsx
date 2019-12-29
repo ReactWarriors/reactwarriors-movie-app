@@ -1,6 +1,14 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
+import Header from "./Header/Header";
+import CallApi from "../api/api";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
+export const AppContext = React.createContext();
+
 
 const initialFilters = {
   sort_by: "popularity.desc",
@@ -13,11 +21,60 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
+      user: null,
+      session_id: null,
       filters: initialFilters,
       page: 1,
       total_pages: 1,
+      showModal: false
     }
   }
+
+  componentDidMount() {
+    const session_id = cookies.get("session_id");
+
+    if (session_id) {
+      CallApi.get("/account", {
+        params: {
+          session_id
+        }
+      })
+        .then(user => {
+          this.updateUser(user);
+          this.updateSessionId(session_id);
+        })
+    }
+  }
+
+  toggleModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal
+    }))
+  };
+
+  updateUser = user => {
+    this.setState({
+      user
+    });
+  };
+
+  updateSessionId = session_id => {
+    cookies.set("session_id", session_id, {
+      path: "/",
+      maxAge: 2592000
+    });
+    this.setState({
+      session_id
+    });
+  };
+
+  onLogOut = () => {
+    cookies.remove("session_id");
+    this.setState({
+      session_id: null,
+      user: null
+    })
+  };
 
   onChangeFilters = event => {
     const value = event.target.value;
@@ -51,37 +108,65 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {filters, page, total_pages, genres} = this.state;
+    const {
+      filters,
+      page,
+      total_pages,
+      genres,
+      user,
+      session_id,
+      showModal
+    } = this.state;
+
 
     return (
-      <div className="container pt-1">
-        <div className="row">
-          <div className="col-4">
-            <div className="card sticky-top">
-              <div className="card-body py-1">
-                <h3>Фильтры:</h3>
-                <Filters
+      <AppContext.Provider
+        value={{
+          user,
+          updateUser: this.updateUser,
+          session_id,
+          updateSessionId: this.updateSessionId,
+          onLogOut: this.onLogOut,
+          showModal
+        }}
+      >
+        <div>
+          <Header
+            user={user}
+            updateSessionId={this.updateSessionId}
+          />
+          <div className="container pt-1">
+            <div className="row">
+              <div className="col-4">
+                <div className="card sticky-top">
+                  <div className="card-body py-1">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      filters={filters}
+                      page={page}
+                      total_pages={total_pages}
+                      genres={genres}
+                      onChangeFilters={this.onChangeFilters}
+                      onChangePage={this.onChangePage}
+                      onResetFilters={this.onResetFilters}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="col-8">
+                <MoviesList
                   filters={filters}
                   page={page}
-                  total_pages={total_pages}
-                  genres={genres}
-                  onChangeFilters={this.onChangeFilters}
+                  session_id={session_id}
                   onChangePage={this.onChangePage}
-                  onResetFilters={this.onResetFilters}
+                  onChangeTotalPages={this.onChangeTotalPages}
+                  toggleModal={this.toggleModal}
                 />
               </div>
             </div>
           </div>
-          <div className="col-8">
-            <MoviesList
-              filters={filters}
-              page={page}
-              onChangePage={this.onChangePage}
-              onChangeTotalPages={this.onChangeTotalPages}
-            />
-          </div>
         </div>
-      </div>
+      </AppContext.Provider>
     );
   }
 }

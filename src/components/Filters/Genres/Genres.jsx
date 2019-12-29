@@ -1,68 +1,37 @@
-import React from 'react';
+import React from "react";
 import GenreItem from "./GenreItem";
-import {API_KEY_3, API_URL} from "../../../api/api";
+import PropTypes from "prop-types";
+import GenresHOC from "./GenresHOC";
 
-class CheckboxList extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      genres: [],
-    }
-  }
+const Genres = ({genres, with_genres, onChangeGenres}) => (
+  <div className="form-group mb-1">
+    <div className="mb-2">Жанры:</div>
+    <div className="form-check">
+        {genres.map(genre => {
+          return (
+            <div key={genre.id}>
+              <GenreItem
+                item={genre}
+                checked={with_genres.includes(genre.id.toString())}
+                onChange={onChangeGenres}
+              />
+            </div>
+          )
+        })}
+    </div>
+  </div>
+);
 
-  componentDidMount() {
-    this.getGenres();
-  }
+Genres.defaultProps = {
+  genres: [],
+  with_genres: []
+};
 
-  getGenres = () => {
-    const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-Ru`;
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          genres: data.genres,
-        });
-      });
-  };
+Genres.propTypes = {
+  genres: PropTypes.array.isRequired,
+  with_genres: PropTypes.array.isRequired,
+  onChangeGenres: PropTypes.func
+};
 
-  onChangeGenres = event => {
-    const {onChangeFilters, with_genres} = this.props;
-    const {value, checked} = event.target;
-
-    onChangeFilters({
-      target: {
-        name: "with_genres",
-        value: checked ? [value, ...with_genres] : with_genres.filter(genre => genre !== value)
-      }
-    })
-  };
-
-  render() {
-    const {genres} = this.state;
-    const {with_genres} = this.props;
-
-    return (
-      <div className="form-group mb-1">
-        <div className="mb-2">Жанры:</div>
-        <div className="form-check">
-          {
-            genres.map(genre => {
-              return (
-                <div key={genre.id}>
-                  <GenreItem
-                    item={genre}
-                    checked={with_genres.includes(genre.id.toString())}
-                    onChange={this.onChangeGenres}
-                  />
-                </div>
-              )
-            })
-          }
-        </div>
-      </div>
-    )
-  }
-}
-
-export default CheckboxList;
+export default GenresHOC(Genres);
