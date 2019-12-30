@@ -29,6 +29,18 @@ export default class App extends React.Component {
     }));
   };
 
+  clearFilters = event => {
+    //console.log("onChangeFilters", this);
+
+    this.setState(prevState => ({
+      filters: {
+        sort_by: "popularity.desc",
+        release_year: false
+      },
+      page: 1,
+    }));
+  };
+
   onChangeTotalPages = totalPages => {
     this.setState({
       totalPages,
@@ -61,6 +73,7 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
+                  clearFilters={this.clearFilters}
                 />
               </div>
             </div>

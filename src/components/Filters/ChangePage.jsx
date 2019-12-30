@@ -5,9 +5,10 @@ export default class ChangePage extends React.Component {
     const { page, totalPages, onChangePage } = this.props;
     return (
       <div className="form-group">
-        <h4>
+        {/* <h5>
           Страница: {page} из {totalPages}
-        </h4>
+        </h5> */}
+        <label htmlFor="page">Страница: {page} из {totalPages}</label>
         <nav aria-label="...">
           <ul className="pagination">
             <li className={"page-item" + (page === 1 ? " disabled" : "")}>

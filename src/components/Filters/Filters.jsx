@@ -1,6 +1,7 @@
 import React from "react";
 import SortBy from "./SortBy";
 import ChangePage from "./ChangePage";
+import ChangeYear from "./ChangeYear";
 
 export default class Filters extends React.Component {
   // static defaultProps = {
@@ -13,7 +14,8 @@ export default class Filters extends React.Component {
       page,
       totalPages,
       onChangeFilters,
-      onChangePage
+      onChangePage,
+      clearFilters
     } = this.props;
 
     let years = [
@@ -33,24 +35,20 @@ export default class Filters extends React.Component {
       <form className="mb-3">
         <SortBy sort_by={sort_by} onChangeFilters={onChangeFilters} />
 
-        <div className="form-group">
-          <label htmlFor="release_year">Год выхода:</label>
-          <select
-            id="release_year"
-            className="form-control"
-            name="release_year"
-            value={release_year}
-            onChange={onChangeFilters}
-          >
-            {years}
-          </select>
-        </div>
+        <ChangeYear
+          release_year={release_year}
+          onChangeFilters={onChangeFilters}
+        />
 
         <ChangePage
           page={page}
           totalPages={totalPages}
           onChangePage={onChangePage}
         />
+
+        <button type="button" className="btn btn-light" onClick={clearFilters}>
+          Сбросить фильтры
+        </button>
 
       </form>
     );
