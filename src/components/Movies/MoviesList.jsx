@@ -13,8 +13,12 @@ export default class MovieList extends Component {
   }
 
   getMovies = (filters, page, onChangeTotalPages) => {
-    const { sort_by } = filters;
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}`;
+    const { sort_by, release_year } = filters;
+    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` 
+      + (release_year ? `&primary_release_year=${release_year}` : "");
+    //console.log("year", release_year);
+    console.log(link);
+    
     fetch(link)
       .then(response => {
         return response.json();
@@ -38,9 +42,15 @@ export default class MovieList extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
-      //console.log("this.state.totalPages1", this.state.totalPages);
+      console.log("1", this.state.totalPages);
 
-      this.props.onChangePage([1, this.state.totalPages]);
+      this.props.onChangePage(1);
+      this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
+    }
+
+    if (this.props.filters.release_year !== prevProps.filters.release_year) {
+      console.log("2", this.state.totalPages);
+      this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
     }
 
@@ -50,8 +60,6 @@ export default class MovieList extends Component {
         this.props.page,
         this.props.onChangeTotalPages
       );
-      console.log("this.state.totalPages2", this.state.totalPages);
-      //this.props.onChangePage(this.props.page, this.state.totalPages);
     }
   }
 

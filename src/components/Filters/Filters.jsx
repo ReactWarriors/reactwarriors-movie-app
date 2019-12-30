@@ -3,17 +3,48 @@ import SortBy from "./SortBy";
 import ChangePage from "./ChangePage";
 
 export default class Filters extends React.Component {
+  // static defaultProps = {
+  //   years: []
+  // };
+
   render() {
     const {
-      filters: { sort_by },
+      filters: { sort_by, release_year },
       page,
       totalPages,
       onChangeFilters,
-      onChangePage,
+      onChangePage
     } = this.props;
+
+    let years = [
+      <option key={0} value="">
+        -
+      </option>
+    ];
+    for (let index = new Date().getUTCFullYear(); index > 1950; index--) {
+      years.push(
+        <option key={index} value={index}>
+          {index}
+        </option>
+      );
+    }
+
     return (
       <form className="mb-3">
         <SortBy sort_by={sort_by} onChangeFilters={onChangeFilters} />
+
+        <div className="form-group">
+          <label htmlFor="release_year">Год выхода:</label>
+          <select
+            id="release_year"
+            className="form-control"
+            name="release_year"
+            value={release_year}
+            onChange={onChangeFilters}
+          >
+            {years}
+          </select>
+        </div>
 
         <ChangePage
           page={page}
@@ -21,36 +52,6 @@ export default class Filters extends React.Component {
           onChangePage={onChangePage}
         />
 
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <h4 className="bold">Scrollable Menu</h4>
-              <div className="btn-group">
-                <button
-                  type="button"
-                  className="btn btn-default dropdown-toggle"
-                  data-toggle="dropdown"
-                >
-                  Scrollable Menu <span className="caret"></span>
-                </button>
-                <ul className="dropdown-menu scrollable-menu" role="menu">
-                  <li>
-                    <a href="/#">Action</a>
-                  </li>
-                  <li>
-                    <a href="/#">Another action</a>
-                  </li>
-                  <li>
-                    <a href="/#">Something else here</a>
-                  </li>
-                  <li>
-                    <a href="/#">Action</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
       </form>
     );
   }

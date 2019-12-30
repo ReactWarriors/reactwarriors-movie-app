@@ -9,6 +9,7 @@ export default class App extends React.Component {
     this.state = {
       filters: {
         sort_by: "popularity.desc",
+        release_year: false
       },
       page: 1,
       totalPages: 1,
@@ -35,6 +36,7 @@ export default class App extends React.Component {
   };
 
   onChangePage = page => {
+    // console.log("page", page);
     this.setState({
       // page: page
       page,
