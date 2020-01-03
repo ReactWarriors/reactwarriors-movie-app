@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class ChangeYear extends React.Component {
+export default class FilterYear extends React.Component {
   static propTypes = {
     release_year: PropTypes.string.isRequired,
     onChangeFilters: PropTypes.func.isRequired

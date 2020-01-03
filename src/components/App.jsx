@@ -9,7 +9,8 @@ export default class App extends React.Component {
     this.state = {
       filters: {
         sort_by: "popularity.desc",
-        release_year: false
+        release_year: "",
+        genres: {}
       },
       page: 1,
       totalPages: 1,
@@ -18,13 +19,24 @@ export default class App extends React.Component {
 
   onChangeFilters = event => {
     //console.log("onChangeFilters", this);
-
-    const value = event.target.value;
-    const name = event.target.name;
+    const { name, value } = event.target
+    // const value = event.target.value;
+    // const name = event.target.name;
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
         [name]: value,
+      },
+    }));
+  };
+
+  setGenres = genres => {
+    //console.log("onChangeFilters", this);
+
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        genres: genres,
       },
     }));
   };
@@ -34,8 +46,9 @@ export default class App extends React.Component {
 
     this.setState(prevState => ({
       filters: {
+        ...prevState.filters,
         sort_by: "popularity.desc",
-        release_year: false
+        release_year: ""
       },
       page: 1,
     }));
@@ -48,9 +61,7 @@ export default class App extends React.Component {
   };
 
   onChangePage = page => {
-    // console.log("page", page);
     this.setState({
-      // page: page
       page,
     });
   };
@@ -82,7 +93,7 @@ export default class App extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
-              //totalPages={totalPages}
+              onChangeFilters={this.onChangeFilters}
               onChangePage={this.onChangePage}
               onChangeTotalPages={this.onChangeTotalPages}
             />

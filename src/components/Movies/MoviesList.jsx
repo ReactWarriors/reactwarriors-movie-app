@@ -8,17 +8,18 @@ export default class MovieList extends Component {
 
     this.state = {
       movies: [],
-      totalPages: 1,
+      totalPages: 1
     };
   }
 
   getMovies = (filters, page, onChangeTotalPages) => {
     const { sort_by, release_year } = filters;
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` 
-      + (release_year ? `&primary_release_year=${release_year}` : "");
+    const link =
+      `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` +
+      (release_year ? `&primary_release_year=${release_year}` : "");
     //console.log("year", release_year);
     console.log(link);
-    
+
     fetch(link)
       .then(response => {
         return response.json();
@@ -27,7 +28,7 @@ export default class MovieList extends Component {
         this.setState({
           movies: data.results,
           page: data.page,
-          totalPages: data.total_pages,
+          totalPages: data.total_pages
         });
         return data.total_pages;
       })
@@ -36,8 +37,30 @@ export default class MovieList extends Component {
       });
   };
 
+  getGenres = filters => {
+    const { onChangeFilters } = filters;
+    const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
+    //console.log("year", release_year);
+    console.log(link);
+
+    fetch(link)
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+
+        this.setState({
+          genres: data.genres
+        });
+
+        onChangeFilters(data.genres);
+
+      });
+  };
+
   componentDidMount() {
     this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
+    //this.getGenres(this.props);
   }
 
   componentDidUpdate(prevProps) {
