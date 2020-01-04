@@ -13,10 +13,12 @@ export default class MovieList extends Component {
   }
 
   getMovies = (filters, page, onChangeTotalPages) => {
-    const { sort_by, release_year } = filters;
+    const { sort_by, release_year, genres } = filters;
     const link =
       `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` +
-      (release_year ? `&primary_release_year=${release_year}` : "");
+      (release_year ? `&primary_release_year=${release_year}` : "") + 
+      (genres ? `&with_genres=${genres.join()}` : "");
+      
     //console.log("year", release_year);
     console.log(link);
 
@@ -37,26 +39,26 @@ export default class MovieList extends Component {
       });
   };
 
-  getGenres = filters => {
-    const { onChangeFilters } = filters;
-    const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-    //console.log("year", release_year);
-    console.log(link);
+  // getGenres = filters => {
+  //   const { onChangeFilters } = filters;
+  //   const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
+  //   //console.log("year", release_year);
+  //   console.log(link);
 
-    fetch(link)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
+  //   fetch(link)
+  //     .then(response => {
+  //       return response.json();
+  //     })
+  //     .then(data => {
 
-        this.setState({
-          genres: data.genres
-        });
+  //       this.setState({
+  //         genres: data.genres
+  //       });
 
-        onChangeFilters(data.genres);
+  //       onChangeFilters(data.genres);
 
-      });
-  };
+  //     });
+  // };
 
   componentDidMount() {
     this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
@@ -64,16 +66,23 @@ export default class MovieList extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    //console.log("componentDidUpdate");
+
+    if (this.props.filters !== prevProps.filters) {
+      console.log("filters", this.props.filters);
+      this.getMovies(this.props.filters, this.props.page, this.props.onChangeTotalPages);
+    }
+
     if (this.props.filters.sort_by !== prevProps.filters.sort_by) {
       console.log("1", this.state.totalPages);
 
-      this.props.onChangePage(1);
+      //this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
     }
 
     if (this.props.filters.release_year !== prevProps.filters.release_year) {
       console.log("2", this.state.totalPages);
-      this.props.onChangePage(1);
+      //this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1, this.props.onChangeTotalPages);
     }
 

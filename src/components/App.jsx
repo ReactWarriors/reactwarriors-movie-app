@@ -10,7 +10,7 @@ export default class App extends React.Component {
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
-        genres: {}
+        genres: []
       },
       page: 1,
       totalPages: 1,
@@ -18,7 +18,9 @@ export default class App extends React.Component {
   }
 
   onChangeFilters = event => {
-    //console.log("onChangeFilters", this);
+    
+    //console.log("onChangeFilters.event.target", event.target);
+    
     const { name, value } = event.target
     // const value = event.target.value;
     // const name = event.target.name;
@@ -30,16 +32,34 @@ export default class App extends React.Component {
     }));
   };
 
-  setGenres = genres => {
-    //console.log("onChangeFilters", this);
+  onChangeGenre = event => {
+    
+    const { id } = event.target
+    const newGenres = [...this.state.filters.genres];
 
+    if(this.state.filters.genres.includes(id)) {
+      newGenres.splice(newGenres.indexOf(id), 1);
+    } else {
+      newGenres.push(id);
+    }
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        genres: genres,
-      },
+        genres: newGenres
+      }
     }));
   };
+
+  // setGenres = genres => {
+  //   //console.log("onChangeFilters", this);
+
+  //   this.setState(prevState => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       genres: genres,
+  //     },
+  //   }));
+  // };
 
   clearFilters = event => {
     //console.log("onChangeFilters", this);
@@ -48,7 +68,8 @@ export default class App extends React.Component {
       filters: {
         ...prevState.filters,
         sort_by: "popularity.desc",
-        release_year: ""
+        release_year: "",
+        genres: []
       },
       page: 1,
     }));
@@ -84,6 +105,7 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
+                  onChangeGenre={this.onChangeGenre}
                   clearFilters={this.clearFilters}
                 />
               </div>

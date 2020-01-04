@@ -15,6 +15,7 @@ export default class Filters extends React.Component {
       page,
       totalPages,
       onChangeFilters,
+      onChangeGenre,
       onChangePage,
       clearFilters
     } = this.props;
@@ -47,7 +48,7 @@ export default class Filters extends React.Component {
           onChangePage={onChangePage}
         />
 
-        <FilterGenre onChangeFilters={onChangeFilters} />
+        <FilterGenre onChangeGenre={onChangeGenre} />
 
         <button type="button" className="btn btn-light" onClick={clearFilters}>
           Сбросить фильтры

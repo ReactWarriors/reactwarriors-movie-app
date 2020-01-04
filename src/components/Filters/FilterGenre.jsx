@@ -4,13 +4,13 @@ import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class FilterGenre extends React.Component {
   static propTypes = {
-    onChangeFilters: PropTypes.func.isRequired
+    onChangeGenre: PropTypes.func.isRequired
   };
 
-  static genres;
+  //static genres;
 
   getGenres = filters => {
-    const { onChangeFilters } = filters;
+    //const { onChangeFilters } = filters;
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
     //console.log("year", release_year);
     console.log(link);
@@ -24,42 +24,46 @@ export default class FilterGenre extends React.Component {
           genres: data.genres
         });
 
+        this.genres = data.genres;
+        //console.log("genres1", this.genres);
         //onChangeFilters(data.genres);
       });
   };
 
   componentDidMount() {
     this.getGenres(this.props);
+    //console.log("genres2", this.genres);
   }
 
   render() {
-    const { onChangeFilters } = this.props;
+    const { onChangeGenre } = this.props;
+
+    let genresCheckBoxes = "";
+    if (this.state) {
+      genresCheckBoxes = this.state.genres.map(genre => {
+        return <div className="form-check form-check" key={genre.id}>
+          <input
+            className="form-check-input"
+            type="checkbox"
+            id={genre.id}
+            name="genre"
+            //checked={false}
+            value={genre.name}
+            onChange={onChangeGenre}
+          ></input>
+          <label className="form-check-label" htmlFor="inlineCheckboxGenre">
+            {genre.name}
+          </label>
+        </div>;
+      });
+    }
+
+    //console.log("genresCheckBoxes", genresCheckBoxes);
 
     return (
       <div className="form-group">
         <label htmlFor="genre">Жанр:</label>
-        <div class="form-check form-check-inline">
-          <input
-            className="form-check-input"
-            type="checkbox"
-            id="inlineCheckbox1"
-            value="option1"
-            onChange={onChangeFilters}
-          ></input>
-          <label className="form-check-label" htmlFor="inlineCheckbox1">
-            1
-          </label>
-        </div>
-
-        {/* <select
-            id="release_year"
-            className="form-control"
-            name="release_year"
-            value={release_year}
-            onChange={onChangeFilters}
-          >
-          {years}
-        </select> */}
+        {genresCheckBoxes}        
       </div>
     );
   }
