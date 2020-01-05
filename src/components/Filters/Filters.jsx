@@ -5,14 +5,10 @@ import FilterYear from "./FilterYear";
 import FilterGenre from "./FilterGenre";
 
 export default class Filters extends React.Component {
-  // static defaultProps = {
-  //   years: []
-  // };
 
   render() {
     const {
-      filters: { sort_by, release_year },
-      page,
+      filters: { sort_by, release_year, page },
       totalPages,
       onChangeFilters,
       onChangeGenre,

@@ -10,34 +10,31 @@ export default class App extends React.Component {
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
-        genres: []
+        genres: [],
+        page: 1
       },
-      page: 1,
-      totalPages: 1,
+      totalPages: 1
     };
   }
 
   onChangeFilters = event => {
-    
     //console.log("onChangeFilters.event.target", event.target);
-    
-    const { name, value } = event.target
-    // const value = event.target.value;
-    // const name = event.target.name;
+
+    const { name, value } = event.target;
+
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        [name]: value,
-      },
+        [name]: value
+      }
     }));
   };
 
   onChangeGenre = event => {
-    
-    const { id } = event.target
+    const { id } = event.target;
     const newGenres = [...this.state.filters.genres];
 
-    if(this.state.filters.genres.includes(id)) {
+    if (this.state.filters.genres.includes(id)) {
       newGenres.splice(newGenres.indexOf(id), 1);
     } else {
       newGenres.push(id);
@@ -50,47 +47,35 @@ export default class App extends React.Component {
     }));
   };
 
-  // setGenres = genres => {
-  //   //console.log("onChangeFilters", this);
-
-  //   this.setState(prevState => ({
-  //     filters: {
-  //       ...prevState.filters,
-  //       genres: genres,
-  //     },
-  //   }));
-  // };
-
   clearFilters = event => {
-    //console.log("onChangeFilters", this);
-
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
         sort_by: "popularity.desc",
         release_year: "",
-        genres: []
-      },
-      page: 1,
+        genres: [],
+        page: 1
+      }
     }));
   };
 
   onChangeTotalPages = totalPages => {
     this.setState({
-      totalPages,
+      totalPages
     });
   };
 
   onChangePage = page => {
-    this.setState({
-      page,
-    });
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        page
+      }
+    }));
   };
 
   render() {
-    const { filters, page, totalPages } = this.state;
-
-    // console.log("filters", filters);
+    const { filters, totalPages } = this.state;
 
     return (
       <div className="container">
@@ -100,7 +85,6 @@ export default class App extends React.Component {
               <div className="card-body">
                 <h3>Фильтры:</h3>
                 <Filters
-                  page={page}
                   totalPages={totalPages}
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
@@ -114,7 +98,6 @@ export default class App extends React.Component {
           <div className="col-8">
             <MoviesList
               filters={filters}
-              page={page}
               onChangeFilters={this.onChangeFilters}
               onChangePage={this.onChangePage}
               onChangeTotalPages={this.onChangeTotalPages}

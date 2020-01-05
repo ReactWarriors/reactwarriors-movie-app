@@ -5,9 +5,7 @@ export default class FilterPage extends React.Component {
     const { page, totalPages, onChangePage } = this.props;
     return (
       <div className="form-group">
-        {/* <h5>
-          Страница: {page} из {totalPages}
-        </h5> */}
+
         <label htmlFor="page">Страница: {page} из {totalPages}</label>
         <nav aria-label="...">
           <ul className="pagination">
