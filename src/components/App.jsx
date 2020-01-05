@@ -2,7 +2,7 @@ import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
-import DisplayModal from "./Modals/DisplayModal";
+import LoginModal from "./Modals/LoginModal";
 import CallApi from "../api/api";
 import Cookies from "universal-cookie";
 
@@ -23,22 +23,18 @@ export default class App extends React.Component {
 
     this.state = {
       user: null,
-      favorites: new Set(),
-      watchlist: new Set(),
+      favorites: [],
+      watchlist: [],
       session_id: null,
-      account_id: undefined,
       filters: initialFilters,
       page: 1,
       total_pages: 1,
       showLoginModal: false,
-      submittingFavorites: false,
-      submittingWatchlist: false
     }
   }
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
-
 
     if (session_id) {
       CallApi.get("/account", {
@@ -47,15 +43,14 @@ export default class App extends React.Component {
         }
       })
         .then(user => {
-          this.updateUser(user);
           this.updateSessionId(session_id);
-          this.updateAccountId(user.id);
+          this.updateUser(user);
         })
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.account_id !== prevState.account_id) {
+    if (this.state.user !== prevState.user) {
       this.getFavorites();
       this.getWatchlist();
     }
@@ -69,7 +64,8 @@ export default class App extends React.Component {
 
   updateUser = user => {
     this.setState({
-      user
+      user,
+      showLoginModal: false
     });
   };
 
@@ -83,18 +79,11 @@ export default class App extends React.Component {
     });
   };
 
-  updateAccountId = id => {
-    this.setState({
-      account_id: id
-    })
-  };
-
   onLogOut = () => {
     cookies.remove("session_id");
     this.setState({
       session_id: null,
       user: null,
-      account_id: null,
       showLoginModal: false
     })
   };
@@ -130,113 +119,43 @@ export default class App extends React.Component {
     })
   };
 
-  changeFavorite = (id, isFavorite) => {
-    const {session_id, account_id} = this.state;
-
-    if (session_id) {
-      this.setState({
-        submittingFavorites: true
-      });
-      CallApi.post(`/account/${account_id}/favorite`, {
-        params: {
-          session_id: session_id
-        },
-        body: {
-          media_type: "movie",
-          media_id: id,
-          favorite: isFavorite
-        }
-      })
-        .then(() => {
-          return this.getFavorites();
-        })
-        .then(() => {
-          this.setState({
-            submittingFavorites: false
-          })
-        })
-    } else {
-      this.toggleModal();
-    }
-  };
-
-  changeWatchlist = (id, isWatchlist) => {
-    const {session_id, account_id} = this.state;
-
-    if (session_id) {
-      this.setState({
-        submittingWatchlist: true
-      });
-      CallApi.post(`/account/${account_id}/watchlist`, {
-        params: {
-          session_id: session_id
-        },
-        body: {
-          media_type: "movie",
-          media_id: id,
-          watchlist: isWatchlist
-        }
-      })
-        .then(() => {
-          return this.getWatchlist();
-        })
-        .then(() => {
-          this.setState({
-            submittingWatchlist: false
-          })
-        })
-    } else {
-      this.toggleModal();
-    }
-  };
-
   getWatchlist = () => {
-    const {session_id, account_id} = this.state;
+    const {session_id, user} = this.state;
 
-    if (session_id) {
-      return CallApi.get(`/account/${account_id}/watchlist/movies`, {
+    if (user) {
+      return CallApi.get(`/account/${user.id}/watchlist/movies`, {
         params: {
           session_id
         }
       })
         .then(data => {
           this.setState({
-            watchlist: new Set(data.results.map(elem => elem.id))
-          })
-        })
-        .catch(() => {
-          this.setState({
-            watchlist: new Set()
+            watchlist: data.results.map(elem => elem.id)
           })
         })
     }
     this.setState({
-      watchlist: new Set()
-    });
+      watchlist: []
+    })
   };
 
   getFavorites = () => {
-    const {session_id, account_id} = this.state;
+    const {session_id, user} = this.state;
 
-    if (session_id) {
-      return CallApi.get(`/account/${account_id}/favorite/movies`, {
+    if (user) {
+      return CallApi.get(`/account/${user.id}/favorite/movies`, {
         params: {
           session_id
         }
       })
         .then(data => {
           this.setState({
-            favorites: new Set(data.results.map(elem => elem.id))
-          })
-        })
-        .catch(() => {
-          this.setState({
-            favorites: new Set()
+            favorites: data.results.map(elem => elem.id)
           })
         })
     }
     this.setState({
-      favorites: new Set()
+      favorites: []
     })
   };
 
@@ -247,13 +166,10 @@ export default class App extends React.Component {
       total_pages,
       genres,
       user,
-      account_id,
       session_id,
       favorites,
       watchlist,
       showLoginModal,
-      submittingFavorites,
-      submittingWatchlist
     } = this.state;
 
     return (
@@ -262,18 +178,14 @@ export default class App extends React.Component {
           user,
           updateUser: this.updateUser,
           session_id,
-          account_id: account_id,
           favorites: favorites,
           watchlist: watchlist,
           updateSessionId: this.updateSessionId,
-          updateAccountId: this.updateAccountId,
           onLogOut: this.onLogOut,
           showLoginModal,
           toggleModal: this.toggleModal,
-          changeFavorite: this.changeFavorite,
-          changeWatchlist: this.changeWatchlist,
-          submittingFavorites: submittingFavorites,
-          submittingWatchlist: submittingWatchlist
+          getWatchlist: this.getWatchlist,
+          getFavorites: this.getFavorites
         }}
       >
         <div>
@@ -312,7 +224,7 @@ export default class App extends React.Component {
             </div>
           </div>
           {
-            !user && <DisplayModal/>
+            showLoginModal && <LoginModal/>
           }
         </div>
       </AppContext.Provider>

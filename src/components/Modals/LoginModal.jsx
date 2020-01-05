@@ -3,7 +3,7 @@ import { Modal, ModalBody } from "reactstrap";
 import LoginForm from "../Header/Login/LoginForm";
 import AppContextHOC from "../HOC/AppContextHOC";
 
-class DisplayModal extends React.Component {
+class LoginModal extends React.Component {
   render() {
     const {showLoginModal, toggleModal} = this.props;
 
@@ -20,4 +20,4 @@ class DisplayModal extends React.Component {
   }
 }
 
-export default AppContextHOC(DisplayModal);
+export default AppContextHOC(LoginModal);

@@ -15,8 +15,8 @@ const MovieItem = ({item}) => (
       <div className="d-flex justify-content-between">
         <div className="card-text">Рейтинг: {item.vote_average}</div>
         <div>
-          <FavoriteIcon id={item.id}/>
-          <WatchlistIcon id={item.id}/>
+          <FavoriteIcon movieId={item.id}/>
+          <WatchlistIcon movieId={item.id}/>
         </div>
       </div>
     </div>
