@@ -30,19 +30,14 @@ export default class App extends React.Component {
     }));
   };
 
-  onChangeGenre = event => {
-    const { id } = event.target;
-    const newGenres = [...this.state.filters.genres];
+  сhangeFiltersState = (name, value) => {
+    //console.log("сhangeFiltersState");
+    //console.log("name, value", name, value);
 
-    if (this.state.filters.genres.includes(id)) {
-      newGenres.splice(newGenres.indexOf(id), 1);
-    } else {
-      newGenres.push(id);
-    }
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        genres: newGenres
+        [name]: value
       }
     }));
   };
@@ -65,14 +60,14 @@ export default class App extends React.Component {
     });
   };
 
-  onChangePage = page => {
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        page
-      }
-    }));
-  };
+  // onChangePage = page => {
+  //   this.setState(prevState => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       page
+  //     }
+  //   }));
+  // };
 
   render() {
     const { filters, totalPages } = this.state;
@@ -88,8 +83,9 @@ export default class App extends React.Component {
                   totalPages={totalPages}
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
-                  onChangePage={this.onChangePage}
+                  //onChangePage={this.onChangePage}
                   onChangeGenre={this.onChangeGenre}
+                  сhangeFiltersState={this.сhangeFiltersState}
                   clearFilters={this.clearFilters}
                 />
               </div>
@@ -99,7 +95,7 @@ export default class App extends React.Component {
             <MoviesList
               filters={filters}
               onChangeFilters={this.onChangeFilters}
-              onChangePage={this.onChangePage}
+              //onChangePage={this.onChangePage}
               onChangeTotalPages={this.onChangeTotalPages}
             />
           </div>

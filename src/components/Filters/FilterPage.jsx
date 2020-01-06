@@ -2,18 +2,25 @@ import React from "react";
 
 export default class FilterPage extends React.Component {
   render() {
-    const { page, totalPages, onChangePage } = this.props;
+    const {
+      page,
+      totalPages,
+      //onChangePage,
+      сhangeFiltersState
+    } = this.props;
     return (
       <div className="form-group">
-
-        <label htmlFor="page">Страница: {page} из {totalPages}</label>
+        <label htmlFor="page">
+          Страница: {page} из {totalPages}
+        </label>
         <nav aria-label="...">
           <ul className="pagination">
             <li className={"page-item" + (page === 1 ? " disabled" : "")}>
               <a
                 className="page-link"
                 href="/#"
-                onClick={onChangePage.bind(null, 1)}
+                //onClick={onChangePage.bind(null, 1)}
+                onClick={сhangeFiltersState.bind(null, "page", 1)}
               >
                 First
               </a>
@@ -22,7 +29,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={onChangePage.bind(null, page - 1)}
+                //onClick={onChangePage.bind(null, page - 1)}
+                onClick={сhangeFiltersState.bind(null, "page", page - 1)}
               >
                 {page === 1 ? "-" : page - 1}
               </a>
@@ -38,7 +46,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={onChangePage.bind(null, page + 1)}
+                //onClick={onChangePage.bind(null, page + 1)}
+                onClick={сhangeFiltersState.bind(null, "page", page + 1)}
               >
                 {page + 1}
               </a>
@@ -47,7 +56,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={onChangePage.bind(null, page + 1)}
+                //onClick={onChangePage.bind(null, page + 1)}
+                onClick={сhangeFiltersState.bind(null, "page", page + 1)}
               >
                 Next
               </a>

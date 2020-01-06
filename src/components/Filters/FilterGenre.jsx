@@ -4,7 +4,7 @@ import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class FilterGenre extends React.Component {
   static propTypes = {
-    onChangeGenre: PropTypes.func.isRequired
+    сhangeFiltersState: PropTypes.func.isRequired
   };
 
   getGenres = () => {
@@ -22,12 +22,39 @@ export default class FilterGenre extends React.Component {
       });
   };
 
+  onChangeGenre = event => {
+    const { сhangeFiltersState } = this.props;
+
+    const { id } = event.target;
+    const newGenres = [...this.props.genres];
+
+    if (this.props.genres.includes(id)) {
+      newGenres.splice(newGenres.indexOf(id), 1);
+    } else {
+      newGenres.push(id);
+    }
+    сhangeFiltersState("genres", newGenres);
+    // this.setState(prevState => ({
+    //   filters: {
+    //     ...prevState.filters,
+    //     genres: newGenres
+    //   }
+    // }));
+  };
+
   componentDidMount() {
     this.getGenres(this.props);
   }
 
   render() {
-    const { onChangeGenre } = this.props;
+    const { genres } = this.props;
+    //console.log("genres", genres);
+
+    // console.log("genre: checked", genres.map(genre => {
+    //   // console.log("genre", genre);
+    //   return (genres.indexOf(genre) === 0)
+    //   //genres.indexOf(genre.id.toString) === 0
+    // }));
 
     let genresCheckBoxes = "";
     if (this.state) {
@@ -39,9 +66,10 @@ export default class FilterGenre extends React.Component {
               type="checkbox"
               id={genre.id}
               name="genre"
-              //checked={false}
+              //checked={genres.indexOf(genre) !== 0}
               value={genre.name}
-              onChange={onChangeGenre}
+              onChange={this.onChangeGenre}
+              //onClick={(event) => this.handleClick(event.target.name, event.target.value)}
             ></input>
             <label className="form-check-label" htmlFor="inlineCheckboxGenre">
               {genre.name}

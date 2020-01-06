@@ -5,14 +5,14 @@ import FilterYear from "./FilterYear";
 import FilterGenre from "./FilterGenre";
 
 export default class Filters extends React.Component {
-
   render() {
     const {
-      filters: { sort_by, release_year, page },
+      filters: { sort_by, release_year, page, genres },
       totalPages,
       onChangeFilters,
       onChangeGenre,
-      onChangePage,
+      //onChangePage,
+      сhangeFiltersState,
       clearFilters
     } = this.props;
 
@@ -31,7 +31,11 @@ export default class Filters extends React.Component {
 
     return (
       <form className="mb-3">
-        <SortBy sort_by={sort_by} onChangeFilters={onChangeFilters} />
+        <SortBy
+          sort_by={sort_by}
+          onChangeFilters={onChangeFilters}
+          // сhangeFiltersState={сhangeFiltersState}
+        />
 
         <FilterYear
           release_year={release_year}
@@ -41,10 +45,15 @@ export default class Filters extends React.Component {
         <FilterPage
           page={page}
           totalPages={totalPages}
-          onChangePage={onChangePage}
+          //onChangePage={onChangePage}
+          сhangeFiltersState={сhangeFiltersState}
         />
 
-        <FilterGenre onChangeGenre={onChangeGenre} />
+        <FilterGenre
+          genres={genres}
+          onChangeGenre={onChangeGenre}
+          сhangeFiltersState={сhangeFiltersState}
+        />
 
         <button type="button" className="btn btn-light" onClick={clearFilters}>
           Сбросить фильтры
