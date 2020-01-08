@@ -48,7 +48,6 @@ export default class Filters extends React.Component {
 
         <FilterGenre
           genres={genres}
-          //onChangeGenre={onChangeGenre}
           сhangeFiltersState={сhangeFiltersState}
         />
 

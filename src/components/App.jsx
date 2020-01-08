@@ -11,37 +11,32 @@ export default class App extends React.Component {
         sort_by: "popularity.desc",
         release_year: "",
         genres: [],
-        page: 1,
-        //totalPages: 1
+        page: 1
       },
       totalPages: 1
     };
   }
 
   onChangeFilters = event => {
-    //console.log("onChangeFilters.event.target", event.target);
-
     const { name, value } = event.target;
     this.сhangeFiltersState(name, value);
   };
 
   сhangeFiltersState = (name, value) => {
 
-    console.log("total_pages2", name, value);
-
-    this.setState({
-      filters: {
-        ...this.state.filters,
-        [name]: value
-      }
-    });
-
-    // this.setState(prevState => ({
+    // this.setState({
     //   filters: {
-    //     ...prevState.filters,
+    //     ...this.state.filters,
     //     [name]: value
     //   }
-    // }));
+    // });
+
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        [name]: value
+      }
+    }));
   };
 
   clearFilters = () => {
@@ -76,7 +71,6 @@ export default class App extends React.Component {
                   totalPages={totalPages}
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
-                  //onChangeGenre={this.onChangeGenre}
                   сhangeFiltersState={this.сhangeFiltersState}
                   clearFilters={this.clearFilters}
                 />
@@ -88,7 +82,6 @@ export default class App extends React.Component {
               filters={filters}
               onChangeFilters={this.onChangeFilters}
               onChangeTotalPages={this.onChangeTotalPages}
-              //сhangeFiltersState={this.сhangeFiltersState}
             />
           </div>
         </div>
