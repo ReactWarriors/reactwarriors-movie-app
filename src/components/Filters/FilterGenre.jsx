@@ -47,7 +47,7 @@ export default class FilterGenre extends React.Component {
   }
 
   render() {
-    const { genres } = this.props;
+    //const { genres } = this.props;
     //console.log("genres", genres);
 
     // console.log("genre: checked", genres.map(genre => {

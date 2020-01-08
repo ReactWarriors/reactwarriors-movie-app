@@ -1,8 +1,13 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import MovieItem from "./MovieItem";
 import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class MovieList extends Component {
+  static propTypes = {
+    onChangeTotalPages: PropTypes.func.isRequired
+  };
+
   constructor() {
     super();
 
@@ -19,7 +24,7 @@ export default class MovieList extends Component {
       (release_year ? `&primary_release_year=${release_year}` : "") + 
       (genres ? `&with_genres=${genres.join()}` : "");
       
-    //console.log(link);
+    //console.log("сhangeFiltersState", сhangeFiltersState);
 
     fetch(link)
       .then(response => {
@@ -34,6 +39,8 @@ export default class MovieList extends Component {
         return data.total_pages;
       })
       .then(total_pages => {
+        console.log("total_pages1", total_pages);
+        //сhangeFiltersState.bind(null,"totalPages", total_pages);
         onChangeTotalPages(total_pages);
       });
   };

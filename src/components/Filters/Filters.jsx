@@ -10,8 +10,6 @@ export default class Filters extends React.Component {
       filters: { sort_by, release_year, page, genres },
       totalPages,
       onChangeFilters,
-      onChangeGenre,
-      //onChangePage,
       сhangeFiltersState,
       clearFilters
     } = this.props;
@@ -34,7 +32,7 @@ export default class Filters extends React.Component {
         <SortBy
           sort_by={sort_by}
           onChangeFilters={onChangeFilters}
-          // сhangeFiltersState={сhangeFiltersState}
+          сhangeFiltersState={сhangeFiltersState}
         />
 
         <FilterYear
@@ -45,13 +43,12 @@ export default class Filters extends React.Component {
         <FilterPage
           page={page}
           totalPages={totalPages}
-          //onChangePage={onChangePage}
           сhangeFiltersState={сhangeFiltersState}
         />
 
         <FilterGenre
           genres={genres}
-          onChangeGenre={onChangeGenre}
+          //onChangeGenre={onChangeGenre}
           сhangeFiltersState={сhangeFiltersState}
         />
 
