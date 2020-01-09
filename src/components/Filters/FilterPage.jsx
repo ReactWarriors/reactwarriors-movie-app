@@ -2,12 +2,7 @@ import React from "react";
 
 export default class FilterPage extends React.Component {
   render() {
-    const {
-      page,
-      totalPages,
-      //onChangePage,
-      сhangeFiltersState
-    } = this.props;
+    const { page, totalPages, сhangeFiltersState } = this.props;
     return (
       <div className="form-group">
         <label htmlFor="page">
@@ -19,7 +14,6 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                //onClick={onChangePage.bind(null, 1)}
                 onClick={сhangeFiltersState.bind(null, "page", 1)}
               >
                 First
@@ -29,7 +23,6 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                //onClick={onChangePage.bind(null, page - 1)}
                 onClick={сhangeFiltersState.bind(null, "page", page - 1)}
               >
                 {page === 1 ? "-" : page - 1}
@@ -46,7 +39,6 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                //onClick={onChangePage.bind(null, page + 1)}
                 onClick={сhangeFiltersState.bind(null, "page", page + 1)}
               >
                 {page + 1}
@@ -56,7 +48,6 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                //onClick={onChangePage.bind(null, page + 1)}
                 onClick={сhangeFiltersState.bind(null, "page", page + 1)}
               >
                 Next

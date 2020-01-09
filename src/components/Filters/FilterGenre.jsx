@@ -4,12 +4,11 @@ import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class FilterGenre extends React.Component {
   static propTypes = {
-    сhangeFiltersState: PropTypes.func.isRequired
+    сhangeFiltersState: PropTypes.func.isRequired,
   };
 
   getGenres = () => {
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-    //console.log(link);
 
     fetch(link)
       .then(response => {
@@ -17,7 +16,7 @@ export default class FilterGenre extends React.Component {
       })
       .then(data => {
         this.setState({
-          genres: data.genres
+          genres: data.genres,
         });
       });
   };
@@ -34,7 +33,6 @@ export default class FilterGenre extends React.Component {
       newGenres.push(id);
     }
     сhangeFiltersState("genres", newGenres);
-
   };
 
   componentDidMount() {
@@ -42,7 +40,6 @@ export default class FilterGenre extends React.Component {
   }
 
   render() {
- 
     let genresCheckBoxes = "";
     if (this.state) {
       genresCheckBoxes = this.state.genres.map(genre => {
