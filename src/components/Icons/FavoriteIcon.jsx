@@ -10,16 +10,16 @@ class FavoriteIcon extends React.Component {
     super();
 
     this.state = {
-      submittingFavorites: false
+      loading: false
     }
   }
 
-  changeFavorite = (movieId, isFavorite) => {
-    const {session_id, getFavorites, toggleModal, user} = this.props;
+  changeFavorite = () => {
+    const {session_id, getFavorites, toggleModal, user, movieId} = this.props;
 
     if (user) {
       this.setState({
-        submittingFavorites: true
+        loading: true
       });
       CallApi.post(`/account/${user.id}/favorite`, {
         params: {
@@ -28,7 +28,7 @@ class FavoriteIcon extends React.Component {
         body: {
           media_type: "movie",
           media_id: movieId,
-          favorite: isFavorite
+          favorite: !this.isFavorite()
         }
       })
         .then(() => {
@@ -36,7 +36,7 @@ class FavoriteIcon extends React.Component {
         })
         .then(() => {
           this.setState({
-            submittingFavorites: false
+            loading: false
           })
         })
     } else {
@@ -44,18 +44,18 @@ class FavoriteIcon extends React.Component {
     }
   };
 
+  isFavorite = () => this.props.favorites.includes(this.props.movieId);
+
   render() {
-    const {movieId} = this.props;
-    const favorite = this.props.favorites.includes(movieId);
-    const disabled = this.state.submittingFavorites;
-    const onClick = () => this.changeFavorite(movieId, !favorite);
 
     return (
-      <span className={classNames({"icon-disabled": disabled})}>
+      <span className={classNames({
+        "icon-disabled": this.state.loading
+      })}>
         {
-          favorite
-            ? <Star onClick={onClick}/>
-            : <StarBorder onClick={onClick}/>
+          this.isFavorite()
+            ? <Star onClick={this.changeFavorite}/>
+            : <StarBorder onClick={this.changeFavorite}/>
         }
       </span>
     )
@@ -68,7 +68,6 @@ FavoriteIcon.propTypes = {
   toggleModal: PropTypes.func,
   user: PropTypes.object,
   movieId: PropTypes.number,
-
 };
 
 export default AppContextHOC(FavoriteIcon);

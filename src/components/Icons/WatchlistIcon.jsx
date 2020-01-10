@@ -10,16 +10,16 @@ class WatchlistIcon extends React.Component {
     super();
 
     this.state = {
-      submittingWatchlist: false
+      loading: false
     }
   }
 
-  changeWatchlist = (movieId, isWatchlist) => {
-    const {session_id, getWatchlist, toggleModal, user} = this.props;
+  changeWatchlist = () => {
+    const {session_id, getWatchlist, toggleModal, user, movieId} = this.props;
 
     if (user) {
       this.setState({
-        submittingWatchlist: true
+        loading: true
       });
       CallApi.post(`/account/${user.id}/watchlist`, {
         params: {
@@ -28,7 +28,7 @@ class WatchlistIcon extends React.Component {
         body: {
           media_type: "movie",
           media_id: movieId,
-          watchlist: isWatchlist
+          watchlist: !this.isWatchlist()
         }
       })
         .then(() => {
@@ -36,7 +36,7 @@ class WatchlistIcon extends React.Component {
         })
         .then(() => {
           this.setState({
-            submittingWatchlist: false
+            loading: false
           })
         })
     } else {
@@ -44,18 +44,18 @@ class WatchlistIcon extends React.Component {
     }
   };
 
+  isWatchlist = () => this.props.watchlist.includes(this.props.movieId);
+
   render() {
-    const {movieId} = this.props;
-    const watchlist = this.props.watchlist.includes(movieId);
-    const disabled = this.state.submittingWatchlist;
-    const onClick = () => this.changeWatchlist(movieId, !watchlist);
 
     return (
-      <span className={classNames({"icon-disabled": disabled})}>
+      <span className={classNames({
+        "icon-disabled": this.state.loading
+      })}>
         {
-          watchlist
-            ? <Bookmark onClick={onClick}/>
-            : <BookmarkBorder onClick={onClick}/>
+          this.isWatchlist()
+            ? <Bookmark onClick={this.changeWatchlist}/>
+            : <BookmarkBorder onClick={this.changeWatchlist}/>
         }
       </span>
     )
