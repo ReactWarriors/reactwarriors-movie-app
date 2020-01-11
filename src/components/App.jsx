@@ -6,24 +6,25 @@ export default class App extends React.Component {
   constructor() {
     super();
 
-    this.state = {
+    this.initialState = {
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
-        genres: [],
+        with_genres: [],
         page: 1
       },
       totalPages: 1
     };
+
+    this.state = this.initialState;
   }
 
   onChangeFilters = event => {
     const { name, value } = event.target;
-    this.сhangeFiltersState(name, value);
+    this.updateFilters(name, value);
   };
 
-  сhangeFiltersState = (name, value) => {
-
+  updateFilters = (name, value) => {
     // this.setState({
     //   filters: {
     //     ...this.state.filters,
@@ -40,15 +41,7 @@ export default class App extends React.Component {
   };
 
   clearFilters = () => {
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        sort_by: "popularity.desc",
-        release_year: "",
-        genres: [],
-        page: 1
-      }
-    }));
+    this.setState(this.initialState);
   };
 
   onChangeTotalPages = totalPages => {
@@ -64,14 +57,14 @@ export default class App extends React.Component {
       <div className="container">
         <div className="row mt-4">
           <div className="col-4">
-            <div className="card" style={{ width: "100%" }}>
+            <div className="card">
               <div className="card-body">
                 <h3>Фильтры:</h3>
                 <Filters
                   totalPages={totalPages}
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
-                  сhangeFiltersState={this.сhangeFiltersState}
+                  updateFilters={this.updateFilters}
                   clearFilters={this.clearFilters}
                 />
               </div>

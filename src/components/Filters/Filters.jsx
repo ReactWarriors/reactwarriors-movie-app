@@ -7,32 +7,19 @@ import FilterGenre from "./FilterGenre";
 export default class Filters extends React.Component {
   render() {
     const {
-      filters: { sort_by, release_year, page, genres },
+      filters: { sort_by, release_year, page, with_genres },
       totalPages,
       onChangeFilters,
-      сhangeFiltersState,
+      updateFilters,
       clearFilters
     } = this.props;
-
-    let years = [
-      <option key={0} value="">
-        -
-      </option>
-    ];
-    for (let index = new Date().getUTCFullYear(); index > 1950; index--) {
-      years.push(
-        <option key={index} value={index}>
-          {index}
-        </option>
-      );
-    }
 
     return (
       <form className="mb-3">
         <SortBy
           sort_by={sort_by}
           onChangeFilters={onChangeFilters}
-          сhangeFiltersState={сhangeFiltersState}
+          //updateFilters={updateFilters}
         />
 
         <FilterYear
@@ -43,12 +30,12 @@ export default class Filters extends React.Component {
         <FilterPage
           page={page}
           totalPages={totalPages}
-          сhangeFiltersState={сhangeFiltersState}
+          updateFilters={updateFilters}
         />
 
         <FilterGenre
-          genres={genres}
-          сhangeFiltersState={сhangeFiltersState}
+          with_genres={with_genres}
+          updateFilters={updateFilters}
         />
 
         <button type="button" className="btn btn-light" onClick={clearFilters}>

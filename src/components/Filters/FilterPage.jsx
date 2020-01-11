@@ -1,8 +1,18 @@
 import React from "react";
 
 export default class FilterPage extends React.Component {
+  handleClick = (page) => {
+    return (event) => {
+      this.props.updateFilters("page", page);
+    };
+  };
+
   render() {
-    const { page, totalPages, сhangeFiltersState } = this.props;
+    const {
+      page,
+      totalPages
+      //updateFilters
+    } = this.props;
     return (
       <div className="form-group">
         <label htmlFor="page">
@@ -14,7 +24,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={сhangeFiltersState.bind(null, "page", 1)}
+                //onClick={updateFilters.bind(null, "page", 1)}
+                onClick={this.handleClick(1)}
               >
                 First
               </a>
@@ -23,7 +34,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={сhangeFiltersState.bind(null, "page", page - 1)}
+                //onClick={updateFilters.bind(null, "page", page - 1)}
+                onClick={this.handleClick(page - 1)}
               >
                 {page === 1 ? "-" : page - 1}
               </a>
@@ -39,7 +51,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={сhangeFiltersState.bind(null, "page", page + 1)}
+                //onClick={updateFilters.bind(null, "page", page + 1)}
+                onClick={this.handleClick(page + 1)}
               >
                 {page + 1}
               </a>
@@ -48,7 +61,8 @@ export default class FilterPage extends React.Component {
               <a
                 className="page-link"
                 href="/#"
-                onClick={сhangeFiltersState.bind(null, "page", page + 1)}
+                //onClick={updateFilters.bind(null, "page", page + 1)}
+                onClick={this.handleClick(page + 1)}
               >
                 Next
               </a>

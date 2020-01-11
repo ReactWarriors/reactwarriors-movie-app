@@ -19,8 +19,8 @@ export default class MovieList extends Component {
     };
   }
 
-  getMovies = (filters, onChangeTotalPages) => {
-    const { sort_by, release_year, genres, page } = filters;
+  getMovies = (filters) => {
+    const { sort_by, release_year, with_genres, page } = filters;
     const queryStringParams = {
       api_key: API_KEY_3,
       language: "ru-RU",
@@ -28,8 +28,8 @@ export default class MovieList extends Component {
       page,
     };
 
-    if (genres.length > 0) {
-      queryStringParams.with_genres = genres.join();
+    if (with_genres.length > 0) {
+      queryStringParams.with_genres = with_genres.join();
     }
     if (release_year) {
       queryStringParams.primary_release_year = release_year;
@@ -41,7 +41,7 @@ export default class MovieList extends Component {
     // const oldLink =
     //   `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` +
     //   (release_year ? `&primary_release_year=${release_year}` : "") +
-    //   (genres.length > 0 ? `&with_genres=${genres.join()}` : "");
+    //   (with_genres.length > 0 ? `&with_genres=${with_genres.join()}` : "");
 
     fetch(link)
       .then(response => {
@@ -53,15 +53,12 @@ export default class MovieList extends Component {
           page: data.page,
           totalPages: data.total_pages,
         });
-        return data.total_pages;
-      })
-      .then(total_pages => {
-        onChangeTotalPages(total_pages);
+        this.props.onChangeTotalPages(data.total_pages);
       });
   };
 
   componentDidMount() {
-    this.getMovies(this.props.filters, this.props.onChangeTotalPages);
+    this.getMovies(this.props.filters);
   }
 
   componentDidUpdate(prevProps) {
