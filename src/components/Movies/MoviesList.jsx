@@ -7,25 +7,27 @@ import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class MovieList extends Component {
   static propTypes = {
-    onChangeTotalPages: PropTypes.func.isRequired,
+    onChangeTotalPages: PropTypes.func.isRequired
   };
 
   constructor() {
     super();
 
     this.state = {
+      loaded: false,
       movies: [],
-      totalPages: 1,
+      totalPages: 1
     };
+
   }
 
-  getMovies = (filters) => {
+  getMovies = filters => {
     const { sort_by, release_year, with_genres, page } = filters;
     const queryStringParams = {
       api_key: API_KEY_3,
       language: "ru-RU",
       sort_by,
-      page,
+      page
     };
 
     if (with_genres.length > 0) {
@@ -45,13 +47,14 @@ export default class MovieList extends Component {
 
     fetch(link)
       .then(response => {
+        this.setState({ loaded: true });
         return response.json();
       })
       .then(data => {
         this.setState({
           movies: data.results,
           page: data.page,
-          totalPages: data.total_pages,
+          totalPages: data.total_pages
         });
         this.props.onChangeTotalPages(data.total_pages);
       });
@@ -63,6 +66,7 @@ export default class MovieList extends Component {
 
   componentDidUpdate(prevProps) {
     if (!_.isEqual(this.props.filters, prevProps.filters)) {
+      this.setState({ loaded: false });
       this.getMovies(this.props.filters, this.props.onChangeTotalPages);
     }
   }
@@ -72,6 +76,8 @@ export default class MovieList extends Component {
 
     return (
       <div className="row">
+        {!this.state.loaded && <div className="loader"></div>}
+
         {movies.map(movie => {
           return (
             <div key={movie.id} className="col-6 mb-4">
