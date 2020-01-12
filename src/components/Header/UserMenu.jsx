@@ -6,7 +6,7 @@ import {
   DropdownItem
 } from "reactstrap";
 import { fetchApi, API_URL, API_KEY_3 } from "../../api/api";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { withAuth } from "../../hoc/withAuth";
 
 class UserMenu extends Component {
   state = {
@@ -27,15 +27,15 @@ class UserMenu extends Component {
         "Content-type": "application/json"
       },
       body: JSON.stringify({
-        session_id: this.props.session_id
+        session_id: this.props.auth.session_id
       })
     }).then(() => {
-      this.props.onLogOut();
+      this.props.authActions.onLogOut();
     });
   };
 
   render() {
-    const { user } = this.props;
+    const { auth } = this.props;
     return (
       <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropdown}>
         <DropdownToggle
@@ -47,7 +47,7 @@ class UserMenu extends Component {
           <img
             width="40"
             className="rounded-circle"
-            src={`https://secure.gravatar.com/avatar/${user.avatar.gravatar.hash}.jpg?s=64"`}
+            src={`https://secure.gravatar.com/avatar/${auth.user.avatar.gravatar.hash}.jpg?s=64"`}
             alt=""
             onClick={this.toggleDropdown}
           />
@@ -60,4 +60,4 @@ class UserMenu extends Component {
   }
 }
 
-export default AppContextHOC(UserMenu);
+export default withAuth(UserMenu);

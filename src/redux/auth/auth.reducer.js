@@ -1,4 +1,5 @@
 import * as types from "./auth.types";
+import { cookies } from "../../utils/cookies";
 
 const initialState = {
   user: null,

@@ -1,13 +1,13 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 import LoginForm from "./LoginForm";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { withAuth } from "../../hoc/withAuth";
 
 class Login extends React.Component {
   render() {
-    const { showLoginModal, toggleLoginModal } = this.props;
+    const { auth, authActions } = this.props;
     return (
-      <Modal isOpen={showLoginModal} toggle={toggleLoginModal}>
+      <Modal isOpen={auth.showLoginModal} toggle={authActions.toggleLoginModal}>
         <ModalBody>
           <LoginForm />
         </ModalBody>
@@ -16,4 +16,4 @@ class Login extends React.Component {
   }
 }
 
-export default AppContextHOC(Login);
+export default withAuth(Login);
