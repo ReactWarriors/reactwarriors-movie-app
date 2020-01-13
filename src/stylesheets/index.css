@@ -11,3 +11,7 @@ body {
 .invalid-feedback {
   display: block;
 }
+
+.icon-disabled {
+  pointer-events: none;
+}

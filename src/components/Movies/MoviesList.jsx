@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
 
 
-const MoviesList = ({movies, watchlist, favorites, changeFavorite, changeWatchlist}) => (
+const MoviesList = ({movies}) => (
   <div className="row">
     {
       movies.length
@@ -13,10 +13,6 @@ const MoviesList = ({movies, watchlist, favorites, changeFavorite, changeWatchli
             <div key={movie.id} className="col-6 mb-4">
               <MovieItem
                 item={movie}
-                favorite={favorites.has(movie.id)}
-                watchlist={watchlist.has(movie.id)}
-                changeFavorite={changeFavorite}
-                changeWatchlist={changeWatchlist}
               />
             </div>
           );

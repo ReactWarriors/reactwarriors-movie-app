@@ -1,8 +1,8 @@
 import React from "react";
-import {Bookmark, BookmarkBorder, Star, StarBorder} from "@material-ui/icons";
-import AppContextHOC from "../HOC/AppContextHOC";
+import FavoriteIcon from "../Icons/FavoriteIcon";
+import WatchlistIcon from "../Icons/WatchlistIcon";
 
-const MovieItem = ({item, session_id, favorite, watchlist, changeFavorite, changeWatchlist}) => (
+const MovieItem = ({item}) => (
   <div className="card" style={{width: "100%"}}>
     <img
       className="card-img-top card-img--height"
@@ -15,20 +15,12 @@ const MovieItem = ({item, session_id, favorite, watchlist, changeFavorite, chang
       <div className="d-flex justify-content-between">
         <div className="card-text">Рейтинг: {item.vote_average}</div>
         <div>
-          {
-            session_id && favorite
-              ? <Star onClick={() => changeFavorite(item.id, !favorite)}/>
-              : <StarBorder onClick={() => changeFavorite(item.id, !favorite)}/>
-          }
-          {
-            session_id && watchlist
-              ? <Bookmark onClick={() => changeWatchlist(item.id, !watchlist)}/>
-              : <BookmarkBorder onClick={() => changeWatchlist(item.id, !watchlist)}/>
-          }
+          <FavoriteIcon movieId={item.id}/>
+          <WatchlistIcon movieId={item.id}/>
         </div>
       </div>
     </div>
   </div>
 );
 
-export default AppContextHOC(MovieItem);
+export default MovieItem;

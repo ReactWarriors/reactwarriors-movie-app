@@ -1,12 +1,9 @@
 import React from "react";
-import { Modal, ModalBody } from "reactstrap";
-import LoginForm from "./LoginForm";
 import AppContextHOC from "../../HOC/AppContextHOC";
-
 
 class Login extends React.Component {
   render() {
-    const {showModal, toggleModal} = this.props;
+    const {toggleModal} = this.props;
 
     return (
       <div>
@@ -17,14 +14,6 @@ class Login extends React.Component {
         >
           Login
         </button>
-        <Modal
-          isOpen={showModal}
-          toggle={toggleModal}
-        >
-          <ModalBody>
-            <LoginForm/>
-          </ModalBody>
-        </Modal>
       </div>
     );
   }

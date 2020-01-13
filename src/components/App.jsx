@@ -2,7 +2,9 @@ import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
+import LoginModal from "./Modals/LoginModal";
 import CallApi from "../api/api";
+import _ from "lodash";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -22,11 +24,13 @@ export default class App extends React.Component {
 
     this.state = {
       user: null,
+      favorites: [],
+      watchlist: [],
       session_id: null,
       filters: initialFilters,
       page: 1,
       total_pages: 1,
-      showModal: false
+      showLoginModal: false,
     }
   }
 
@@ -40,21 +44,29 @@ export default class App extends React.Component {
         }
       })
         .then(user => {
-          this.updateUser(user);
           this.updateSessionId(session_id);
+          this.updateUser(user);
         })
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.user === null && _.size(this.state.user)) {
+      this.getFavorites();
+      this.getWatchlist();
     }
   }
 
   toggleModal = () => {
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      showLoginModal: !prevState.showLoginModal
     }))
   };
 
   updateUser = user => {
     this.setState({
-      user
+      user,
+      showLoginModal: false
     });
   };
 
@@ -72,7 +84,10 @@ export default class App extends React.Component {
     cookies.remove("session_id");
     this.setState({
       session_id: null,
-      user: null
+      user: null,
+      showLoginModal: false,
+      watchlist: [],
+      favorites: []
     })
   };
 
@@ -107,6 +122,36 @@ export default class App extends React.Component {
     })
   };
 
+  getWatchlist = () => {
+    const {session_id, user} = this.state;
+
+      return CallApi.get(`/account/${user.id}/watchlist/movies`, {
+        params: {
+          session_id
+        }
+      })
+        .then(data => {
+          this.setState({
+            watchlist: data.results
+          })
+        })
+  };
+
+  getFavorites = () => {
+    const {session_id, user} = this.state;
+
+      return CallApi.get(`/account/${user.id}/favorite/movies`, {
+        params: {
+          session_id
+        }
+      })
+        .then(data => {
+          this.setState({
+            favorites: data.results
+          })
+        })
+  };
+
   render() {
     const {
       filters,
@@ -115,9 +160,10 @@ export default class App extends React.Component {
       genres,
       user,
       session_id,
-      showModal
+      favorites,
+      watchlist,
+      showLoginModal,
     } = this.state;
-
 
     return (
       <AppContext.Provider
@@ -125,9 +171,14 @@ export default class App extends React.Component {
           user,
           updateUser: this.updateUser,
           session_id,
+          favorites: favorites,
+          watchlist: watchlist,
           updateSessionId: this.updateSessionId,
           onLogOut: this.onLogOut,
-          showModal
+          showLoginModal,
+          toggleModal: this.toggleModal,
+          getWatchlist: this.getWatchlist,
+          getFavorites: this.getFavorites
         }}
       >
         <div>
@@ -165,6 +216,9 @@ export default class App extends React.Component {
               </div>
             </div>
           </div>
+          {
+            showLoginModal && <LoginModal/>
+          }
         </div>
       </AppContext.Provider>
     );
