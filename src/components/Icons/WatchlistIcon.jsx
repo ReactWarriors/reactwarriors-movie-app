@@ -44,7 +44,7 @@ class WatchlistIcon extends React.Component {
     }
   };
 
-  isWatchlist = () => this.props.watchlist.includes(this.props.movieId);
+  isWatchlist = () => this.props.watchlist.some(item => item.id === this.props.movieId);
 
   render() {
 

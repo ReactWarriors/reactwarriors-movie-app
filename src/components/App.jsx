@@ -4,6 +4,7 @@ import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import LoginModal from "./Modals/LoginModal";
 import CallApi from "../api/api";
+import _ from "lodash";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -50,7 +51,7 @@ export default class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.user !== prevState.user) {
+    if (prevState.user === null && _.size(this.state.user)) {
       this.getFavorites();
       this.getWatchlist();
     }
@@ -84,7 +85,9 @@ export default class App extends React.Component {
     this.setState({
       session_id: null,
       user: null,
-      showLoginModal: false
+      showLoginModal: false,
+      watchlist: [],
+      favorites: []
     })
   };
 
@@ -122,7 +125,6 @@ export default class App extends React.Component {
   getWatchlist = () => {
     const {session_id, user} = this.state;
 
-    if (user) {
       return CallApi.get(`/account/${user.id}/watchlist/movies`, {
         params: {
           session_id
@@ -130,19 +132,14 @@ export default class App extends React.Component {
       })
         .then(data => {
           this.setState({
-            watchlist: data.results.map(elem => elem.id)
+            watchlist: data.results
           })
         })
-    }
-    this.setState({
-      watchlist: []
-    })
   };
 
   getFavorites = () => {
     const {session_id, user} = this.state;
 
-    if (user) {
       return CallApi.get(`/account/${user.id}/favorite/movies`, {
         params: {
           session_id
@@ -150,13 +147,9 @@ export default class App extends React.Component {
       })
         .then(data => {
           this.setState({
-            favorites: data.results.map(elem => elem.id)
+            favorites: data.results
           })
         })
-    }
-    this.setState({
-      favorites: []
-    })
   };
 
   render() {

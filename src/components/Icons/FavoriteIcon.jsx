@@ -44,7 +44,7 @@ class FavoriteIcon extends React.Component {
     }
   };
 
-  isFavorite = () => this.props.favorites.includes(this.props.movieId);
+  isFavorite = () => this.props.favorites.some(item => item.id === this.props.movieId);
 
   render() {
 
