@@ -2,9 +2,12 @@ import React from "react";
 import Header from "./Header/Header";
 import LoginModal from "./Modals/LoginModal";
 import MoviesPage from "./pages/MoviesPage/MoviesPage";
+import MoviePage from "./pages/MoviePage/MoviePage";
 import CallApi from "../api/api";
 import _ from "lodash";
 import Cookies from "universal-cookie";
+import {BrowserRouter as Router} from "react-router-dom";
+import {Route} from "react-router";
 
 const cookies = new Cookies();
 
@@ -120,17 +123,18 @@ export default class App extends React.Component {
     } = this.state;
 
     return (
-      <AppContext.Provider
-        value={{
-          user,
-          updateUser: this.updateUser,
-          session_id,
-          favorites: favorites,
-          watchlist: watchlist,
-          updateSessionId: this.updateSessionId,
-          onLogOut: this.onLogOut,
-          showLoginModal,
-          toggleModal: this.toggleModal,
+      <Router>
+        <AppContext.Provider
+          value={{
+            user,
+            updateUser: this.updateUser,
+            session_id,
+            favorites: favorites,
+            watchlist: watchlist,
+            updateSessionId: this.updateSessionId,
+            onLogOut: this.onLogOut,
+            showLoginModal,
+            toggleModal: this.toggleModal,
           getWatchlist: this.getWatchlist,
           getFavorites: this.getFavorites
         }}
@@ -140,12 +144,14 @@ export default class App extends React.Component {
             user={user}
             updateSessionId={this.updateSessionId}
           />
-          <MoviesPage/>
+          <Route exact path="/" component={MoviesPage} />
+          <Route path="/movie/:id" component={MoviePage} />
           {
             showLoginModal && <LoginModal/>
           }
         </div>
-      </AppContext.Provider>
+        </AppContext.Provider>
+      </Router>
     );
   }
 }
