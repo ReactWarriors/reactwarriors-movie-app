@@ -15,3 +15,10 @@ body {
 .icon-disabled {
   pointer-events: none;
 }
+
+.nav-link,
+.page-item {
+  cursor: pointer;
+
+}
+
