@@ -6,7 +6,6 @@ import GenresHOC from "./GenresHOC";
 
 const Genres = ({genres, with_genres, onChangeGenres}) => (
   <div className="form-group mb-1">
-    <div className="mb-2">Жанры:</div>
     <div className="form-check">
         {genres.map(genre => {
           return (
