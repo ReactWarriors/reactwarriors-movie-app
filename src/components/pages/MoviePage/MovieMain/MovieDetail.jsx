@@ -1,17 +1,50 @@
 import React from "react";
-import MovieContextHOC from "../../HOC/MovieContextHOC";
+import CallApi from "../../../../api/api";
 
 class MovieDetail extends React.Component {
-  render() {
+  constructor() {
+    super();
 
-    const {details, genres, production_countries, production_companies, loading} = this.props;
+    this.state = {
+      details: [],
+      genres: [],
+      production_countries: [],
+      production_companies: []
+    }
+  }
+
+  componentDidMount() {
+    this.getMovieDetails();
+  }
+
+  getMovieDetails = () => {
+    this.setState({
+      loading: true
+    });
+
+    const queryStringParams = {
+      language: "ru-Ru",
+    };
+
+    CallApi.get(`/movie/${this.props.movieId}`, {
+      params: queryStringParams
+    })
+      .then(data => {
+        this.setState({
+          details: data,
+          genres: data.genres,
+          production_countries: data.production_countries,
+          production_companies: data.production_companies
+        })
+      });
+  };
+
+  render() {
+    const {details, genres, production_countries, production_companies} = this.state;
 
     return (
       <div className="mx-auto">
-        {
-          loading
-            ? <div className="loader">Loading...</div>
-            : <table className="table table-bordered mt-4">
+        <table className="table table-bordered mt-4">
           <tbody>
           <tr>
             <th>Статус</th>
@@ -51,11 +84,9 @@ class MovieDetail extends React.Component {
           </tr>
           </tbody>
         </table>
-
-        }
       </div>
     )
   }
 }
 
-export default MovieContextHOC(MovieDetail);
+export default MovieDetail;
