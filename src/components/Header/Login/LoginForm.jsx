@@ -24,10 +24,9 @@ export default class LoginForm extends React.Component {
   };
 
   handleBlur = () => {
-    console.log("on blur");
+    // console.log("on blur");
 
     const errors = this.validateFields();
-    // console.log("errors.length", Object.keys(errors));
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
         errors: {
@@ -115,14 +114,11 @@ export default class LoginForm extends React.Component {
           },
         }));
       });
-    console.log("this.state.errors", this.state.errors);
   };
 
   onLogin = e => {
     e.preventDefault();
     const errors = this.validateFields();
-
-    //console.log("errors.onLogin", errors);
 
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
@@ -144,7 +140,6 @@ export default class LoginForm extends React.Component {
       errors,
       submitting,
     } = this.state;
-    //console.log("errors.base", errors.base);
 
     return (
       <div className="form-login-container">
@@ -184,7 +179,6 @@ export default class LoginForm extends React.Component {
             )}
           </div>
           <div className="form-group">
-            {/* <label htmlFor="repeatPassword">Пароль</label> */}
             <input
               type="password"
               className="form-control"
@@ -194,7 +188,7 @@ export default class LoginForm extends React.Component {
               value={repeatPassword}
               onChange={this.onChange}
               onBlur={this.handleBlur}
-              // style={{" border: 4px solid red; "}}
+              style={{ borderColor: errors.repeatPassword && 'red'}}
             />
             {errors.repeatPassword && (
               <div className="invalid-feedback">{errors.repeatPassword}</div>
