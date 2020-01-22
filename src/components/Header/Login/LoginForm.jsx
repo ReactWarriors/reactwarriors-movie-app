@@ -5,8 +5,9 @@ export default class LoginForm extends React.Component {
   state = {
     username: "",
     password: "",
+    repeatPassword: "",
     errors: {},
-    submitting: false
+    submitting: false,
   };
 
   onChange = e => {
@@ -17,20 +18,22 @@ export default class LoginForm extends React.Component {
       errors: {
         ...prevState.errors,
         base: null,
-        [name]: null
-      }
+        [name]: null,
+      },
     }));
   };
 
   handleBlur = () => {
     console.log("on blur");
+
     const errors = this.validateFields();
+    // console.log("errors.length", Object.keys(errors));
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          ...errors
-        }
+          ...errors,
+        },
       }));
     }
   };
@@ -41,13 +44,16 @@ export default class LoginForm extends React.Component {
     if (this.state.username === "") {
       errors.username = "Not empty";
     }
+    if (this.state.password !== this.state.repeatPassword) {
+      errors.repeatPassword = "Not equal password";
+    }
 
     return errors;
   };
 
   onSubmit = () => {
     this.setState({
-      submitting: true
+      submitting: true,
     });
     fetchApi(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`)
       .then(data => {
@@ -57,13 +63,13 @@ export default class LoginForm extends React.Component {
             method: "POST",
             mode: "cors",
             headers: {
-              "Content-type": "application/json"
+              "Content-type": "application/json",
             },
             body: JSON.stringify({
               username: this.state.username,
               password: this.state.password,
-              request_token: data.request_token
-            })
+              request_token: data.request_token,
+            }),
           }
         );
       })
@@ -74,48 +80,56 @@ export default class LoginForm extends React.Component {
             method: "POST",
             mode: "cors",
             headers: {
-              "Content-type": "application/json"
+              "Content-type": "application/json",
             },
             body: JSON.stringify({
-              request_token: data.request_token
-            })
+              request_token: data.request_token,
+            }),
           }
         );
       })
       .then(data => {
         this.props.updateSessionId(data.session_id);
         return fetchApi(
-          `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-            data.session_id
-          }`
+          `${API_URL}/account?api_key=${API_KEY_3}&session_id=${data.session_id}`
         );
       })
       .then(user => {
         this.props.updateUser(user);
         this.setState({
-          submitting: false
+          submitting: false,
         });
       })
       .catch(error => {
         console.log("error", error);
-        this.setState({
+        // this.setState({
+        //   submitting: false,
+        //   errors: {
+        //     base: error.status_message,
+        //   },
+        // });
+        this.setState(prevState => ({
           submitting: false,
           errors: {
-            base: error.status_message
-          }
-        });
+            base: error.status_message,
+          },
+        }));
       });
+    console.log("this.state.errors", this.state.errors);
   };
 
   onLogin = e => {
     e.preventDefault();
     const errors = this.validateFields();
+
+    //console.log("errors.onLogin", errors);
+
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          ...errors
-        }
+          ...errors,
+        },
       }));
     } else {
       this.onSubmit();
@@ -123,7 +137,15 @@ export default class LoginForm extends React.Component {
   };
 
   render() {
-    const { username, password, errors, submitting } = this.state;
+    const {
+      username,
+      password,
+      repeatPassword,
+      errors,
+      submitting,
+    } = this.state;
+    //console.log("errors.base", errors.base);
+
     return (
       <div className="form-login-container">
         <form className="form-login">
@@ -159,6 +181,23 @@ export default class LoginForm extends React.Component {
             />
             {errors.password && (
               <div className="invalid-feedback">{errors.password}</div>
+            )}
+          </div>
+          <div className="form-group">
+            {/* <label htmlFor="repeatPassword">Пароль</label> */}
+            <input
+              type="password"
+              className="form-control"
+              id="repeatPassword"
+              placeholder="подтверждение пароля"
+              name="repeatPassword"
+              value={repeatPassword}
+              onChange={this.onChange}
+              onBlur={this.handleBlur}
+              // style={{" border: 4px solid red; "}}
+            />
+            {errors.repeatPassword && (
+              <div className="invalid-feedback">{errors.repeatPassword}</div>
             )}
           </div>
           <button
