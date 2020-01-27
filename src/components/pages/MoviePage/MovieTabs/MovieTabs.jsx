@@ -1,15 +1,12 @@
 import React from "react";
-import {NavLink, Redirect, Switch} from "react-router-dom";
+import {NavLink, withRouter} from "react-router-dom";
 import {Route} from "react-router";
-import MovieDetail from "../MovieMain/MovieDetail";
-import MovieVideos from "../Video/MovieVideos";
-import MovieCredits from "../Credits/MovieCredits";
 
-const MovieTabs = ({movieId}) => {
+const MovieTabs = (props) => {
+  const movieId = props.match.params.id;
 
   return (
     <Route>
-      <div className="container">
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <NavLink
@@ -39,25 +36,8 @@ const MovieTabs = ({movieId}) => {
             </NavLink>
           </li>
         </ul>
-        <div>
-          <Switch>
-            <Route path={`/movie/${movieId}/detail`}>
-              <MovieDetail movieId={movieId}/>
-            </Route>
-            <Route path={`/movie/${movieId}/videos`}>
-              <MovieVideos movieId={movieId}/>
-            </Route>
-            <Route path={`/movie/${movieId}/credits`} >
-              <MovieCredits movieId={movieId}/>
-            </Route>
-            <Route exact path={`/movie/${movieId}`}>
-              <Redirect to={`/movie/${movieId}/detail`}/>
-            </Route>
-          </Switch>
-        </div>
-      </div>
     </Route>
   );
 };
 
-export default MovieTabs;
+export default withRouter(MovieTabs);

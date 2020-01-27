@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class VideoItem extends React.Component {
+export default class Video extends React.Component {
   render() {
     const {video} = this.props;
 
@@ -20,3 +20,4 @@ export default class VideoItem extends React.Component {
     )
   }
 }
+

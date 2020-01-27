@@ -1,10 +1,12 @@
 import React from "react";
-import VideoItem from "./VideoItem";
+import Video from "./Video";
+import PropTypes from "prop-types";
 import CallApi from "../../../../api/api";
+import {withRouter} from "react-router";
 
 class MovieVideos extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       videos: []
     }
@@ -18,8 +20,7 @@ class MovieVideos extends React.Component {
     const queryStringParams = {
       language: "ru-Ru",
     };
-
-    CallApi.get(`/movie/${this.props.movieId}/videos`, {
+    CallApi.get(`/movie/${this.props.match.params.id}/videos`, {
       params: queryStringParams
     })
       .then(data => {
@@ -30,6 +31,7 @@ class MovieVideos extends React.Component {
   };
 
   render() {
+
     const {videos} = this.state;
     return (
       <div className="container mx-auto">
@@ -37,7 +39,7 @@ class MovieVideos extends React.Component {
           videos.map(video => {
             return (
               <div className="mb-4" key={video.key}>
-                <VideoItem
+                <Video
                   video={video}
                 />
               </div>
@@ -49,4 +51,10 @@ class MovieVideos extends React.Component {
   }
 }
 
-export default MovieVideos;
+MovieVideos.propTypes = {
+  videos: PropTypes.array
+};
+
+
+
+export default withRouter(MovieVideos);

@@ -1,10 +1,12 @@
 import React from "react";
-import PersonaltItem from "./PersonaltItem";
+import Actor from "./Actor";
 import CallApi from "../../../../api/api";
+import PropTypes from "prop-types";
+
 
 class MovieCredits extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       cast: []
@@ -20,7 +22,7 @@ class MovieCredits extends React.Component {
       language: "ru-Ru",
     };
 
-    CallApi.get(`/movie/${this.props.movieId}/credits`, {
+    CallApi.get(`/movie/${this.props.match.params.id}/credits`, {
       params: queryStringParams
     })
       .then(data => {
@@ -40,7 +42,7 @@ class MovieCredits extends React.Component {
               cast.map(actor => {
                 return (
                   <div key={actor.id} className="col-2 mb-4">
-                    <PersonaltItem
+                    <Actor
                       actor={actor}
                     />
                   </div>
@@ -52,5 +54,9 @@ class MovieCredits extends React.Component {
     )
   }
 }
+
+MovieCredits.propTypes = {
+  cast: PropTypes.array
+};
 
 export default MovieCredits;

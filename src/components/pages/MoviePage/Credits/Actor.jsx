@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class PersonaltItem extends React.Component {
+export default class Actor extends React.Component {
   render() {
     const {actor} = this.props;
     return (
