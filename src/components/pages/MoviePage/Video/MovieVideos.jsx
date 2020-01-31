@@ -3,12 +3,14 @@ import Video from "./Video";
 import PropTypes from "prop-types";
 import CallApi from "../../../../api/api";
 import {withRouter} from "react-router";
+import Loader from "../../../UI/Loader/Loader";
 
 class MovieVideos extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videos: []
+      videos: [],
+      loading: true
     }
   }
 
@@ -17,36 +19,38 @@ class MovieVideos extends React.Component {
   }
 
   getVideos = () => {
-    const queryStringParams = {
-      language: "ru-Ru",
-    };
-    CallApi.get(`/movie/${this.props.match.params.id}/videos`, {
-      params: queryStringParams
-    })
+    this.setState({
+      loading: true
+    });
+
+    CallApi.get(`/movie/${this.props.match.params.id}/videos`)
       .then(data => {
         this.setState({
           videos: data.results,
+          loading: false
         })
       });
   };
 
   render() {
 
-    const {videos} = this.state;
+    const {videos, loading} = this.state;
     return (
-      <div className="container mx-auto">
-        {
-          videos.map(video => {
-            return (
-              <div className="mb-4" key={video.key}>
-                <Video
-                  video={video}
-                />
-              </div>
-            )
-          })
-        }
-      </div>
+      loading
+        ? <Loader/>
+        : <div className="container mx-auto">
+            {
+              videos.map(video => {
+                return (
+                  <div className="mb-4" key={video.key}>
+                    <Video
+                      video={video}
+                    />
+                  </div>
+                )
+              })
+            }
+          </div>
     )
   }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import Login from "./Login/Login";
 import UserMenu from "./Login/UserMenu";
-import {Route, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 class Header extends React.Component {
 
@@ -9,7 +9,6 @@ class Header extends React.Component {
     const {user} = this.props;
 
     return (
-      <Route>
         <nav className="navbar navbar-dark bg-primary">
           <div className="container">
             <ul className="navbar-nav">
@@ -24,7 +23,6 @@ class Header extends React.Component {
             }
           </div>
         </nav>
-      </Route>
     );
   }
 }

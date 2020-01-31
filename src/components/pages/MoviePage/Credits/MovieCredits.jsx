@@ -2,6 +2,7 @@ import React from "react";
 import Actor from "./Actor";
 import CallApi from "../../../../api/api";
 import PropTypes from "prop-types";
+import Loader from "../../../UI/Loader/Loader";
 
 
 class MovieCredits extends React.Component {
@@ -9,7 +10,8 @@ class MovieCredits extends React.Component {
     super(props);
 
     this.state = {
-      cast: []
+      cast: [],
+      loading: true
     }
   }
 
@@ -18,39 +20,40 @@ class MovieCredits extends React.Component {
   }
 
   getCredits = () => {
-    const queryStringParams = {
-      language: "ru-Ru",
-    };
+    this.setState({
+      loading: true
+    });
 
-    CallApi.get(`/movie/${this.props.match.params.id}/credits`, {
-      params: queryStringParams
-    })
+    CallApi.get(`/movie/${this.props.match.params.id}/credits`)
       .then(data => {
         this.setState({
-          cast: data.cast
+          cast: data.cast,
+          loading: false
         })
       });
   };
 
   render() {
-    const {cast} = this.state;
+    const {cast, loading} = this.state;
 
     return (
-        <div className="row">
-          <div className="card-deck mx-auto">
-            {
-              cast.map(actor => {
-                return (
-                  <div key={actor.id} className="col-2 mb-4">
-                    <Actor
-                      actor={actor}
-                    />
-                  </div>
-                )
-              })
-            }
+      loading
+        ? <Loader/>
+        : <div className="row">
+            <div className="card-deck mx-auto">
+              {
+                cast.map(actor => {
+                  return (
+                    <div key={actor.id} className="col-2 mb-4">
+                      <Actor
+                        actor={actor}
+                      />
+                    </div>
+                  )
+                })
+              }
+            </div>
           </div>
-        </div>
     )
   }
 }

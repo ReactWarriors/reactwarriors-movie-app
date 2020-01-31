@@ -1,11 +1,12 @@
 import React from "react";
+import Image from "../../../UI/Image";
 
 export default class Actor extends React.Component {
   render() {
     const {actor} = this.props;
     return (
       <div className="card mt-4">
-        <img
+        <Image
           className="card-img-top card-img--height"
           src={`https://image.tmdb.org/t/p/w500${actor.profile_path}`}
           alt="actor"

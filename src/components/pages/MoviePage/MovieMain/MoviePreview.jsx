@@ -1,6 +1,7 @@
 import React from "react";
 import FavoriteIcon from "../../../Icons/FavoriteIcon";
 import WatchlistIcon from "../../../Icons/WatchlistIcon";
+import Image from "../../../UI/Image";
 
 class MoviePreview extends React.Component {
 
@@ -10,7 +11,7 @@ class MoviePreview extends React.Component {
     return (
       <div className="row justify-content-center">
         <div className="col-md-4">
-          <img
+          <Image
             src={`https://image.tmdb.org/t/p/w300${movie.backdrop_path || movie.poster_path}`}
             alt="poster"
             className="rounded"

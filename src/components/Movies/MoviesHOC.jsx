@@ -1,5 +1,6 @@
 import React from "react";
 import CallApi from "../../api/api";
+import Loader from "../UI/Loader/Loader";
 
 export default Component =>
   class MoviesHOC extends React.Component {
@@ -35,7 +36,6 @@ export default Component =>
 
       const {sort_by, primary_release_year, with_genres} = filters;
       const queryStringParams = {
-        language: "ru-RU",
         sort_by,
         page,
         primary_release_year
@@ -62,7 +62,7 @@ export default Component =>
 
       return (
         loading
-          ? <div className="loader">Loading...</div>
+          ? <Loader/>
           : <Component
             movies={movies}
             {...this.props}

@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import queryString from "query-string";
 import MoviesList from "./MoviesList";
 import {API_URL, API_KEY_3} from "../../api/api";
+import Loader from "../UI/Loader/Loader";
 
 export default class MoviesContainer extends Component {
   constructor(props) {
@@ -64,7 +65,7 @@ export default class MoviesContainer extends Component {
 
     return (
         loading
-          ? <div className="loader">Loading...</div>
+          ? <Loader/>
           : <MoviesList movies={movies}/>
     )
   }

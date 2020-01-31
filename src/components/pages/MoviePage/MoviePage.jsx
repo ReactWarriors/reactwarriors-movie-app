@@ -7,6 +7,7 @@ import MoviePreview from "./MovieMain/MoviePreview";
 import MovieDetail from "./MovieMain/MovieDetail";
 import MovieVideos from "./Video/MovieVideos";
 import MovieCredits from "./Credits/MovieCredits";
+import Loader from "../../UI/Loader/Loader";
 
 class MoviePage extends React.Component {
   constructor() {
@@ -27,13 +28,7 @@ class MoviePage extends React.Component {
       loading: true
     });
 
-    const queryStringParams = {
-      language: "ru-Ru",
-    };
-
-    CallApi.get(`/movie/${this.props.match.params.id}`, {
-      params: queryStringParams
-    })
+    CallApi.get(`/movie/${this.props.match.params.id}`)
       .then(data => {
         this.setState({
           movie: data,
@@ -48,7 +43,7 @@ class MoviePage extends React.Component {
     const movieId = this.props.match.params.id;
     return (
       loading
-        ? <div className="loader">Loading...</div>
+        ? <Loader/>
         : <div className="container pt-1">
             <div className="card border-light mb-2">
               <MoviePreview movie={movie}/>
@@ -57,14 +52,12 @@ class MoviePage extends React.Component {
             <MovieTabs/>
             <div>
               <Switch>
-                <Route path={`/movie/:id/detail`}>
+                <Route path="/movie/:id/detail">
                   <MovieDetail movie={movie}/>
                 </Route>
-                <Route path={`/movie/:id/videos`} component={MovieVideos}/>
-                <Route path={`/movie/:id/credits`} component={MovieCredits}/>
-                <Route exact path={`/movie/${movieId}`}>
-                  <Redirect to={`/movie/${movieId}/detail`}/>
-                </Route>
+                <Route path="/movie/:id/videos" component={MovieVideos}/>
+                <Route path="/movie/:id/credits" component={MovieCredits}/>
+                <Redirect to={`/movie/${movieId}/detail`}/>
               </Switch>
             </div>
           </div>
