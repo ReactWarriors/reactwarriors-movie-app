@@ -1,5 +1,6 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
+import classNames from "classnames";
 
 export default class LoginForm extends React.Component {
   state = {
@@ -23,15 +24,18 @@ export default class LoginForm extends React.Component {
     }));
   };
 
-  handleBlur = () => {
-    // console.log("on blur");
+  handleBlur = event => {
+    //console.log("event.target", event.target);
+    const { name } = event.target;
 
     const errors = this.validateFields();
+    const error = errors[name];
+
     if (Object.keys(errors).length > 0) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,
-          ...errors,
+          [name]: error,
         },
       }));
     }
@@ -42,6 +46,9 @@ export default class LoginForm extends React.Component {
 
     if (this.state.username === "") {
       errors.username = "Not empty";
+    }
+    if (this.state.password.length < 5) {
+      errors.password = "Required! Must be 5 characters or more";
     }
     if (this.state.password !== this.state.repeatPassword) {
       errors.repeatPassword = "Not equal password";
@@ -132,6 +139,11 @@ export default class LoginForm extends React.Component {
     }
   };
 
+  getClassForInput = key =>
+    classNames("form-control", {
+      invalid: this.state.errors[key],
+    });
+
   render() {
     const {
       username,
@@ -151,7 +163,7 @@ export default class LoginForm extends React.Component {
             <label htmlFor="username">Пользователь</label>
             <input
               type="text"
-              className="form-control"
+              className={this.getClassForInput("username")}
               id="username"
               placeholder="Пользователь"
               name="username"
@@ -167,12 +179,13 @@ export default class LoginForm extends React.Component {
             <label htmlFor="password">Пароль</label>
             <input
               type="password"
-              className="form-control"
+              className={this.getClassForInput("password")}
               id="password"
               placeholder="Пароль"
               name="password"
               value={password}
               onChange={this.onChange}
+              onBlur={this.handleBlur}
             />
             {errors.password && (
               <div className="invalid-feedback">{errors.password}</div>
@@ -181,14 +194,13 @@ export default class LoginForm extends React.Component {
           <div className="form-group">
             <input
               type="password"
-              className="form-control"
+              className={this.getClassForInput("repeatPassword")}
               id="repeatPassword"
               placeholder="подтверждение пароля"
               name="repeatPassword"
               value={repeatPassword}
               onChange={this.onChange}
               onBlur={this.handleBlur}
-              style={{ borderColor: errors.repeatPassword && 'red'}}
             />
             {errors.repeatPassword && (
               <div className="invalid-feedback">{errors.repeatPassword}</div>

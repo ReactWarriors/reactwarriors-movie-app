@@ -1,3 +1,5 @@
+$error: #dc3545;
+
 body {
   background: #fdfdfd;
 }
@@ -44,4 +46,8 @@ body {
 
 .invalid-feedback {
   display: block;
+}
+
+input.invalid {
+  border-color: #dc3545;
 }
