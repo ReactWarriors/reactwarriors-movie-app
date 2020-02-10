@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
+import {withAuth} from "../../hoc/withAuth";
 import {Bookmark, BookmarkBorder} from "@material-ui/icons";
 import CallApi from "../../api/api";
 import PropTypes from "prop-types";
@@ -15,7 +15,8 @@ class WatchlistIcon extends React.Component {
   }
 
   changeWatchlist = () => {
-    const {session_id, getWatchlist, toggleModal, user, movieId} = this.props;
+    const {user, session_id} = this.props.auth;
+    const {authActions, movieId} = this.props;
 
     if (user) {
       this.setState({
@@ -32,7 +33,7 @@ class WatchlistIcon extends React.Component {
         }
       })
         .then(() => {
-          return getWatchlist();
+          return authActions.fetchWatchlist({user, session_id});
         })
         .then(() => {
           this.setState({
@@ -40,11 +41,11 @@ class WatchlistIcon extends React.Component {
           })
         })
     } else {
-      toggleModal();
+      authActions.toggleModal();
     }
   };
 
-  isWatchlist = () => this.props.watchlist.some(item => item.id === this.props.movieId);
+  isWatchlist = () => this.props.auth.watchlist.some(item => item.id === this.props.movieId);
 
   render() {
 
@@ -63,11 +64,11 @@ class WatchlistIcon extends React.Component {
 }
 
 WatchlistIcon.propTypes = {
-  getWatchlist: PropTypes.func,
+  updateWatchlist: PropTypes.func,
   session_id: PropTypes.string,
   toggleModal: PropTypes.func,
   user: PropTypes.object,
   movieId: PropTypes.number,
 };
 
-export default AppContextHOC(WatchlistIcon);
+export default withAuth(WatchlistIcon);

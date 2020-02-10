@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import {withAuth} from "../../../hoc/withAuth";
 import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
 
@@ -58,10 +58,7 @@ class MoviesPage extends React.Component {
       total_pages,
     } = this.state;
 
-    const {
-      session_id,
-      toggleModal
-    } = this.props;
+    const {auth, authActions} = this.props;
 
     return (
       <div className="container pt-1">
@@ -85,10 +82,10 @@ class MoviesPage extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
-              session_id={session_id}
+              session_id={auth.session_id}
               onChangePage={this.onChangePage}
               onChangeTotalPages={this.onChangeTotalPages}
-              toggleModal={toggleModal}
+              toggleModal={authActions.toggleModal}
             />
           </div>
         </div>
@@ -98,4 +95,4 @@ class MoviesPage extends React.Component {
   }
 }
 
-export default AppContextHOC(MoviesPage);
+export default withAuth(MoviesPage);

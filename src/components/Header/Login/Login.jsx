@@ -1,16 +1,16 @@
 import React from "react";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import {withAuth} from "../../../hoc/withAuth";
 
 class Login extends React.Component {
   render() {
-    const {toggleModal} = this.props;
+    const {authActions} = this.props;
 
     return (
       <div>
         <button
           className="btn btn-success"
           type="button"
-          onClick={toggleModal}
+          onClick={authActions.toggleModal}
         >
           Login
         </button>
@@ -19,4 +19,4 @@ class Login extends React.Component {
   }
 }
 
-export default AppContextHOC(Login);
+export default withAuth(Login);

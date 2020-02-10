@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import CallApi from "../../../api/api";
-import AppContextHOC from "../../HOC/AppContextHOC";
+import {withAuth} from "../../../hoc/withAuth";
 
 class LoginForm extends React.Component {
 
@@ -61,10 +61,12 @@ class LoginForm extends React.Component {
   };
 
   onSubmit = () => {
+    let session_id = null;
 
     this.setState({
       submitting: true
     });
+
     CallApi.get("/authentication/token/new")
       .then(data => {
         return CallApi.post("/authentication/token/validate_with_login", {
@@ -83,22 +85,15 @@ class LoginForm extends React.Component {
         })
       })
       .then(data => {
-        this.props.updateSessionId(data.session_id);
-        return CallApi.get("/account", {
-          params: {
-            session_id: data.session_id
-          }
-        })
-      })
-      .then(user => {
+        session_id = data.session_id;
         this.setState(
           {
             submitting: false
           },
           () => {
-            this.props.updateUser(user);
-          }
-        );
+            this.props.authActions.fetchAuth(session_id);
+            this.props.authActions.toggleModal();
+          })
       })
       .catch(error => {
         this.setState({
@@ -205,4 +200,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default AppContextHOC(LoginForm);
+export default withAuth(LoginForm);

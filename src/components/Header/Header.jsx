@@ -1,12 +1,13 @@
 import React from "react";
 import Login from "./Login/Login";
 import UserMenu from "./Login/UserMenu";
+import {withAuth} from "../../hoc/withAuth";
 import {Link} from "react-router-dom";
 
 class Header extends React.Component {
 
   render() {
-    const {user} = this.props;
+    const {auth} = this.props;
 
     return (
         <nav className="navbar navbar-dark bg-primary">
@@ -17,7 +18,7 @@ class Header extends React.Component {
               </li>
             </ul>
             {
-              user
+              auth.user
                 ? <UserMenu/>
                 : <Login/>
             }
@@ -27,4 +28,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default withAuth(Header);

@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
+import {withAuth} from "../../hoc/withAuth";
 import {Star, StarBorder} from "@material-ui/icons";
 import CallApi from "../../api/api";
 import PropTypes from "prop-types";
@@ -15,7 +15,8 @@ class FavoriteIcon extends React.Component {
   }
 
   changeFavorite = () => {
-    const {session_id, getFavorites, toggleModal, user, movieId} = this.props;
+    const {user, session_id} = this.props.auth;
+    const {authActions, movieId} = this.props;
 
     if (user) {
       this.setState({
@@ -32,7 +33,7 @@ class FavoriteIcon extends React.Component {
         }
       })
         .then(() => {
-          return getFavorites();
+          return authActions.fetchFavorites({user, session_id});
         })
         .then(() => {
           this.setState({
@@ -40,11 +41,11 @@ class FavoriteIcon extends React.Component {
           })
         })
     } else {
-      toggleModal();
+      authActions.toggleModal();
     }
   };
 
-  isFavorite = () => this.props.favorites.some(item => item.id === this.props.movieId);
+  isFavorite = () => this.props.auth.favorites.some(item => item.id === this.props.movieId);
 
   render() {
 
@@ -63,11 +64,11 @@ class FavoriteIcon extends React.Component {
 }
 
 FavoriteIcon.propTypes = {
-  getFavorites: PropTypes.func,
+  updateFavorites: PropTypes.func,
   session_id: PropTypes.string,
   toggleModal: PropTypes.func,
   user: PropTypes.object,
   movieId: PropTypes.number,
 };
 
-export default AppContextHOC(FavoriteIcon);
+export default withAuth(FavoriteIcon);
