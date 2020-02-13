@@ -2,7 +2,7 @@ import React from "react";
 import SortBy from "./SortBy";
 import FilterPage from "./FilterPage";
 import FilterYear from "./FilterYear";
-import FilterGenre from "./FilterGenre";
+import GenresContainer from "./GenresContainer";
 
 export default class Filters extends React.Component {
   render() {
@@ -11,7 +11,7 @@ export default class Filters extends React.Component {
       totalPages,
       onChangeFilters,
       updateFilters,
-      clearFilters
+      clearFilters,
     } = this.props;
 
     return (
@@ -33,7 +33,7 @@ export default class Filters extends React.Component {
           updateFilters={updateFilters}
         />
 
-        <FilterGenre
+        <GenresContainer
           with_genres={with_genres}
           updateFilters={updateFilters}
         />

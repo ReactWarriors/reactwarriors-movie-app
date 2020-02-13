@@ -4,14 +4,14 @@ import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default class FilterGenre extends React.Component {
   static propTypes = {
-    updateFilters: PropTypes.func.isRequired
+    updateFilters: PropTypes.func.isRequired,
   };
 
   constructor() {
     super();
 
     this.state = {
-      genres: []
+      genres: [],
     };
   }
 
@@ -28,7 +28,7 @@ export default class FilterGenre extends React.Component {
       })
       .then(data => {
         this.setState({
-          genres: data.genres
+          genres: data.genres,
         });
       });
   };
@@ -62,7 +62,6 @@ export default class FilterGenre extends React.Component {
                 checked={this.props.with_genres.includes(String(genre.id))}
                 value={genre.name}
                 onChange={this.onChangeGenre}
-                //onClick={(event) => this.handleClick(event.target.name, event.target.value)}
               ></input>
               <label className="form-check-label" htmlFor="inlineCheckboxGenre">
                 {genre.name}

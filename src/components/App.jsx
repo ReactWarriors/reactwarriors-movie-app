@@ -1,6 +1,6 @@
 import React from "react";
 import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
+import MoviesContainer from "./Movies/MoviesContainer";
 import Header from "./Header/Header";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import Cookies from "universal-cookie";
@@ -18,9 +18,9 @@ export default class App extends React.Component {
         sort_by: "popularity.desc",
         release_year: "",
         with_genres: [],
-        page: 1
+        page: 1,
       },
-      totalPages: 1
+      totalPages: 1,
     };
 
     this.state = this.initialState;
@@ -39,17 +39,17 @@ export default class App extends React.Component {
 
   updateUser = user => {
     this.setState({
-      user
+      user,
     });
   };
 
   updateSessionId = session_id => {
     cookies.set("session_id", session_id, {
       path: "/",
-      maxAge: 2592000
+      maxAge: 2592000,
     });
     this.setState({
-      session_id
+      session_id,
     });
   };
 
@@ -69,8 +69,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
@@ -80,7 +80,7 @@ export default class App extends React.Component {
 
   onChangeTotalPages = totalPages => {
     this.setState({
-      totalPages
+      totalPages,
     });
   };
 
@@ -111,7 +111,7 @@ export default class App extends React.Component {
               </div>
             </div>
             <div className="col-8">
-              <MoviesList
+              <MoviesContainer
                 filters={filters}
                 onChangeFilters={this.onChangeFilters}
                 onChangeTotalPages={this.onChangeTotalPages}
