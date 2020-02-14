@@ -6,13 +6,13 @@ export default class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      showModal: false
+      showModal: false,
     };
   }
 
   toggleModal = () => {
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      showModal: !prevState.showModal,
     }));
   };
 
@@ -29,8 +29,8 @@ export default class Login extends React.Component {
         <Modal isOpen={this.state.showModal} toggle={this.toggleModal}>
           <ModalBody>
             <LoginForm
-              updateUser={this.props.updateUser}
-              updateSessionId={this.props.updateSessionId}
+            // updateUser={this.props.updateUser}
+            // updateSessionId={this.props.updateSessionId}
             />
           </ModalBody>
         </Modal>

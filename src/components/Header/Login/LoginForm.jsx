@@ -1,8 +1,9 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 import classNames from "classnames";
+import { AppContext } from "../../App";
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
   state = {
     username: "",
     password: "",
@@ -101,6 +102,8 @@ export default class LoginForm extends React.Component {
         );
       })
       .then(user => {
+        //console.log("this.props.updateUser", this.props.updateUser);
+
         this.props.updateUser(user);
         this.setState({
           submitting: false,
@@ -222,3 +225,24 @@ export default class LoginForm extends React.Component {
     );
   }
 }
+
+const LoginContainer = props => {
+  // console.log("AppContext", AppContext.Consumer);
+
+  return (
+    <AppContext.Consumer>
+      {context => {
+        //console.log("context", context);
+        return (
+          <LoginForm
+            updateUser={context.updateUser}
+            updateSessionId={context.updateSessionId}
+            {...props}
+          />
+        );
+      }}
+    </AppContext.Consumer>
+  );
+};
+
+export default LoginContainer;
