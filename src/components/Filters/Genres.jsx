@@ -1,7 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import GenresHOC from "./GenresHOC";
 
 const Genres = ({ genres, with_genres, onChangeGenre }) => (
+
+  // console.log("with_genres1", with_genres);
+  // console.log("genres1", genres);
+  // console.log("updateFilters", updateFilters);
+
   <div className="form-group">
     <label htmlFor="genre">Жанр:</label>
     {genres.map(genre => {
@@ -23,9 +29,15 @@ const Genres = ({ genres, with_genres, onChangeGenre }) => (
       );
     })}
   </div>
+
 );
 
 Genres.defaultProps = {
+  genres: [],
+  with_genres: false,
+};
+
+Genres.updateFilters = {
   genres: [],
   with_genres: false,
 };
@@ -34,4 +46,4 @@ Genres.propTypes = {
   genres: PropTypes.array.isRequired,
 };
 
-export default Genres;
+export default GenresHOC(Genres);
