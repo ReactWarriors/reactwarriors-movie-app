@@ -1,19 +1,19 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Genres from "./Genres";
+//import Genres from "./Genres";
 import { API_URL, API_KEY_3 } from "../../api/api";
 
 export default Component =>
   class GenresHOC extends React.Component {
     static propTypes = {
-      updateFilters: PropTypes.func.isRequired
+      updateFilters: PropTypes.func.isRequired,
     };
 
     constructor() {
       super();
 
       this.state = {
-        genres: []
+        genres: [],
       };
     }
 
@@ -30,7 +30,7 @@ export default Component =>
         })
         .then(data => {
           this.setState({
-            genres: data.genres
+            genres: data.genres,
           });
         });
     };
@@ -50,26 +50,20 @@ export default Component =>
     };
 
     render() {
-      const { with_genres, updateFilters } = this.props;
+      const { with_genres } = this.props;
       const { genres } = this.state;
       const onChangeGenre = this.onChangeGenre;
 
-    //   console.log("Component", Component);
-      console.log("with_genres", with_genres);
-      console.log("genres", genres);
-      console.log("this.onChangeGenre", this.onChangeGenre);
+      //   console.log("Component", Component);
 
       return (
-        <Component>
-          <React.Fragment>
-            <Genres
-              genres={genres}
-              onChangeGenre={onChangeGenre}
-              with_genres={with_genres}
-              updateFilters={updateFilters}
-            />
-          </React.Fragment>
-        </Component>
+        <React.Fragment>
+          <Component
+            genres={genres}
+            onChangeGenre={onChangeGenre}
+            with_genres={with_genres}
+          />
+        </React.Fragment>
       );
     }
   };

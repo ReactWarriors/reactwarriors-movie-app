@@ -34,11 +34,7 @@ export default class Filters extends React.Component {
           updateFilters={updateFilters}
         />
 
-        {/* <GenresContainer */}
-        <Genres
-          with_genres={with_genres}
-          updateFilters={updateFilters}
-        />
+        <Genres with_genres={with_genres} updateFilters={updateFilters} />
 
         <button type="button" className="btn btn-light" onClick={clearFilters}>
           Сбросить фильтры
