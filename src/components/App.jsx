@@ -54,6 +54,14 @@ export default class App extends React.Component {
     });
   };
 
+  onLogOut = () => {
+    cookies.remove("session_id");
+    this.setState({
+      session_id: null,
+      user: null,
+    });
+  };
+
   onChangeFilters = event => {
     const { name, value } = event.target;
     this.updateFilters(name, value);
@@ -97,6 +105,7 @@ export default class App extends React.Component {
           session_id: session_id,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
+          onLogOut: this.onLogOut,
         }}
       >
         <div>

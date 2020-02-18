@@ -1,6 +1,6 @@
 import React from "react";
 import Login from "./Login/Login";
-import User from "./User";
+import UserMenu from "./UserMenu";
 
 export default class Header extends React.Component {
   render() {
@@ -15,7 +15,7 @@ export default class Header extends React.Component {
               </a>
             </li>
           </ul>
-          {user ? <User /> : <Login />}
+          {user ? <UserMenu /> : <Login />}
         </div>
       </nav>
     );

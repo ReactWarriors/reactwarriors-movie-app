@@ -1,7 +1,7 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 import classNames from "classnames";
-import { AppContext } from "../../App";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
 class LoginForm extends React.Component {
   state = {
@@ -102,8 +102,6 @@ class LoginForm extends React.Component {
         );
       })
       .then(user => {
-        //console.log("this.props.updateUser", this.props.updateUser);
-
         this.props.updateUser(user);
         this.setState({
           submitting: false,
@@ -111,12 +109,6 @@ class LoginForm extends React.Component {
       })
       .catch(error => {
         console.log("error", error);
-        // this.setState({
-        //   submitting: false,
-        //   errors: {
-        //     base: error.status_message,
-        //   },
-        // });
         this.setState(prevState => ({
           submitting: false,
           errors: {
@@ -226,23 +218,4 @@ class LoginForm extends React.Component {
   }
 }
 
-const LoginContainer = props => {
-  // console.log("AppContext", AppContext.Consumer);
-
-  return (
-    <AppContext.Consumer>
-      {context => {
-        //console.log("context", context);
-        return (
-          <LoginForm
-            updateUser={context.updateUser}
-            updateSessionId={context.updateSessionId}
-            {...props}
-          />
-        );
-      }}
-    </AppContext.Consumer>
-  );
-};
-
-export default LoginContainer;
+export default AppContextHOC(LoginForm);
