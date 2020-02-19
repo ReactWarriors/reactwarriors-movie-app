@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 //import Genres from "./Genres";
-import { API_URL, API_KEY_3 } from "../../api/api";
+//import { API_URL, API_KEY_3 } from "../../api/api";
+import CallApi from "../../api/api";
 
 export default Component =>
   class GenresHOC extends React.Component {
@@ -22,17 +23,13 @@ export default Component =>
     }
 
     getGenres = () => {
-      const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-
-      fetch(link)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          this.setState({
-            genres: data.genres,
-          });
+      CallApi.get("/genre/movie/list", {
+        params: { language: "ru-RU" },
+      }).then(data => {
+        this.setState({
+          genres: data.genres,
         });
+      });
     };
 
     onChangeGenre = event => {

@@ -1,55 +1,47 @@
 import React from "react";
 import PropTypes from "prop-types";
-//import MoviesList from "./MoviesList";
 import _ from "lodash";
-import queryString from "querystring";
-import { API_URL, API_KEY_3 } from "../../api/api";
+import CallApi from "../../api/api";
 
-export default (Component) => class MoviesHOC extends React.Component {
-  static propTypes = {
-    onChangeTotalPages: PropTypes.func.isRequired,
-  };
-
-  constructor() {
-    super();
-
-    this.state = {
-      loaded: false,
-      movies: [],
-      totalPages: 1,
-    };
-  }
-
-  getMovies = filters => {
-    const { sort_by, release_year, with_genres, page } = filters;
-    const queryStringParams = {
-      api_key: API_KEY_3,
-      language: "ru-RU",
-      sort_by,
-      page,
+export default Component =>
+  class MoviesHOC extends React.Component {
+    static propTypes = {
+      onChangeTotalPages: PropTypes.func.isRequired,
     };
 
-    if (with_genres.length > 0) {
-      queryStringParams.with_genres = with_genres.join();
-    }
-    if (release_year) {
-      queryStringParams.primary_release_year = release_year;
-    }
-    const link = `${API_URL}/discover/movie?${queryString.stringify(
-      queryStringParams
-    )}`;
+    constructor() {
+      super();
 
-    // const oldLink =
-    //   `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` +
-    //   (release_year ? `&primary_release_year=${release_year}` : "") +
-    //   (with_genres.length > 0 ? `&with_genres=${with_genres.join()}` : "");
+      this.state = {
+        loaded: false,
+        movies: [],
+        totalPages: 1,
+      };
+    }
 
-    fetch(link)
-      .then(response => {
-        this.setState({ loaded: true });
-        return response.json();
-      })
-      .then(data => {
+    getMovies = filters => {
+      const { sort_by, release_year, with_genres, page } = filters;
+      const queryStringParams = {
+        language: "ru-RU",
+        sort_by,
+        page,
+      };
+
+      if (with_genres.length > 0) {
+        queryStringParams.with_genres = with_genres.join();
+      }
+      if (release_year) {
+        queryStringParams.primary_release_year = release_year;
+      }
+
+      // const oldLink =
+      //   `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}` +
+      //   (release_year ? `&primary_release_year=${release_year}` : "") +
+      //   (with_genres.length > 0 ? `&with_genres=${with_genres.join()}` : "");
+
+      CallApi.get("/discover/movie", {
+        params: queryStringParams,
+      }).then(data => {
         this.setState({
           movies: data.results,
           page: data.page,
@@ -57,22 +49,22 @@ export default (Component) => class MoviesHOC extends React.Component {
         });
         this.props.onChangeTotalPages(data.total_pages);
       });
-  };
+    };
 
-  componentDidMount() {
-    this.getMovies(this.props.filters);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!_.isEqual(this.props.filters, prevProps.filters)) {
-      this.setState({ loaded: false });
-      this.getMovies(this.props.filters, this.props.onChangeTotalPages);
+    componentDidMount() {
+      this.getMovies(this.props.filters);
     }
-  }
 
-  render() {
-    const { movies } = this.state;
-    // console.log("Component", Component);
-    return <Component movies={movies} loaded={this.state.loaded} />;
-  }
-}
+    componentDidUpdate(prevProps) {
+      if (!_.isEqual(this.props.filters, prevProps.filters)) {
+        this.setState({ loaded: false });
+        this.getMovies(this.props.filters, this.props.onChangeTotalPages);
+      }
+    }
+
+    render() {
+      const { movies } = this.state;
+      // console.log("Component", Component);
+      return <Component movies={movies} loaded={this.state.loaded} />;
+    }
+  };

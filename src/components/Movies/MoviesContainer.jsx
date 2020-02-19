@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MoviesList from "./MoviesList";
 import _ from "lodash";
 import queryString from "querystring";
-import { API_URL, API_KEY_3 } from "../../api/api";
+import CallApi from "../../api/api";
 
 export default class MoviesContainer extends Component {
   static propTypes = {
@@ -44,7 +44,9 @@ export default class MoviesContainer extends Component {
     //   (release_year ? `&primary_release_year=${release_year}` : "") +
     //   (with_genres.length > 0 ? `&with_genres=${with_genres.join()}` : "");
 
-    fetch(link)
+    CallApi.get("/discover/movie", {
+      params: queryStringParams,
+    })
       .then(response => {
         this.setState({ loaded: true });
         return response.json();
