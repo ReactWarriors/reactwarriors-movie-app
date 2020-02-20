@@ -34,6 +34,7 @@ export default class App extends React.Component {
         params: { session_id: session_id },
       }).then(user => {
         this.updateUser(user);
+        this.updateSessionId(session_id);
       });
     }
   }
