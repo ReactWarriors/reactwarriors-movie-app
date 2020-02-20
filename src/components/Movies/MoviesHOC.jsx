@@ -44,6 +44,7 @@ export default Component =>
       }).then(data => {
         this.setState({
           movies: data.results,
+          loaded: true,
           page: data.page,
           totalPages: data.total_pages,
         });
