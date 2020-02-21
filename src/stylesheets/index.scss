@@ -6,7 +6,7 @@ body {
 
 .card-img--height {
   height: 180px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .loader {
