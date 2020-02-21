@@ -64,8 +64,15 @@ export default Component =>
     }
 
     render() {
-      const { movies } = this.state;
+      const { movies, loaded } = this.state;
       // console.log("Component", Component);
-      return <Component movies={movies} loaded={this.state.loaded} />;
+      return (
+        <Component
+          movies={movies}
+          loaded={loaded}
+          favourite={this.props.favourite}
+          toggleFavourite={this.props.toggleFavourite}
+        />
+      );
     }
   };

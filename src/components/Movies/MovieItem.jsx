@@ -1,15 +1,12 @@
 import React from "react";
-import {
-  Star,
-  Star_border,
-  Bookmark,
-  Bookmark_border,
-} from "@material-ui/icons";
+import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
 
 export default class MovieItem extends React.Component {
   render() {
-    const { item } = this.props;
+    const { item, toggleFavourite } = this.props;
     const imagePath = item.backdrop_path || item.poster_path;
+
+    //console.log("this.props", this.props);
     //const imagePath = item.poster_path;
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -25,9 +22,13 @@ export default class MovieItem extends React.Component {
         />
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
-          <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <Star />
-          <Bookmark />
+          <div className="d-flex justify-content-between">
+            <div className="card-text">Рейтинг: {item.vote_average}</div>
+            <div>
+              <StarBorder onClick={e => toggleFavourite(item.id, true)} />
+              <BookmarkBorder />
+            </div>
+          </div>
         </div>
       </div>
     );

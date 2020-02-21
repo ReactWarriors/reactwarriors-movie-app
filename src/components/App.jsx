@@ -15,6 +15,8 @@ export default class App extends React.Component {
     this.initialState = {
       user: null,
       session_id: null,
+      favourite: [],
+      watchlist: [],
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
@@ -29,15 +31,47 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
+    const { page, sort_by } = this.state.filters;
     if (session_id) {
       CallApi.get("/account", {
         params: { session_id: session_id },
-      }).then(user => {
-        this.updateUser(user);
-        this.updateSessionId(session_id);
-      });
+      })
+        .then(user => {
+          this.updateUser(user);
+          this.updateSessionId(session_id);
+        })
+        .then(() => {
+          CallApi.get(`/account/{account_id}/favourite/movies`, {
+            params: {
+              session_id: session_id,
+              language: "ru-RU",
+              page,
+              sort_by,
+            },
+          }).then(Datafavourite => {
+            this.updateFavourite(Datafavourite.results || []);
+          });
+        });
     }
   }
+
+  updateFavourite = favourite => {
+    this.setState({
+      favourite,
+    });
+  };
+
+  toggleFavourite = (id, value) => {
+    console.log("id, value", id, value);
+    const { favourite } = this.state;
+
+    const newFavourite = [...favourite];
+    this.updateFavourite(
+      favourite.includes(id)
+        ? newFavourite.filter(movieId => movieId !== id)
+        : [...newFavourite, id]
+    );
+  };
 
   updateUser = user => {
     this.setState({
@@ -95,7 +129,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { filters, totalPages, user, session_id } = this.state;
+    const { filters, totalPages, user, session_id, favourite } = this.state;
 
     //console.log("this.updateUser", this.updateUser);
 
@@ -136,6 +170,8 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangeTotalPages={this.onChangeTotalPages}
+                  favourite={favourite}
+                  toggleFavourite={this.toggleFavourite}
                 />
               </div>
             </div>
