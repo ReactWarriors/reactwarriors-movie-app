@@ -11,7 +11,9 @@ const MoviesList = ({
   toggleFavorite,
   toggleWatchlist
 }) => {
-  //console.log("movies, toggleFavorite", movies, toggleFavorite);
+  
+  favorite = favorite || [];
+  watchlist = watchlist || [];
 
   return (
     <div className="row">
@@ -19,6 +21,8 @@ const MoviesList = ({
 
       {movies.map(movie => {
         // console.log("favorite", favorite);
+        
+        //console.log("favorite, watchlist", favorite, watchlist);
 
         return (
           <div key={movie.id} className="col-6 mb-4">

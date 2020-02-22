@@ -23,7 +23,8 @@ export default class App extends React.Component {
         with_genres: [],
         page: 1
       },
-      totalPages: 1
+      totalPages: 1,
+      showLogin: false
     };
 
     this.state = this.initialState;
@@ -31,51 +32,16 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
-    const { page, sort_by } = this.state.filters;
-
-    let favorite, watchlist;
+    // const { page, sort_by } = this.state.filters;
 
     if (session_id) {
       CallApi.get("/account", {
         params: { session_id: session_id }
-      })
-        .then(user => {
-          this.updateUser(user);
-          this.updateSessionId(session_id);
-        })
-        .then(() => {
-          CallApi.get(`/account/{account_id}/favorite/movies`, {
-            params: {
-              session_id: session_id,
-              language: "ru-RU",
-              page,
-              sort_by
-            }
-          })
-            .then(data => {
-              favorite = data.results.map(elem => {
-                return elem.id;
-              });
-            })
-            .then(
-              CallApi.get(`/account/{account_id}/watchlist/movies`, {
-                params: {
-                  session_id: session_id,
-                  language: "ru-RU",
-                  page,
-                  sort_by
-                }
-              }).then(data => {
-                watchlist = data.results.map(elem => {
-                  return elem.id;
-                });
-                this.setState({
-                  favorite,
-                  watchlist
-                });
-              })
-            );
-        });
+      }).then(user => {
+        this.updateUser(user);
+        this.updateSessionId(session_id);
+        //this.uploadFavoriteAndWatchlist(session_id);
+      });
     }
   }
 
@@ -83,6 +49,13 @@ export default class App extends React.Component {
     // console.log("id, value", id, value);
     const { favorite } = this.state;
     const session_id = cookies.get("session_id");
+
+    if (!session_id) {
+      this.setState({
+        showLogin: true
+      });
+      return;
+    }
 
     CallApi.post(`/account/{account_id}/favorite`, {
       params: {
@@ -109,6 +82,13 @@ export default class App extends React.Component {
     const { watchlist } = this.state;
     const session_id = cookies.get("session_id");
 
+    if (!session_id) {
+      this.setState({
+        showLogin: true
+      });
+      return;
+    }
+
     CallApi.post(`/account/{account_id}/watchlist`, {
       params: {
         session_id: session_id,
@@ -129,9 +109,55 @@ export default class App extends React.Component {
     });
   };
 
+  uploadFavoriteAndWatchlist = session_id => {
+    const { page, sort_by } = this.state.filters;
+    let favorite, watchlist;
+
+    //console.log("session_id", session_id);
+
+    CallApi.get(`/account/{account_id}/favorite/movies`, {
+      params: {
+        session_id: session_id,
+        language: "ru-RU",
+        page,
+        sort_by
+      }
+    })
+      .then(data => {
+        favorite = data.results.map(elem => {
+          return elem.id;
+        });
+      })
+      .then(
+        CallApi.get(`/account/{account_id}/watchlist/movies`, {
+          params: {
+            session_id: session_id,
+            language: "ru-RU",
+            page,
+            sort_by
+          }
+        }).then(data => {
+          watchlist = data.results.map(elem => {
+            return elem.id;
+          });
+          this.setState({
+            favorite,
+            watchlist
+          });
+        })
+      );
+  };
+
   updateUser = user => {
+    const session_id = cookies.get("session_id");
+    //this.uploadFavoriteAndWatchlist(session_id);
+    this.uploadFavoriteAndWatchlist(session_id);
+    
+    console.log("this.state.favorite", this.state.favorite);
+
     this.setState({
-      user
+      user,
+      showLogin: false
     });
   };
 
@@ -149,7 +175,9 @@ export default class App extends React.Component {
     cookies.remove("session_id");
     this.setState({
       session_id: null,
-      user: null
+      user: null,
+      favorite: [],
+      watchlist: []
     });
   };
 
@@ -184,8 +212,22 @@ export default class App extends React.Component {
     });
   };
 
+  toggleShowLogin = () => {
+    this.setState(prevState => ({
+      showLogin: !prevState.showLogin
+    }));
+  };
+
   render() {
-    const { filters, totalPages, user, session_id, favorite, watchlist } = this.state;
+    const {
+      filters,
+      totalPages,
+      user,
+      session_id,
+      favorite,
+      watchlist,
+      showLogin
+    } = this.state;
 
     //console.log("this.updateUser", this.updateUser);
 
@@ -196,7 +238,9 @@ export default class App extends React.Component {
           session_id: session_id,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
-          onLogOut: this.onLogOut
+          onLogOut: this.onLogOut,
+          showLogin: showLogin,
+          toggleShowLogin: this.toggleShowLogin
         }}
       >
         <div>
