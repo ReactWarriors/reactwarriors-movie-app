@@ -3,18 +3,32 @@ import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
 
-const MoviesList = ({ movies, loaded, favorite, toggleFavourite }) => {
-  //console.log("movies, toggleFavourite", movies, toggleFavourite);
+const MoviesList = ({
+  movies,
+  loaded,
+  favorite,
+  watchlist,
+  toggleFavorite,
+  toggleWatchlist
+}) => {
+  //console.log("movies, toggleFavorite", movies, toggleFavorite);
 
   return (
     <div className="row">
       {!loaded && <div className="loader"></div>}
 
       {movies.map(movie => {
-        //console.log("toggleFavourite", toggleFavourite);
+        // console.log("favorite", favorite);
+
         return (
           <div key={movie.id} className="col-6 mb-4">
-            <MovieItem item={movie} toggleFavourite={toggleFavourite} />
+            <MovieItem
+              item={movie}
+              toggleFavorite={toggleFavorite}
+              toggleWatchlist={toggleWatchlist}
+              isFavorite={favorite.includes(movie.id)}
+              isWatchlist={watchlist.includes(movie.id)}
+            />
           </div>
         );
       })}
@@ -23,11 +37,11 @@ const MoviesList = ({ movies, loaded, favorite, toggleFavourite }) => {
 };
 
 MoviesList.defaultProps = {
-  movies: [],
+  movies: []
 };
 
 MoviesList.propTypes = {
-  movies: PropTypes.array.isRequired,
+  movies: PropTypes.array.isRequired
 };
 
 export default MoviesHOC(MoviesList);

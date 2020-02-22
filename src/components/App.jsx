@@ -15,15 +15,15 @@ export default class App extends React.Component {
     this.initialState = {
       user: null,
       session_id: null,
-      favourite: [],
+      favorite: [],
       watchlist: [],
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
         with_genres: [],
-        page: 1,
+        page: 1
       },
-      totalPages: 1,
+      totalPages: 1
     };
 
     this.state = this.initialState;
@@ -32,60 +32,116 @@ export default class App extends React.Component {
   componentDidMount() {
     const session_id = cookies.get("session_id");
     const { page, sort_by } = this.state.filters;
+
+    let favorite, watchlist;
+
     if (session_id) {
       CallApi.get("/account", {
-        params: { session_id: session_id },
+        params: { session_id: session_id }
       })
         .then(user => {
           this.updateUser(user);
           this.updateSessionId(session_id);
         })
         .then(() => {
-          CallApi.get(`/account/{account_id}/favourite/movies`, {
+          CallApi.get(`/account/{account_id}/favorite/movies`, {
             params: {
               session_id: session_id,
               language: "ru-RU",
               page,
-              sort_by,
-            },
-          }).then(Datafavourite => {
-            this.updateFavourite(Datafavourite.results || []);
-          });
+              sort_by
+            }
+          })
+            .then(data => {
+              favorite = data.results.map(elem => {
+                return elem.id;
+              });
+            })
+            .then(
+              CallApi.get(`/account/{account_id}/watchlist/movies`, {
+                params: {
+                  session_id: session_id,
+                  language: "ru-RU",
+                  page,
+                  sort_by
+                }
+              }).then(data => {
+                watchlist = data.results.map(elem => {
+                  return elem.id;
+                });
+                this.setState({
+                  favorite,
+                  watchlist
+                });
+              })
+            );
         });
     }
   }
 
-  updateFavourite = favourite => {
-    this.setState({
-      favourite,
+  toggleFavorite = (id, value) => {
+    // console.log("id, value", id, value);
+    const { favorite } = this.state;
+    const session_id = cookies.get("session_id");
+
+    CallApi.post(`/account/{account_id}/favorite`, {
+      params: {
+        session_id: session_id,
+        media_type: "movie",
+        media_id: id,
+        favorite: value
+      }
+    }).then(response => {
+      //console.log("response", response);
+
+      const newArray = favorite.includes(id)
+        ? [...favorite].filter(movieId => movieId !== id)
+        : [...favorite, id];
+
+      this.setState({
+        favorite: newArray
+      });
     });
   };
 
-  toggleFavourite = (id, value) => {
-    console.log("id, value", id, value);
-    const { favourite } = this.state;
+  toggleWatchlist = (id, value) => {
+    // console.log("id, value", id, value);
+    const { watchlist } = this.state;
+    const session_id = cookies.get("session_id");
 
-    const newFavourite = [...favourite];
-    this.updateFavourite(
-      favourite.includes(id)
-        ? newFavourite.filter(movieId => movieId !== id)
-        : [...newFavourite, id]
-    );
+    CallApi.post(`/account/{account_id}/watchlist`, {
+      params: {
+        session_id: session_id,
+        media_type: "movie",
+        media_id: id,
+        watchlist: value
+      }
+    }).then(response => {
+      console.log("response", response);
+
+      const newArray = watchlist.includes(id)
+        ? [...watchlist].filter(movieId => movieId !== id)
+        : [...watchlist, id];
+
+      this.setState({
+        watchlist: newArray
+      });
+    });
   };
 
   updateUser = user => {
     this.setState({
-      user,
+      user
     });
   };
 
   updateSessionId = session_id => {
     cookies.set("session_id", session_id, {
       path: "/",
-      maxAge: 2592000,
+      maxAge: 2592000
     });
     this.setState({
-      session_id,
+      session_id
     });
   };
 
@@ -93,7 +149,7 @@ export default class App extends React.Component {
     cookies.remove("session_id");
     this.setState({
       session_id: null,
-      user: null,
+      user: null
     });
   };
 
@@ -113,8 +169,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        [name]: value,
-      },
+        [name]: value
+      }
     }));
   };
 
@@ -124,12 +180,12 @@ export default class App extends React.Component {
 
   onChangeTotalPages = totalPages => {
     this.setState({
-      totalPages,
+      totalPages
     });
   };
 
   render() {
-    const { filters, totalPages, user, session_id, favourite } = this.state;
+    const { filters, totalPages, user, session_id, favorite, watchlist } = this.state;
 
     //console.log("this.updateUser", this.updateUser);
 
@@ -140,7 +196,7 @@ export default class App extends React.Component {
           session_id: session_id,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
-          onLogOut: this.onLogOut,
+          onLogOut: this.onLogOut
         }}
       >
         <div>
@@ -170,8 +226,10 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangeTotalPages={this.onChangeTotalPages}
-                  favourite={favourite}
-                  toggleFavourite={this.toggleFavourite}
+                  favorite={favorite}
+                  watchlist={watchlist}
+                  toggleFavorite={this.toggleFavorite}
+                  toggleWatchlist={this.toggleWatchlist}
                 />
               </div>
             </div>

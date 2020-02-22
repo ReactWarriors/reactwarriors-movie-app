@@ -3,7 +3,13 @@ import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
 
 export default class MovieItem extends React.Component {
   render() {
-    const { item, toggleFavourite } = this.props;
+    const {
+      item,
+      isFavorite,
+      isWatchlist,
+      toggleFavorite,
+      toggleWatchlist
+    } = this.props;
     const imagePath = item.backdrop_path || item.poster_path;
 
     //console.log("this.props", this.props);
@@ -25,8 +31,16 @@ export default class MovieItem extends React.Component {
           <div className="d-flex justify-content-between">
             <div className="card-text">Рейтинг: {item.vote_average}</div>
             <div>
-              <StarBorder onClick={e => toggleFavourite(item.id, true)} />
-              <BookmarkBorder />
+              {isFavorite ? (
+                <Star onClick={e => toggleFavorite(item.id, true)} />
+              ) : (
+                <StarBorder onClick={e => toggleFavorite(item.id, false)} />
+              )}
+              {isWatchlist ? (
+                <Bookmark onClick={e => toggleWatchlist(item.id, true)} />
+              ) : (
+                <BookmarkBorder onClick={e => toggleWatchlist(item.id, false)} />
+              )}
             </div>
           </div>
         </div>

@@ -70,8 +70,10 @@ export default Component =>
         <Component
           movies={movies}
           loaded={loaded}
-          favourite={this.props.favourite}
-          toggleFavourite={this.props.toggleFavourite}
+          favorite={this.props.favorite}
+          watchlist={this.props.watchlist}
+          toggleFavorite={this.props.toggleFavorite}
+          toggleWatchlist={this.props.toggleWatchlist}
         />
       );
     }
