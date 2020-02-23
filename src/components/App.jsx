@@ -36,9 +36,9 @@ export default class App extends React.Component {
     if (session_id) {
       CallApi.get("/account", {
         params: { session_id: session_id }
-      }).then(() => {
+      }).then((user) => {
         this.updateSessionId(session_id);
-        this.updateUser(this.state.user);
+        this.updateUser(user);
       });
     }
   }
