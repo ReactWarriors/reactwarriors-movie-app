@@ -32,15 +32,13 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
-    // const { page, sort_by } = this.state.filters;
 
     if (session_id) {
       CallApi.get("/account", {
         params: { session_id: session_id }
-      }).then(user => {
-        this.updateUser(user);
+      }).then(() => {
         this.updateSessionId(session_id);
-        //this.uploadFavoriteAndWatchlist(session_id);
+        this.updateUser(this.state.user);
       });
     }
   }
@@ -109,51 +107,42 @@ export default class App extends React.Component {
     });
   };
 
-  uploadFavoriteAndWatchlist = session_id => {
-    const { page, sort_by } = this.state.filters;
-    let favorite, watchlist;
-
-    //console.log("session_id", session_id);
+  uploadFavoriteAndWatchlist = () => {
+    let favorite = [],
+      watchlist = [];
+    const { session_id } = this.state;
 
     CallApi.get(`/account/{account_id}/favorite/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU",
-        page,
-        sort_by
+        language: "ru-RU"
       }
-    })
-      .then(data => {
-        favorite = data.results.map(elem => {
+    }).then(data => {
+      favorite = data.results.map(elem => {
+        return elem.id;
+      });
+
+      CallApi.get(`/account/{account_id}/watchlist/movies`, {
+        params: {
+          session_id: session_id,
+          language: "ru-RU"
+        }
+      }).then(data => {
+        watchlist = data.results.map(elem => {
           return elem.id;
         });
-      })
-      .then(
-        CallApi.get(`/account/{account_id}/watchlist/movies`, {
-          params: {
-            session_id: session_id,
-            language: "ru-RU",
-            page,
-            sort_by
-          }
-        }).then(data => {
-          watchlist = data.results.map(elem => {
-            return elem.id;
-          });
-          this.setState({
-            favorite,
-            watchlist
-          });
-        })
-      );
+
+        this.setState({
+          favorite,
+          watchlist
+        });
+      });
+    });
   };
 
   updateUser = user => {
-    const session_id = cookies.get("session_id");
-    //this.uploadFavoriteAndWatchlist(session_id);
-    this.uploadFavoriteAndWatchlist(session_id);
-    
-    console.log("this.state.favorite", this.state.favorite);
+
+    this.uploadFavoriteAndWatchlist(this.state.session_id);
 
     this.setState({
       user,
@@ -228,8 +217,6 @@ export default class App extends React.Component {
       watchlist,
       showLogin
     } = this.state;
-
-    //console.log("this.updateUser", this.updateUser);
 
     return (
       <AppContext.Provider
