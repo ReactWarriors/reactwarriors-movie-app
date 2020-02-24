@@ -6,17 +6,24 @@ export default class App extends React.Component {
   constructor() {
     super()
 
-    this.state = {
+    this.initialState = {
       filters: {
         sort_by: 'popularity.desc',
+        year: 'Год выпуска',
+        with_genres: [],
       },
       page: 1,
+      total_pages: null,
     }
+    this.state = { ...this.initialState }
   }
 
   onChangeFilters = e => {
     const value = e.target.value
     const name = e.target.name
+    if (name === 'genre') {
+      console.log('GENRE')
+    }
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
@@ -31,8 +38,33 @@ export default class App extends React.Component {
     })
   }
 
+  onChangeTotalPage = total_pages => {
+    this.setState({
+      total_pages,
+    })
+  }
+
+  onReset = () => {
+    // console.log(
+    //   Object.entries(this.state).toString() !==
+    //     Object.entries(this.initialState).toString()
+    // )
+
+    // if (
+    //   Object.entries(this.state).toString() ===
+    //   Object.entries(this.initialState).toString()
+    // ) {
+    //   this.setState(this.initialState)
+    // }
+    this.setState(this.initialState)
+    //  Object.entries(this.state).toString() !==
+    //   Object.entries(this.initialState).toString()
+    //   ? return this.setState(this.initialState)
+    //   : return null
+  }
+
   render() {
-    const { filters, page } = this.state
+    const { filters, page, total_pages } = this.state
     return (
       <div className="container">
         <div className="row mt-4">
@@ -42,9 +74,11 @@ export default class App extends React.Component {
                 <h3>Фильтры:</h3>
                 <Filters
                   page={page}
+                  total_pages={total_pages}
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
+                  onReset={this.onReset}
                 />
               </div>
             </div>
@@ -52,8 +86,10 @@ export default class App extends React.Component {
           <div className="col-8">
             <MoviesList
               page={page}
+              total_pages={total_pages}
               filters={filters}
               onChangePage={this.onChangePage}
+              onChangeTotalPage={this.onChangeTotalPage}
             />
           </div>
         </div>
