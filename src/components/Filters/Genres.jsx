@@ -18,19 +18,40 @@ export default class Genres extends React.Component {
       })
       .then(data => {
         this.setState({
-          genres: data.genres,
+          genres: data.genres.map(genre => {
+            return Object.assign(genre, { isChecked: false })
+          }),
         })
       })
   }
 
+  handleGenresClick = e => {
+    const genres = this.state.genres
+    genres.forEach(genre => {
+      if (Number(genre.id) === Number(e.target.id)) {
+        genre.isChecked = !genre.isChecked
+        this.addToArray(genre.id)
+      }
+    })
+    this.setState({ genres: genres })
+  }
+
+  addToArray = id => {
+    const genresId = this.props.with_genres
+    if (genresId.indexOf(id) === -1) {
+      genresId.push(id)
+    } else {
+      genresId.splice(genresId.indexOf(id), 1)
+    }
+
+    this.props.onGenresUpdate(genresId)
+  }
+
   componentDidMount() {
-    // console.log('componentDidMount')
     this.getGenres()
   }
 
   render() {
-    const { genre, onChangeFilters } = this.props
-    console.log(genre)
     const { genres } = this.state
     return (
       <div className="form-group">
@@ -43,7 +64,8 @@ export default class Genres extends React.Component {
                 value={genre.name}
                 id={genre.id}
                 name="with_genres"
-                onChange={onChangeFilters}
+                onChange={this.handleGenresClick}
+                checked={genre.isChecked}
               ></input>
               <label className="form-check-label" htmlFor={genre.id}>
                 {genre.name}
@@ -55,7 +77,3 @@ export default class Genres extends React.Component {
     )
   }
 }
-
-// <div key={genre.id}>
-// <p>{genre.name}</p>
-// </div>

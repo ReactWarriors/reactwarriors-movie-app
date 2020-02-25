@@ -21,13 +21,19 @@ export default class App extends React.Component {
   onChangeFilters = e => {
     const value = e.target.value
     const name = e.target.name
-    if (name === 'genre') {
-      console.log('GENRE')
-    }
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
         [name]: value,
+      },
+    }))
+  }
+
+  onGenresUpdate = genres => {
+    this.setState(prevState => ({
+      filters: {
+        ...prevState.filters,
+        with_genres: genres,
       },
     }))
   }
@@ -45,17 +51,6 @@ export default class App extends React.Component {
   }
 
   onReset = () => {
-    // console.log(
-    //   Object.entries(this.state).toString() !==
-    //     Object.entries(this.initialState).toString()
-    // )
-
-    // if (
-    //   Object.entries(this.state).toString() ===
-    //   Object.entries(this.initialState).toString()
-    // ) {
-    //   this.setState(this.initialState)
-    // }
     this.setState(this.initialState)
     //  Object.entries(this.state).toString() !==
     //   Object.entries(this.initialState).toString()
@@ -79,6 +74,7 @@ export default class App extends React.Component {
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
                   onReset={this.onReset}
+                  onGenresUpdate={this.onGenresUpdate}
                 />
               </div>
             </div>
