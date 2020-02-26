@@ -1,19 +1,62 @@
 import React from "react";
-import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
+//import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
+import StarIcon from "./StarIcon";
+import BookmarkIcon from "./BookmarkIcon";
+import AppContextHOC from "../HOC/AppContextHOC";
+import CallApi from "../../api/api";
 
-export default class MovieItem extends React.Component {
+class MovieItem extends React.Component {
+  onClickFavorite = (item, value) => {
+    const { session_id, toggleFavorite, toggleShowLogin } = this.props;
+    console.log("this.props", this.props);
+
+    if (!session_id) {
+      toggleShowLogin();
+      return;
+    }
+
+    CallApi.post(`/account/{account_id}/favorite`, {
+      params: {
+        session_id: session_id,
+        media_type: "movie",
+        media_id: item.id,
+        favorite: value,
+      },
+    }).then(
+      response => {
+        toggleFavorite(item);
+      },
+      reject => {}
+    );
+  };
+
+  onClickWatchlist = (item, value) => {
+    const { session_id, toggleWatchlist, toggleShowLogin } = this.props;
+
+    if (!session_id) {
+      toggleShowLogin();
+      return;
+    }
+
+    CallApi.post(`/account/{account_id}/watchlist`, {
+      params: {
+        session_id: session_id,
+        media_type: "movie",
+        media_id: item.id,
+        watchlist: value,
+      },
+    }).then(
+      response => {
+        toggleWatchlist(item);
+      },
+      reject => {}
+    );
+  };
+
   render() {
-    const {
-      item,
-      isFavorite,
-      isWatchlist,
-      toggleFavorite,
-      toggleWatchlist
-    } = this.props;
+    const { item, favorite, watchlist } = this.props;
     const imagePath = item.backdrop_path || item.poster_path;
 
-    //console.log("this.props", this.props);
-    //const imagePath = item.poster_path;
     return (
       <div className="card" style={{ width: "100%" }}>
         <img
@@ -23,7 +66,6 @@ export default class MovieItem extends React.Component {
               ? `https://image.tmdb.org/t/p/w500${item.poster_path}`
               : ""
           }
-          //src={`https://image.tmdb.org/t/p/w500${imagePath}`}
           alt=""
         />
         <div className="card-body">
@@ -31,16 +73,16 @@ export default class MovieItem extends React.Component {
           <div className="d-flex justify-content-between">
             <div className="card-text">Рейтинг: {item.vote_average}</div>
             <div>
-              {isFavorite ? (
-                <Star onClick={e => toggleFavorite(item.id, true)} />
-              ) : (
-                <StarBorder onClick={e => toggleFavorite(item.id, false)} />
-              )}
-              {isWatchlist ? (
-                <Bookmark onClick={e => toggleWatchlist(item.id, true)} />
-              ) : (
-                <BookmarkBorder onClick={e => toggleWatchlist(item.id, false)} />
-              )}
+              <StarIcon
+                item={item}
+                favorite={favorite}
+                onClickFavorite={this.onClickFavorite}
+              />
+              <BookmarkIcon
+                item={item}
+                watchlist={watchlist}
+                onClickWatchlist={this.onClickWatchlist}
+              />
             </div>
           </div>
         </div>
@@ -48,3 +90,5 @@ export default class MovieItem extends React.Component {
     );
   }
 }
+
+export default AppContextHOC(MovieItem);

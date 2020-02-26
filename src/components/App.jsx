@@ -21,10 +21,10 @@ export default class App extends React.Component {
         sort_by: "popularity.desc",
         release_year: "",
         with_genres: [],
-        page: 1
+        page: 1,
       },
       totalPages: 1,
-      showLogin: false
+      showLogin: false,
     };
 
     this.state = this.initialState;
@@ -35,128 +35,92 @@ export default class App extends React.Component {
 
     if (session_id) {
       CallApi.get("/account", {
-        params: { session_id: session_id }
-      }).then((user) => {
+        params: { session_id: session_id },
+      }).then(user => {
         this.updateSessionId(session_id);
         this.updateUser(user);
       });
     }
   }
 
-  toggleFavorite = (id, value) => {
-    // console.log("id, value", id, value);
+  toggleFavorite = item => {
     const { favorite } = this.state;
-    const session_id = cookies.get("session_id");
 
-    if (!session_id) {
-      this.setState({
-        showLogin: true
-      });
-      return;
-    }
+    const newArray = favorite.includes(item)
+      ? [...favorite].filter(movie => movie.id !== item.id)
+      : [...favorite, item];
 
-    CallApi.post(`/account/{account_id}/favorite`, {
-      params: {
-        session_id: session_id,
-        media_type: "movie",
-        media_id: id,
-        favorite: value
-      }
-    }).then(response => {
-      //console.log("response", response);
-
-      const newArray = favorite.includes(id)
-        ? [...favorite].filter(movieId => movieId !== id)
-        : [...favorite, id];
-
-      this.setState({
-        favorite: newArray
-      });
+    this.setState({
+      favorite: newArray,
     });
   };
 
-  toggleWatchlist = (id, value) => {
-    // console.log("id, value", id, value);
+  toggleWatchlist = item => {
     const { watchlist } = this.state;
-    const session_id = cookies.get("session_id");
 
-    if (!session_id) {
-      this.setState({
-        showLogin: true
-      });
-      return;
-    }
+    const newArray = watchlist.includes(item)
+      ? [...watchlist].filter(movie => movie.id !== item.id)
+      : [...watchlist, item];
 
-    CallApi.post(`/account/{account_id}/watchlist`, {
-      params: {
-        session_id: session_id,
-        media_type: "movie",
-        media_id: id,
-        watchlist: value
-      }
-    }).then(response => {
-      console.log("response", response);
-
-      const newArray = watchlist.includes(id)
-        ? [...watchlist].filter(movieId => movieId !== id)
-        : [...watchlist, id];
-
-      this.setState({
-        watchlist: newArray
-      });
+    this.setState({
+      watchlist: newArray,
     });
   };
 
-  uploadFavoriteAndWatchlist = () => {
-    let favorite = [],
-      watchlist = [];
+  uploadFavorite = () => {
     const { session_id } = this.state;
 
     CallApi.get(`/account/{account_id}/favorite/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
-      favorite = data.results.map(elem => {
-        return elem.id;
+        language: "ru-RU",
+      },
+    }).then(favorite => {
+      // const favorite = data.results.map(elem => {
+      //   return elem.id;
+      // });
+      this.setState({
+        favorite,
       });
+    });
+  };
 
-      CallApi.get(`/account/{account_id}/watchlist/movies`, {
-        params: {
-          session_id: session_id,
-          language: "ru-RU"
-        }
-      }).then(data => {
-        watchlist = data.results.map(elem => {
-          return elem.id;
-        });
+  uploadWatchlist = () => {
+    const { session_id } = this.state;
 
-        this.setState({
-          favorite,
-          watchlist
-        });
+    CallApi.get(`/account/{account_id}/watchlist/movies`, {
+      params: {
+        session_id: session_id,
+        language: "ru-RU",
+      },
+    }).then(watchlist => {
+      // const watchlist = data.results.map(elem => {
+      //   return elem.id;
+      // });
+
+      this.setState({
+        watchlist,
       });
     });
   };
 
   updateUser = user => {
-
-    this.uploadFavoriteAndWatchlist(this.state.session_id);
+    this.uploadFavorite(this.state.session_id);
+    this.uploadWatchlist(this.state.session_id);
 
     this.setState({
       user,
-      showLogin: false
+      showLogin: false,
     });
   };
 
   updateSessionId = session_id => {
     cookies.set("session_id", session_id, {
       path: "/",
-      maxAge: 2592000
+      maxAge: 2592000,
     });
     this.setState({
-      session_id
+      session_id,
     });
   };
 
@@ -166,7 +130,7 @@ export default class App extends React.Component {
       session_id: null,
       user: null,
       favorite: [],
-      watchlist: []
+      watchlist: [],
     });
   };
 
@@ -186,8 +150,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        [name]: value
-      }
+        [name]: value,
+      },
     }));
   };
 
@@ -197,13 +161,13 @@ export default class App extends React.Component {
 
   onChangeTotalPages = totalPages => {
     this.setState({
-      totalPages
+      totalPages,
     });
   };
 
   toggleShowLogin = () => {
     this.setState(prevState => ({
-      showLogin: !prevState.showLogin
+      showLogin: !prevState.showLogin,
     }));
   };
 
@@ -215,7 +179,7 @@ export default class App extends React.Component {
       session_id,
       favorite,
       watchlist,
-      showLogin
+      showLogin,
     } = this.state;
 
     return (
@@ -223,11 +187,15 @@ export default class App extends React.Component {
         value={{
           user: user,
           session_id: session_id,
+          favorite,
+          watchlist,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
           onLogOut: this.onLogOut,
           showLogin: showLogin,
-          toggleShowLogin: this.toggleShowLogin
+          toggleShowLogin: this.toggleShowLogin,
+          toggleFavorite: this.toggleFavorite,
+          toggleWatchlist: this.toggleWatchlist,
         }}
       >
         <div>
@@ -257,10 +225,10 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangeTotalPages={this.onChangeTotalPages}
-                  favorite={favorite}
-                  watchlist={watchlist}
-                  toggleFavorite={this.toggleFavorite}
-                  toggleWatchlist={this.toggleWatchlist}
+                  // favorite={favorite}
+                  // watchlist={watchlist}
+                  // toggleFavorite={this.toggleFavorite}
+                  // toggleWatchlist={this.toggleWatchlist}
                 />
               </div>
             </div>
