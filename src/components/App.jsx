@@ -75,12 +75,12 @@ export default class App extends React.Component {
         session_id: session_id,
         language: "ru-RU",
       },
-    }).then(favorite => {
+    }).then(data => {
       // const favorite = data.results.map(elem => {
       //   return elem.id;
       // });
       this.setState({
-        favorite,
+        favorite: data.results,
       });
     });
   };
@@ -93,13 +93,13 @@ export default class App extends React.Component {
         session_id: session_id,
         language: "ru-RU",
       },
-    }).then(watchlist => {
+    }).then(data => {
       // const watchlist = data.results.map(elem => {
       //   return elem.id;
       // });
 
       this.setState({
-        watchlist,
+        watchlist: data.results,
       });
     });
   };
