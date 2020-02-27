@@ -19,25 +19,25 @@ export default class Genres extends React.Component {
       .then(data => {
         this.setState({
           genres: data.genres.map(genre => {
-            return Object.assign(genre, { isChecked: false })
+            return { ...genre, isChecked: false }
           }),
         })
       })
   }
 
   handleGenresClick = e => {
-    const genres = this.state.genres
+    const genres = [...this.state.genres]
     genres.forEach(genre => {
       if (Number(genre.id) === Number(e.target.id)) {
         genre.isChecked = !genre.isChecked
         this.addToArray(genre.id)
       }
     })
-    this.setState({ genres: genres })
+    this.setState({ genres })
   }
 
   addToArray = id => {
-    const genresId = this.props.with_genres
+    const genresId = [...this.props.with_genres]
     if (genresId.indexOf(id) === -1) {
       genresId.push(id)
     } else {

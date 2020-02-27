@@ -8,7 +8,6 @@ export default class MovieList extends React.Component {
 
     this.state = {
       movies: [],
-      total_pages: null,
     }
   }
 
@@ -20,14 +19,12 @@ export default class MovieList extends React.Component {
       year === 'Год выпуска' ? '' : `&primary_release_year=${year}`
     }`
     fetch(link)
-      .then(response => {
-        return response.json()
-      })
+      .then(response => response.json())
       .then(data => {
         this.setState({
           movies: data.results,
-          total_pages: data.total_pages,
         })
+        this.props.onChangeTotalPage(data.total_pages)
       })
   }
 
@@ -42,22 +39,11 @@ export default class MovieList extends React.Component {
   // }
 
   componentDidUpdate(prevProps) {
-    // console.log(this.props.filters.with_genres.length)
-    // console.log(prevProps.filters.with_genres.length)
-    console.log(prevProps)
-    console.log(this.props)
-    if (this.state.total_pages !== prevProps.total_pages) {
-      this.props.onChangeTotalPage(this.state.total_pages)
-    }
-    if (
-      this.props.filters.sort_by !== prevProps.filters.sort_by ||
-      this.props.filters.year !== prevProps.filters.year ||
-      this.props.filters.with_genres.length !==
-        prevProps.filters.with_genres.length
-    ) {
+    if (this.props.filters !== prevProps.filters) {
       this.props.onChangePage(1)
       this.getMovies(this.props.filters, 1)
     }
+
     if (this.props.page !== prevProps.page) {
       this.getMovies(this.props.filters, this.props.page)
     }

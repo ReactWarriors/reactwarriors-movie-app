@@ -33,7 +33,7 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        with_genres: genres,
+        with_genres: [...genres],
       },
     }))
   }
@@ -51,11 +51,10 @@ export default class App extends React.Component {
   }
 
   onReset = () => {
-    this.setState(this.initialState)
-    //  Object.entries(this.state).toString() !==
-    //   Object.entries(this.initialState).toString()
-    //   ? return this.setState(this.initialState)
-    //   : return null
+    this.setState({
+      ...this.initialState,
+      filters: { ...this.initialState.filters },
+    })
   }
 
   render() {
@@ -64,7 +63,7 @@ export default class App extends React.Component {
       <div className="container">
         <div className="row mt-4">
           <div className="col-4">
-            <div className="card" style={{ width: '100%' }}>
+            <div className="card">
               <div className="card-body">
                 <h3>Фильтры:</h3>
                 <Filters
