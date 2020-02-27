@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Star, StarBorder } from "@material-ui/icons";
 
 const StarIcon = ({ item, favorite, onClickFavorite }) => {
@@ -9,6 +10,12 @@ const StarIcon = ({ item, favorite, onClickFavorite }) => {
   ) : (
     <StarBorder onClick={e => onClickFavorite(item, true)} />
   );
+};
+
+StarIcon.propTypes = {
+  item: PropTypes.object.isRequired,
+  favorite: PropTypes.array.isRequired,
+  onClickFavorite: PropTypes.func.isRequired,
 };
 
 export default StarIcon;

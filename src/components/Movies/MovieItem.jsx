@@ -1,5 +1,5 @@
 import React from "react";
-//import { Star, StarBorder, Bookmark, BookmarkBorder } from "@material-ui/icons";
+import PropTypes from "prop-types";
 import StarIcon from "./StarIcon";
 import BookmarkIcon from "./BookmarkIcon";
 import AppContextHOC from "../HOC/AppContextHOC";
@@ -89,5 +89,9 @@ class MovieItem extends React.Component {
     );
   }
 }
+
+MovieItem.propTypes = {
+  item: PropTypes.object.isRequired,
+};
 
 export default AppContextHOC(MovieItem);
