@@ -25,18 +25,18 @@ export default class Genres extends React.Component {
       })
   }
 
-  handleGenresClick = e => {
+  onChangeGenres = e => {
     const genres = [...this.state.genres]
     genres.forEach(genre => {
       if (Number(genre.id) === Number(e.target.id)) {
         genre.isChecked = !genre.isChecked
-        this.addToArray(genre.id)
+        this.collectSelectedGenres(genre.id)
       }
     })
     this.setState({ genres })
   }
 
-  addToArray = id => {
+  collectSelectedGenres = id => {
     const genresId = [...this.props.with_genres]
     if (genresId.indexOf(id) === -1) {
       genresId.push(id)
@@ -47,8 +47,22 @@ export default class Genres extends React.Component {
     this.props.onGenresUpdate(genresId)
   }
 
+  // Почему это работает????
+  resetAllGenres = () => {
+    const genres = [...this.state.genres]
+    genres.forEach(genre => {
+      genre.isChecked = false
+    })
+  }
+
   componentDidMount() {
     this.getGenres()
+  }
+
+  componentDidUpdate() {
+    if (this.props.with_genres.length === 0) {
+      this.resetAllGenres()
+    }
   }
 
   render() {
@@ -64,7 +78,7 @@ export default class Genres extends React.Component {
                 value={genre.name}
                 id={genre.id}
                 name="with_genres"
-                onChange={this.handleGenresClick}
+                onChange={this.onChangeGenres}
                 checked={genre.isChecked}
               ></input>
               <label className="form-check-label" htmlFor={genre.id}>

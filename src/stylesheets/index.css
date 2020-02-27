@@ -6,3 +6,19 @@ body {
   height: 200px;
   object-fit: cover;
 }
+
+.pagination-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.pagination-buttons .btn {
+  min-width: 120px;
+  max-width: 100px;
+  margin-bottom: 16px;
+}
+
+.pages-info {
+  text-align: center;
+}

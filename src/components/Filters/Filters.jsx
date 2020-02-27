@@ -7,7 +7,7 @@ import Genres from './Genres'
 export default class Filters extends React.Component {
   render() {
     const {
-      filters: { sort_by, with_genres, year },
+      filters: { sort_by, with_genres, primary_release_year },
       page,
       total_pages,
       onChangeFilters,
@@ -18,7 +18,10 @@ export default class Filters extends React.Component {
     return (
       <form className="mb-3">
         <SortBy sort_by={sort_by} onChangeFilters={onChangeFilters}></SortBy>
-        <Year year={year} onChangeFilters={onChangeFilters}></Year>
+        <Year
+          primary_release_year={primary_release_year}
+          onChangeFilters={onChangeFilters}
+        ></Year>
         <Genres
           with_genres={with_genres}
           onChangeFilters={onChangeFilters}

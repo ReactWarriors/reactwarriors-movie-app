@@ -1,6 +1,7 @@
 import React from 'react'
 import MovieItem from './MovieItem'
 import { API_URL, API_KEY_3 } from '../../api/api'
+import queryString from 'querystring'
 
 export default class MovieList extends React.Component {
   constructor() {
@@ -12,12 +13,22 @@ export default class MovieList extends React.Component {
   }
 
   getMovies = (filters, page) => {
-    const { sort_by, with_genres, year } = filters
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&with_genres=${with_genres.join(
-      ','
-    )}&page=${page}${
-      year === 'Год выпуска' ? '' : `&primary_release_year=${year}`
-    }`
+    const { sort_by, with_genres, primary_release_year } = filters
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      language: 'ru-RU',
+      sort_by,
+      page,
+    }
+    if (with_genres.length > 0) {
+      queryStringParams.with_genres = with_genres.join(',')
+    }
+    if (primary_release_year !== 'Год выпуска') {
+      queryStringParams.primary_release_year = primary_release_year
+    }
+    const link = `${API_URL}/discover/movie?${queryString.stringify(
+      queryStringParams
+    )}`
     fetch(link)
       .then(response => response.json())
       .then(data => {
@@ -31,12 +42,6 @@ export default class MovieList extends React.Component {
   componentDidMount() {
     this.getMovies(this.props.filters, this.props.page)
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.filters.sort_by !== this.props.filters.sort_by) {
-  //     this.getMovies(nextProps.filters)
-  //   }
-  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.filters !== prevProps.filters) {

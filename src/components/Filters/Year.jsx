@@ -3,15 +3,15 @@ import years from '../../data/years'
 
 export default class Year extends React.Component {
   render() {
-    const { year, onChangeFilters } = this.props
+    const { primary_release_year, onChangeFilters } = this.props
     return (
       <div className="form-group">
         <label htmlFor="sort_by">Выбрать год выпуска:</label>
         <select
           className="form-control"
-          name="year"
-          id="year"
-          value={year}
+          name="primary_release_year"
+          id="primary_release_year"
+          value={primary_release_year}
           onChange={onChangeFilters}
         >
           <option value="Год выпуска" key="0">
