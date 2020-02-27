@@ -63,6 +63,8 @@ class LoginForm extends React.Component {
       submitting: true,
     });
 
+    let session_id;
+
     CallApi.get("/authentication/token/new")
       .then(data => {
         return CallApi.post("/authentication/token/validate_with_login", {
@@ -81,14 +83,16 @@ class LoginForm extends React.Component {
         });
       })
       .then(data => {
-        this.props.updateSessionId(data.session_id);
+        session_id = data.session_id;
+
+        this.props.updateSessionId(session_id);
 
         return CallApi.get("/account", {
-          params: { session_id: data.session_id },
+          params: { session_id: session_id },
         });
       })
       .then(user => {
-        this.props.updateUser(user);
+        this.props.updateUser(user, session_id);
         this.setState({
           submitting: false,
         });

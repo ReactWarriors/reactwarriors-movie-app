@@ -8,7 +8,6 @@ import CallApi from "../../api/api";
 class MovieItem extends React.Component {
   onClickFavorite = (item, value) => {
     const { session_id, toggleFavorite, toggleShowLogin } = this.props;
-    console.log("this.props", this.props);
 
     if (!session_id) {
       toggleShowLogin();

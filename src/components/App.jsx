@@ -24,7 +24,7 @@ export default class App extends React.Component {
         page: 1,
       },
       totalPages: 1,
-      showLogin: false,
+      showLoginModal: false,
     };
 
     this.state = this.initialState;
@@ -33,12 +33,16 @@ export default class App extends React.Component {
   componentDidMount() {
     const session_id = cookies.get("session_id");
 
+    console.log("componentDidMount");
+
     if (session_id) {
       CallApi.get("/account", {
         params: { session_id: session_id },
       }).then(user => {
         this.updateSessionId(session_id);
-        this.updateUser(user);
+        this.updateUser(user, session_id);
+        this.uploadFavorite(user, session_id);
+        this.uploadWatchlist(user, session_id);
       });
     }
   }
@@ -67,37 +71,30 @@ export default class App extends React.Component {
     });
   };
 
-  uploadFavorite = () => {
-    const { session_id } = this.state;
+  uploadFavorite = (user, session_id) => {
+    // const { session_id, user } = this.state;
 
-    CallApi.get(`/account/{account_id}/favorite/movies`, {
+    CallApi.get(`/account/${user.id}/favorite/movies`, {
       params: {
         session_id: session_id,
         language: "ru-RU",
       },
     }).then(data => {
-      // const favorite = data.results.map(elem => {
-      //   return elem.id;
-      // });
       this.setState({
         favorite: data.results,
       });
     });
   };
 
-  uploadWatchlist = () => {
-    const { session_id } = this.state;
+  uploadWatchlist = (user, session_id) => {
+    //const { session_id, user } = this.state;
 
-    CallApi.get(`/account/{account_id}/watchlist/movies`, {
+    CallApi.get(`/account/${user.id}/watchlist/movies`, {
       params: {
         session_id: session_id,
         language: "ru-RU",
       },
     }).then(data => {
-      // const watchlist = data.results.map(elem => {
-      //   return elem.id;
-      // });
-
       this.setState({
         watchlist: data.results,
       });
@@ -105,12 +102,9 @@ export default class App extends React.Component {
   };
 
   updateUser = user => {
-    this.uploadFavorite(this.state.session_id);
-    this.uploadWatchlist(this.state.session_id);
-
     this.setState({
       user,
-      showLogin: false,
+      showLoginModal: false,
     });
   };
 
@@ -167,7 +161,7 @@ export default class App extends React.Component {
 
   toggleShowLogin = () => {
     this.setState(prevState => ({
-      showLogin: !prevState.showLogin,
+      showLoginModal: !prevState.showLoginModal,
     }));
   };
 
@@ -179,7 +173,7 @@ export default class App extends React.Component {
       session_id,
       favorite,
       watchlist,
-      showLogin,
+      showLoginModal,
     } = this.state;
 
     return (
@@ -187,12 +181,12 @@ export default class App extends React.Component {
         value={{
           user: user,
           session_id: session_id,
-          favorite,
-          watchlist,
+          favorite: favorite,
+          watchlist: watchlist,
           updateUser: this.updateUser,
           updateSessionId: this.updateSessionId,
           onLogOut: this.onLogOut,
-          showLogin: showLogin,
+          showLoginModal: showLoginModal,
           toggleShowLogin: this.toggleShowLogin,
           toggleFavorite: this.toggleFavorite,
           toggleWatchlist: this.toggleWatchlist,
@@ -225,10 +219,6 @@ export default class App extends React.Component {
                   filters={filters}
                   onChangeFilters={this.onChangeFilters}
                   onChangeTotalPages={this.onChangeTotalPages}
-                  // favorite={favorite}
-                  // watchlist={watchlist}
-                  // toggleFavorite={this.toggleFavorite}
-                  // toggleWatchlist={this.toggleWatchlist}
                 />
               </div>
             </div>

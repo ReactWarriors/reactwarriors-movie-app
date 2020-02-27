@@ -3,9 +3,9 @@ import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
 import MoviesHOC from "./MoviesHOC";
 
-const MoviesList = ({ movies, loaded, favorite, watchlist }) => {
-  favorite = favorite || [];
-  watchlist = watchlist || [];
+const MoviesList = ({ movies, loaded }) => {
+  // favorite = favorite || [];
+  // watchlist = watchlist || [];
 
   return (
     <div className="row">

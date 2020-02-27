@@ -7,13 +7,13 @@ export default class Login extends React.Component {
   constructor() {
     super();
     this.state = {
-      showModal: false
+      showModal: false,
     };
   }
 
   toggleModal = () => {
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      showModal: !prevState.showModal,
     }));
   };
 
@@ -35,7 +35,7 @@ export default class Login extends React.Component {
                 </button>
 
                 <Modal
-                  isOpen={context.showLogin}
+                  isOpen={context.showLoginModal}
                   toggle={context.toggleShowLogin}
                   {...this.props}
                 >
