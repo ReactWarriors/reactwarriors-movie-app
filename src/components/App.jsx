@@ -9,7 +9,7 @@ export default class App extends React.Component {
     this.initialState = {
       filters: {
         sort_by: 'popularity.desc',
-        primary_release_year: 'Год выпуска',
+        primary_release_year: '',
         with_genres: [],
       },
       page: 1,
@@ -19,21 +19,15 @@ export default class App extends React.Component {
   }
 
   onChangeFilters = e => {
-    const value = e.target.value
-    const name = e.target.name
+    const { name, value } = e.target
+    this.updateFilters({ name, value })
+  }
+
+  updateFilters = ({ name, value }) => {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
         [name]: value,
-      },
-    }))
-  }
-
-  onGenresUpdate = genres => {
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        with_genres: [...genres],
       },
     }))
   }
@@ -73,7 +67,7 @@ export default class App extends React.Component {
                   onChangeFilters={this.onChangeFilters}
                   onChangePage={this.onChangePage}
                   onReset={this.onReset}
-                  onGenresUpdate={this.onGenresUpdate}
+                  updateFilters={this.updateFilters}
                 />
               </div>
             </div>

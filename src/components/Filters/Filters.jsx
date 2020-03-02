@@ -1,7 +1,7 @@
 import React from 'react'
 import SortBy from './SortBy'
 import Pagination from './Pagination'
-import Year from './Year'
+import PrimaryReleaseYear from './PrimaryReleaseYear'
 import Genres from './Genres'
 
 export default class Filters extends React.Component {
@@ -13,19 +13,19 @@ export default class Filters extends React.Component {
       onChangeFilters,
       onChangePage,
       onReset,
-      onGenresUpdate,
+      updateFilters,
     } = this.props
     return (
-      <form className="mb-3">
+      <form className="mb-3" action="POST">
         <SortBy sort_by={sort_by} onChangeFilters={onChangeFilters}></SortBy>
-        <Year
+        <PrimaryReleaseYear
           primary_release_year={primary_release_year}
           onChangeFilters={onChangeFilters}
-        ></Year>
+        ></PrimaryReleaseYear>
         <Genres
           with_genres={with_genres}
           onChangeFilters={onChangeFilters}
-          onGenresUpdate={onGenresUpdate}
+          updateFilters={updateFilters}
         ></Genres>
         <Pagination
           page={page}

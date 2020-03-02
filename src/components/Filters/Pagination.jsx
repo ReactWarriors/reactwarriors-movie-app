@@ -1,8 +1,17 @@
 import React from 'react'
 
-export default class Pagination extends React.Component {
+export default class Pagination extends React.PureComponent {
+  prewPage = step => () => {
+    this.props.onChangePage(this.props.page - step)
+  }
+
+  nextPage = step => () => {
+    this.props.onChangePage(this.props.page + step)
+  }
+
   render() {
-    const { page, total_pages, onChangePage, onReset } = this.props
+    const { page, total_pages, onReset } = this.props
+
     return (
       <div className="form-group">
         <div className="pagination-buttons">
@@ -10,7 +19,7 @@ export default class Pagination extends React.Component {
             type="button"
             className="btn btn-primary"
             disabled={page === 1}
-            onClick={onChangePage.bind(null, page - 1)}
+            onClick={this.prewPage(1)}
           >
             Назад
           </button>
@@ -18,7 +27,7 @@ export default class Pagination extends React.Component {
             type="button"
             className="btn btn-primary"
             disabled={page >= total_pages}
-            onClick={onChangePage.bind(null, page + 1)}
+            onClick={this.nextPage(1)}
           >
             Вперед
           </button>
@@ -26,7 +35,8 @@ export default class Pagination extends React.Component {
             Сброс
           </button>
         </div>
-        <div className="pages-info">{`Страница: ${page}/${total_pages}`}</div>
+        <div className="pages-info">{`Страница: ${page}/${total_pages ||
+          '...'}`}</div>
       </div>
     )
   }

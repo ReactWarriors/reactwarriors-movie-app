@@ -23,7 +23,7 @@ export default class MovieList extends React.Component {
     if (with_genres.length > 0) {
       queryStringParams.with_genres = with_genres.join(',')
     }
-    if (primary_release_year !== 'Год выпуска') {
+    if (primary_release_year) {
       queryStringParams.primary_release_year = primary_release_year
     }
     const link = `${API_URL}/discover/movie?${queryString.stringify(

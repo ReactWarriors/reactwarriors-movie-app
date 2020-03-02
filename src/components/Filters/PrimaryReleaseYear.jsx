@@ -1,9 +1,15 @@
 import React from 'react'
-import years from '../../data/years'
 
-export default class Year extends React.Component {
+const getYears = () =>
+  Array.from(new Array(70), (_, index) => new Date().getFullYear() - index)
+
+export default class PrimaryReleaseYear extends React.PureComponent {
+  static defaultProps = {
+    years: getYears(),
+  }
+
   render() {
-    const { primary_release_year, onChangeFilters } = this.props
+    const { primary_release_year, onChangeFilters, years } = this.props
     return (
       <div className="form-group">
         <label htmlFor="sort_by">Выбрать год выпуска:</label>
@@ -14,12 +20,12 @@ export default class Year extends React.Component {
           value={primary_release_year}
           onChange={onChangeFilters}
         >
-          <option value="Год выпуска" key="0">
+          <option value="" key="0">
             Год выпуска
           </option>
-          {years.map(option => (
-            <option key={option} value={option}>
-              {option}
+          {years.map((year, index) => (
+            <option key={index} value={year}>
+              {year}
             </option>
           ))}
         </select>

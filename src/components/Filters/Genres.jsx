@@ -1,7 +1,7 @@
 import React from 'react'
 import { API_URL, API_KEY_3 } from '../../api/api'
 
-export default class Genres extends React.Component {
+export default class Genres extends React.PureComponent {
   constructor() {
     super()
 
@@ -13,45 +13,21 @@ export default class Genres extends React.Component {
   getGenres = () => {
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`
     fetch(link)
-      .then(response => {
-        return response.json()
-      })
+      .then(response => response.json())
       .then(data => {
         this.setState({
-          genres: data.genres.map(genre => {
-            return { ...genre, isChecked: false }
-          }),
+          genres: data.genres,
         })
       })
   }
 
   onChangeGenres = e => {
-    const genres = [...this.state.genres]
-    genres.forEach(genre => {
-      if (Number(genre.id) === Number(e.target.id)) {
-        genre.isChecked = !genre.isChecked
-        this.collectSelectedGenres(genre.id)
-      }
-    })
-    this.setState({ genres })
-  }
-
-  collectSelectedGenres = id => {
-    const genresId = [...this.props.with_genres]
-    if (genresId.indexOf(id) === -1) {
-      genresId.push(id)
-    } else {
-      genresId.splice(genresId.indexOf(id), 1)
-    }
-
-    this.props.onGenresUpdate(genresId)
-  }
-
-  // Почему это работает????
-  resetAllGenres = () => {
-    const genres = [...this.state.genres]
-    genres.forEach(genre => {
-      genre.isChecked = false
+    const { checked, id } = e.target
+    this.props.updateFilters({
+      name: 'with_genres',
+      value: checked
+        ? [...this.props.with_genres, Number(id)]
+        : this.props.with_genres.filter(genre => genre !== Number(id)),
     })
   }
 
@@ -59,14 +35,9 @@ export default class Genres extends React.Component {
     this.getGenres()
   }
 
-  componentDidUpdate() {
-    if (this.props.with_genres.length === 0) {
-      this.resetAllGenres()
-    }
-  }
-
   render() {
     const { genres } = this.state
+    const { with_genres } = this.props
     return (
       <div className="form-group">
         {genres.map(genre => {
@@ -79,7 +50,7 @@ export default class Genres extends React.Component {
                 id={genre.id}
                 name="with_genres"
                 onChange={this.onChangeGenres}
-                checked={genre.isChecked}
+                checked={with_genres.includes(Number(genre.id))}
               ></input>
               <label className="form-check-label" htmlFor={genre.id}>
                 {genre.name}
