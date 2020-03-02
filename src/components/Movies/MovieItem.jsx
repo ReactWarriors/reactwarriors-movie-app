@@ -7,14 +7,17 @@ import CallApi from "../../api/api";
 
 class MovieItem extends React.Component {
   onClickFavorite = (item, value) => {
-    const { session_id, toggleFavorite, toggleShowLogin } = this.props;
+    const { user, session_id, uploadFavorite, toggleShowLogin } = this.props;
 
     if (!session_id) {
       toggleShowLogin();
       return;
     }
 
-    CallApi.post(`/account/{account_id}/favorite`, {
+    console.log("NEWvalue", value);
+    console.log("item.id", item.id);
+
+    CallApi.post(`/account/${user.id}/favorite`, {
       params: {
         session_id: session_id,
         media_type: "movie",
@@ -23,7 +26,8 @@ class MovieItem extends React.Component {
       },
     }).then(
       response => {
-        toggleFavorite(item);
+        uploadFavorite(user, session_id);
+        //toggleFavorite(item);
       },
       reject => {}
     );

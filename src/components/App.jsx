@@ -190,6 +190,8 @@ export default class App extends React.Component {
           toggleShowLogin: this.toggleShowLogin,
           toggleFavorite: this.toggleFavorite,
           toggleWatchlist: this.toggleWatchlist,
+          uploadFavorite: this.uploadFavorite,
+          uploadWatchlist: this.uploadWatchlist,
         }}
       >
         <div>
