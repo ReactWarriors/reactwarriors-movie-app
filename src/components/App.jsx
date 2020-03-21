@@ -21,10 +21,10 @@ export default class App extends React.Component {
         sort_by: "popularity.desc",
         release_year: "",
         with_genres: [],
-        page: 1,
+        page: 1
       },
       totalPages: 1,
-      showLoginModal: false,
+      showLoginModal: false
     };
 
     this.state = this.initialState;
@@ -37,7 +37,7 @@ export default class App extends React.Component {
 
     if (session_id) {
       CallApi.get("/account", {
-        params: { session_id: session_id },
+        params: { session_id: session_id }
       }).then(user => {
         this.updateSessionId(session_id);
         this.updateUser(user, session_id);
@@ -49,25 +49,38 @@ export default class App extends React.Component {
 
   toggleFavorite = item => {
     const { favorite } = this.state;
-
-    const newArray = favorite.includes(item)
-      ? [...favorite].filter(movie => movie.id !== item.id)
-      : [...favorite, item];
+    let newArray;
+    if (
+      favorite.find(movie => {
+        return movie.id === item.id;
+      })
+    ) {
+      newArray = [...favorite].filter(movie => movie.id !== item.id);
+    } else {
+      newArray = [...favorite, item];
+    }
 
     this.setState({
-      favorite: newArray,
+      favorite: newArray
     });
   };
 
   toggleWatchlist = item => {
     const { watchlist } = this.state;
 
-    const newArray = watchlist.includes(item)
-      ? [...watchlist].filter(movie => movie.id !== item.id)
-      : [...watchlist, item];
+    let newArray;
+    if (
+      watchlist.find(movie => {
+        return movie.id === item.id;
+      })
+    ) {
+      newArray = [...watchlist].filter(movie => movie.id !== item.id);
+    } else {
+      newArray = [...watchlist, item];
+    }
 
     this.setState({
-      watchlist: newArray,
+      watchlist: newArray
     });
   };
 
@@ -77,11 +90,11 @@ export default class App extends React.Component {
     CallApi.get(`/account/${user.id}/favorite/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU",
-      },
+        language: "ru-RU"
+      }
     }).then(data => {
       this.setState({
-        favorite: data.results,
+        favorite: data.results
       });
     });
   };
@@ -92,11 +105,11 @@ export default class App extends React.Component {
     CallApi.get(`/account/${user.id}/watchlist/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU",
-      },
+        language: "ru-RU"
+      }
     }).then(data => {
       this.setState({
-        watchlist: data.results,
+        watchlist: data.results
       });
     });
   };
@@ -104,17 +117,17 @@ export default class App extends React.Component {
   updateUser = user => {
     this.setState({
       user,
-      showLoginModal: false,
+      showLoginModal: false
     });
   };
 
   updateSessionId = session_id => {
     cookies.set("session_id", session_id, {
       path: "/",
-      maxAge: 2592000,
+      maxAge: 2592000
     });
     this.setState({
-      session_id,
+      session_id
     });
   };
 
@@ -124,7 +137,7 @@ export default class App extends React.Component {
       session_id: null,
       user: null,
       favorite: [],
-      watchlist: [],
+      watchlist: []
     });
   };
 
@@ -144,8 +157,8 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       filters: {
         ...prevState.filters,
-        [name]: value,
-      },
+        [name]: value
+      }
     }));
   };
 
@@ -155,13 +168,13 @@ export default class App extends React.Component {
 
   onChangeTotalPages = totalPages => {
     this.setState({
-      totalPages,
+      totalPages
     });
   };
 
   toggleShowLogin = () => {
     this.setState(prevState => ({
-      showLoginModal: !prevState.showLoginModal,
+      showLoginModal: !prevState.showLoginModal
     }));
   };
 
@@ -173,7 +186,7 @@ export default class App extends React.Component {
       session_id,
       favorite,
       watchlist,
-      showLoginModal,
+      showLoginModal
     } = this.state;
 
     return (
@@ -189,7 +202,7 @@ export default class App extends React.Component {
           showLoginModal: showLoginModal,
           toggleShowLogin: this.toggleShowLogin,
           toggleFavorite: this.toggleFavorite,
-          toggleWatchlist: this.toggleWatchlist,
+          toggleWatchlist: this.toggleWatchlist
         }}
       >
         <div>

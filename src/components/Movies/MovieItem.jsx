@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import StarIcon from "./StarIcon";
-import BookmarkIcon from "./BookmarkIcon";
+import FavoriteIcon from "./FavoriteIcon";
+import WatchlistIcon from "./WatchlistIcon";
 import AppContextHOC from "../HOC/AppContextHOC";
 import CallApi from "../../api/api";
 
@@ -19,8 +19,8 @@ class MovieItem extends React.Component {
         session_id: session_id,
         media_type: "movie",
         media_id: item.id,
-        favorite: value,
-      },
+        favorite: value
+      }
     }).then(
       response => {
         toggleFavorite(item);
@@ -42,8 +42,8 @@ class MovieItem extends React.Component {
         session_id: session_id,
         media_type: "movie",
         media_id: item.id,
-        watchlist: value,
-      },
+        watchlist: value
+      }
     }).then(
       response => {
         toggleWatchlist(item);
@@ -55,6 +55,21 @@ class MovieItem extends React.Component {
   render() {
     const { item, favorite, watchlist } = this.props;
     const imagePath = item.backdrop_path || item.poster_path;
+
+    
+    const isFavorite = Boolean(favorite.find(movie => {
+      return movie.id === item.id;
+    }));
+    const isWatchlist = Boolean(watchlist.find(movie => {
+      return movie.id === item.id;
+    }));
+    //  => {
+    //   return movie.id === item.id;
+    // });
+    // console.log("favorite", favorite);
+    // console.log("item", item);
+
+    //console.log("isFavorite", isFavorite);
 
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -72,14 +87,16 @@ class MovieItem extends React.Component {
           <div className="d-flex justify-content-between">
             <div className="card-text">Рейтинг: {item.vote_average}</div>
             <div>
-              <StarIcon
+              <FavoriteIcon
                 item={item}
                 favorite={favorite}
+                isFavorite={isFavorite}
                 onClickFavorite={this.onClickFavorite}
               />
-              <BookmarkIcon
+              <WatchlistIcon
                 item={item}
                 watchlist={watchlist}
+                isWatchlist={isWatchlist}
                 onClickWatchlist={this.onClickWatchlist}
               />
             </div>
@@ -91,7 +108,7 @@ class MovieItem extends React.Component {
 }
 
 MovieItem.propTypes = {
-  item: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired
 };
 
 export default AppContextHOC(MovieItem);
