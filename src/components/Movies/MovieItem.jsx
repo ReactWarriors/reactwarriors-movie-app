@@ -82,13 +82,11 @@ class MovieItem extends React.Component {
             <div>
               <FavoriteIcon
                 item={item}
-                favorite={favorite}
                 isFavorite={isFavorite}
                 onClickFavorite={this.onClickFavorite}
               />
               <WatchlistIcon
                 item={item}
-                watchlist={watchlist}
                 isWatchlist={isWatchlist}
                 onClickWatchlist={this.onClickWatchlist}
               />

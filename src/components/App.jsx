@@ -33,7 +33,7 @@ export default class App extends React.Component {
   componentDidMount() {
     const session_id = cookies.get("session_id");
 
-    console.log("componentDidMount");
+    // console.log("componentDidMount");
 
     if (session_id) {
       CallApi.get("/account", {
