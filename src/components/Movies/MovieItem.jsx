@@ -63,13 +63,6 @@ class MovieItem extends React.Component {
     const isWatchlist = Boolean(watchlist.find(movie => {
       return movie.id === item.id;
     }));
-    //  => {
-    //   return movie.id === item.id;
-    // });
-    // console.log("favorite", favorite);
-    // console.log("item", item);
-
-    //console.log("isFavorite", isFavorite);
 
     return (
       <div className="card" style={{ width: "100%" }}>

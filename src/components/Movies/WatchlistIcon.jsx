@@ -8,13 +8,6 @@ const WatchlistIcon = ({ item, isWatchlist, onClickWatchlist }) => {
   ) : (
     <BookmarkBorder onClick={e => onClickWatchlist(item)} />
   );
-  // return watchlist.find(movie => {
-  //   return movie.id === item.id;
-  // }) ? (
-  //   <Bookmark onClick={e => onClickWatchlist(item, false)} />
-  // ) : (
-  //   <BookmarkBorder onClick={e => onClickWatchlist(item, true)} />
-  // );
 };
 
 WatchlistIcon.propTypes = {
