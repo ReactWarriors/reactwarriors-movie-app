@@ -6,20 +6,20 @@ import AppContextHOC from "../HOC/AppContextHOC";
 import CallApi from "../../api/api";
 
 class MovieItem extends React.Component {
-  onClickFavorite = (item, value) => {
-    const { session_id, toggleFavorite, toggleShowLogin } = this.props;
+  onClickFavorite = (item, newValue) => {
+    const { user, session_id, toggleFavorite, toggleShowLogin } = this.props;
 
     if (!session_id) {
       toggleShowLogin();
       return;
     }
 
-    CallApi.post(`/account/{account_id}/favorite`, {
+    CallApi.post(`/account/${user.id}/favorite`, {
       params: {
         session_id: session_id,
         media_type: "movie",
         media_id: item.id,
-        favorite: value
+        favorite: newValue
       }
     }).then(
       response => {
@@ -29,20 +29,20 @@ class MovieItem extends React.Component {
     );
   };
 
-  onClickWatchlist = (item, value) => {
-    const { session_id, toggleWatchlist, toggleShowLogin } = this.props;
+  onClickWatchlist = (item, newValue) => {
+    const { user, session_id, toggleWatchlist, toggleShowLogin } = this.props;
 
     if (!session_id) {
       toggleShowLogin();
       return;
     }
 
-    CallApi.post(`/account/{account_id}/watchlist`, {
+    CallApi.post(`/account/${user.id}/watchlist`, {
       params: {
         session_id: session_id,
         media_type: "movie",
         media_id: item.id,
-        watchlist: value
+        watchlist: newValue
       }
     }).then(
       response => {

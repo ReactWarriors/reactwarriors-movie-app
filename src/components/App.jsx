@@ -114,7 +114,11 @@ export default class App extends React.Component {
     });
   };
 
-  updateUser = user => {
+  updateUser = (user, session_id) => {
+    
+    this.uploadFavorite(user, session_id);
+    this.uploadWatchlist(user, session_id);
+
     this.setState({
       user,
       showLoginModal: false

@@ -68,6 +68,7 @@ export default Component =>
       // console.log("Component", Component);
       return (
         <Component
+          //user={user}
           movies={movies}
           loaded={loaded}
           favorite={this.props.favorite}

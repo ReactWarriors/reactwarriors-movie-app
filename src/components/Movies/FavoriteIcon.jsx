@@ -4,9 +4,9 @@ import { Star, StarBorder } from "@material-ui/icons";
 
 const FavoriteIcon = ({ item, isFavorite, onClickFavorite }) => {
   return isFavorite ? (
-    <Star onClick={e => onClickFavorite(item)} />
+    <Star onClick={e => onClickFavorite(item, false)} />
   ) : (
-    <StarBorder onClick={e => onClickFavorite(item)} />
+    <StarBorder onClick={e => onClickFavorite(item, true)} />
   );
 };
 
