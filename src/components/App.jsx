@@ -3,7 +3,10 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import Cookies from "universal-cookie";
+import MoviesPage from "./pages/MoviesPage/MoviesPage";
+import MoviePage from "./pages/MoviePage/MoviePage";
 import CallApi from "../api/api";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 
 const cookies = new Cookies();
 
@@ -15,15 +18,6 @@ export default class App extends React.Component {
     this.initialState = {
       user: null,
       session_id: null,
-      favorite: [],
-      watchlist: [],
-      filters: {
-        sort_by: "popularity.desc",
-        release_year: "",
-        with_genres: [],
-        page: 1
-      },
-      totalPages: 1,
       showLoginModal: false
     };
 
@@ -41,83 +35,15 @@ export default class App extends React.Component {
       }).then(user => {
         this.updateSessionId(session_id);
         this.updateUser(user, session_id);
-        this.uploadFavorite(user, session_id);
-        this.uploadWatchlist(user, session_id);
+        // this.uploadFavorite(user, session_id);
+        // this.uploadWatchlist(user, session_id);
       });
     }
   }
 
-  toggleFavorite = item => {
-    const { favorite } = this.state;
-    let newArray;
-    if (
-      favorite.find(movie => {
-        return movie.id === item.id;
-      })
-    ) {
-      newArray = [...favorite].filter(movie => movie.id !== item.id);
-    } else {
-      newArray = [...favorite, item];
-    }
-
-    this.setState({
-      favorite: newArray
-    });
-  };
-
-  toggleWatchlist = item => {
-    const { watchlist } = this.state;
-
-    let newArray;
-    if (
-      watchlist.find(movie => {
-        return movie.id === item.id;
-      })
-    ) {
-      newArray = [...watchlist].filter(movie => movie.id !== item.id);
-    } else {
-      newArray = [...watchlist, item];
-    }
-
-    this.setState({
-      watchlist: newArray
-    });
-  };
-
-  uploadFavorite = (user, session_id) => {
-    // const { session_id, user } = this.state;
-
-    CallApi.get(`/account/${user.id}/favorite/movies`, {
-      params: {
-        session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
-      this.setState({
-        favorite: data.results
-      });
-    });
-  };
-
-  uploadWatchlist = (user, session_id) => {
-    //const { session_id, user } = this.state;
-
-    CallApi.get(`/account/${user.id}/watchlist/movies`, {
-      params: {
-        session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
-      this.setState({
-        watchlist: data.results
-      });
-    });
-  };
-
   updateUser = (user, session_id) => {
-    
-    this.uploadFavorite(user, session_id);
-    this.uploadWatchlist(user, session_id);
+    // this.uploadFavorite(user, session_id);
+    // this.uploadWatchlist(user, session_id);
 
     this.setState({
       user,
@@ -139,40 +65,9 @@ export default class App extends React.Component {
     cookies.remove("session_id");
     this.setState({
       session_id: null,
-      user: null,
-      favorite: [],
-      watchlist: []
-    });
-  };
-
-  onChangeFilters = event => {
-    const { name, value } = event.target;
-    this.updateFilters(name, value);
-  };
-
-  updateFilters = (name, value) => {
-    // this.setState({
-    //   filters: {
-    //     ...this.state.filters,
-    //     [name]: value
-    //   }
-    // });
-
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        [name]: value
-      }
-    }));
-  };
-
-  clearFilters = () => {
-    this.setState(this.initialState);
-  };
-
-  onChangeTotalPages = totalPages => {
-    this.setState({
-      totalPages
+      user: null
+      // favorite: [],
+      // watchlist: []
     });
   };
 
@@ -183,65 +78,38 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {
-      filters,
-      totalPages,
-      user,
-      session_id,
-      favorite,
-      watchlist,
-      showLoginModal
-    } = this.state;
+    const { user, session_id, showLoginModal } = this.state;
 
     return (
-      <AppContext.Provider
-        value={{
-          user: user,
-          session_id: session_id,
-          favorite: favorite,
-          watchlist: watchlist,
-          updateUser: this.updateUser,
-          updateSessionId: this.updateSessionId,
-          onLogOut: this.onLogOut,
-          showLoginModal: showLoginModal,
-          toggleShowLogin: this.toggleShowLogin,
-          toggleFavorite: this.toggleFavorite,
-          toggleWatchlist: this.toggleWatchlist
-        }}
-      >
-        <div>
-          <Header
-            user={user}
-            updateUser={this.updateUser}
-            updateSessionId={this.updateSessionId}
-          />
-          <div className="container">
-            <div className="row mt-4">
-              <div className="col-4">
-                <div className="card">
-                  <div className="card-body">
-                    <h3>Фильтры:</h3>
-                    <Filters
-                      totalPages={totalPages}
-                      filters={filters}
-                      onChangeFilters={this.onChangeFilters}
-                      updateFilters={this.updateFilters}
-                      clearFilters={this.clearFilters}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-8">
-                <MoviesList
-                  filters={filters}
-                  onChangeFilters={this.onChangeFilters}
-                  onChangeTotalPages={this.onChangeTotalPages}
-                />
-              </div>
-            </div>
+      <BrowserRouter>
+        <AppContext.Provider
+          value={{
+            user: user,
+            session_id: session_id,
+            // favorite: favorite,
+            // watchlist: watchlist,
+            updateUser: this.updateUser,
+            updateSessionId: this.updateSessionId,
+            onLogOut: this.onLogOut,
+            showLoginModal: showLoginModal,
+            toggleShowLogin: this.toggleShowLogin
+            // toggleFavorite: this.toggleFavorite,
+            // toggleWatchlist: this.toggleWatchlist
+          }}
+        >
+          <div>
+            <Header
+              user={user}
+              updateUser={this.updateUser}
+              updateSessionId={this.updateSessionId}
+            />
+            <Link to="/movie">go to movie</Link>
+            <Route exact path="/" component={MoviesPage} />
+            <Route exact path="/movie" component={MoviePage} />
+            {/* <MoviesPage /> */}
           </div>
-        </div>
-      </AppContext.Provider>
+        </AppContext.Provider>
+      </BrowserRouter>
     );
   }
 }

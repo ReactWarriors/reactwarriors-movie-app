@@ -57,12 +57,12 @@ class MovieItem extends React.Component {
     const imagePath = item.backdrop_path || item.poster_path;
 
     
-    const isFavorite = Boolean(favorite.find(movie => {
-      return movie.id === item.id;
-    }));
-    const isWatchlist = Boolean(watchlist.find(movie => {
-      return movie.id === item.id;
-    }));
+    // const isFavorite = Boolean(favorite.find(movie => {
+    //   return movie.id === item.id;
+    // }));
+    // const isWatchlist = Boolean(watchlist.find(movie => {
+    //   return movie.id === item.id;
+    // }));
 
     return (
       <div className="card" style={{ width: "100%" }}>
@@ -82,12 +82,12 @@ class MovieItem extends React.Component {
             <div>
               <FavoriteIcon
                 item={item}
-                isFavorite={isFavorite}
+                //isFavorite={isFavorite}
                 onClickFavorite={this.onClickFavorite}
               />
               <WatchlistIcon
                 item={item}
-                isWatchlist={isWatchlist}
+                //isWatchlist={isWatchlist}
                 onClickWatchlist={this.onClickWatchlist}
               />
             </div>
