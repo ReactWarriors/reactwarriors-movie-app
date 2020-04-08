@@ -1,16 +1,15 @@
 import React from "react";
 import Filters from "../../Filters/Filters";
 import MoviesList from "../../Movies/MoviesList";
-
-import CallApi from "../../../api/api";
+//import CallApi from "../../../api/api";
 
 export default class MoviesPage extends React.Component {
   constructor() {
     super();
 
     this.initialState = {
-      favorite: [],
-      watchlist: [],
+      // favorite: [],
+      // watchlist: [],
       filters: {
         sort_by: "popularity.desc",
         release_year: "",
@@ -24,72 +23,42 @@ export default class MoviesPage extends React.Component {
     this.state = this.initialState;
   }
 
-  toggleFavorite = item => {
-    const { favorite } = this.state;
-    let newArray;
-    if (
-      favorite.find(movie => {
-        return movie.id === item.id;
-      })
-    ) {
-      newArray = [...favorite].filter(movie => movie.id !== item.id);
-    } else {
-      newArray = [...favorite, item];
-    }
+  // toggleFavorite = item => {
+  //   const { favorite } = this.state;
+  //   let newArray;
+  //   if (
+  //     favorite.find(movie => {
+  //       return movie.id === item.id;
+  //     })
+  //   ) {
+  //     newArray = [...favorite].filter(movie => movie.id !== item.id);
+  //   } else {
+  //     newArray = [...favorite, item];
+  //   }
 
-    this.setState({
-      favorite: newArray
-    });
-  };
+  //   this.setState({
+  //     favorite: newArray
+  //   });
+  // };
 
-  toggleWatchlist = item => {
-    const { watchlist } = this.state;
+  // toggleWatchlist = item => {
+  //   const { watchlist } = this.state;
 
-    let newArray;
-    if (
-      watchlist.find(movie => {
-        return movie.id === item.id;
-      })
-    ) {
-      newArray = [...watchlist].filter(movie => movie.id !== item.id);
-    } else {
-      newArray = [...watchlist, item];
-    }
+  //   let newArray;
+  //   if (
+  //     watchlist.find(movie => {
+  //       return movie.id === item.id;
+  //     })
+  //   ) {
+  //     newArray = [...watchlist].filter(movie => movie.id !== item.id);
+  //   } else {
+  //     newArray = [...watchlist, item];
+  //   }
 
-    this.setState({
-      watchlist: newArray
-    });
-  };
-
-  uploadFavorite = (user, session_id) => {
-    // const { session_id, user } = this.state;
-
-    CallApi.get(`/account/${user.id}/favorite/movies`, {
-      params: {
-        session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
-      this.setState({
-        favorite: data.results
-      });
-    });
-  };
-
-  uploadWatchlist = (user, session_id) => {
-    //const { session_id, user } = this.state;
-
-    CallApi.get(`/account/${user.id}/watchlist/movies`, {
-      params: {
-        session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
-      this.setState({
-        watchlist: data.results
-      });
-    });
-  };
+  //   this.setState({
+  //     watchlist: newArray
+  //   });
+  // };
 
   onChangeFilters = event => {
     const { name, value } = event.target;
@@ -133,6 +102,8 @@ export default class MoviesPage extends React.Component {
       filters,
       totalPages
     } = this.state;
+
+    // console.log("MoviesPage.props", this.props);
 
     return (
 

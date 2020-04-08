@@ -3,60 +3,60 @@ import PropTypes from "prop-types";
 import FavoriteIcon from "./FavoriteIcon";
 import WatchlistIcon from "./WatchlistIcon";
 import AppContextHOC from "../HOC/AppContextHOC";
-import CallApi from "../../api/api";
+//import CallApi from "../../api/api";
+import { Link } from "react-router-dom";
 
 class MovieItem extends React.Component {
-  onClickFavorite = (item, newValue) => {
-    const { user, session_id, toggleFavorite, toggleShowLogin } = this.props;
+  // onClickFavorite = (item, newValue) => {
+  //   const { user, session_id, toggleFavorite, toggleShowLogin } = this.props;
 
-    if (!session_id) {
-      toggleShowLogin();
-      return;
-    }
+  //   if (!session_id) {
+  //     toggleShowLogin();
+  //     return;
+  //   }
 
-    CallApi.post(`/account/${user.id}/favorite`, {
-      params: {
-        session_id: session_id,
-        media_type: "movie",
-        media_id: item.id,
-        favorite: newValue
-      }
-    }).then(
-      response => {
-        toggleFavorite(item);
-      },
-      reject => {}
-    );
-  };
+  //   CallApi.post(`/account/${user.id}/favorite`, {
+  //     params: {
+  //       session_id: session_id,
+  //       media_type: "movie",
+  //       media_id: item.id,
+  //       favorite: newValue
+  //     }
+  //   }).then(
+  //     response => {
+  //       toggleFavorite(item);
+  //     },
+  //     reject => {}
+  //   );
+  // };
 
-  onClickWatchlist = (item, newValue) => {
-    const { user, session_id, toggleWatchlist, toggleShowLogin } = this.props;
+  // onClickWatchlist = (item, newValue) => {
+  //   const { user, session_id, toggleWatchlist, toggleShowLogin } = this.props;
 
-    if (!session_id) {
-      toggleShowLogin();
-      return;
-    }
+  //   if (!session_id) {
+  //     toggleShowLogin();
+  //     return;
+  //   }
 
-    CallApi.post(`/account/${user.id}/watchlist`, {
-      params: {
-        session_id: session_id,
-        media_type: "movie",
-        media_id: item.id,
-        watchlist: newValue
-      }
-    }).then(
-      response => {
-        toggleWatchlist(item);
-      },
-      reject => {}
-    );
-  };
+  //   CallApi.post(`/account/${user.id}/watchlist`, {
+  //     params: {
+  //       session_id: session_id,
+  //       media_type: "movie",
+  //       media_id: item.id,
+  //       watchlist: newValue
+  //     }
+  //   }).then(
+  //     response => {
+  //       toggleWatchlist(item);
+  //     },
+  //     reject => {}
+  //   );
+  // };
 
   render() {
-    const { item, favorite, watchlist } = this.props;
+    const { item } = this.props;
     const imagePath = item.backdrop_path || item.poster_path;
 
-    
     // const isFavorite = Boolean(favorite.find(movie => {
     //   return movie.id === item.id;
     // }));
@@ -76,19 +76,17 @@ class MovieItem extends React.Component {
           alt=""
         />
         <div className="card-body">
-          <h6 className="card-title">{item.title}</h6>
+          <Link className="card-title" to={`/movie/${item.id}`}>
+            {item.title}
+          </Link>
           <div className="d-flex justify-content-between">
             <div className="card-text">Рейтинг: {item.vote_average}</div>
             <div>
               <FavoriteIcon
                 item={item}
-                //isFavorite={isFavorite}
-                onClickFavorite={this.onClickFavorite}
               />
               <WatchlistIcon
                 item={item}
-                //isWatchlist={isWatchlist}
-                onClickWatchlist={this.onClickWatchlist}
               />
             </div>
           </div>
