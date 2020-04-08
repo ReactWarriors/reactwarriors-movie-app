@@ -12,10 +12,10 @@ class LoginForm extends React.Component {
     submitting: false,
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       [name]: value,
       errors: {
         ...prevState.errors,
@@ -25,7 +25,7 @@ class LoginForm extends React.Component {
     }));
   };
 
-  handleBlur = event => {
+  handleBlur = (event) => {
     //console.log("event.target", event.target);
     const { name } = event.target;
 
@@ -33,7 +33,7 @@ class LoginForm extends React.Component {
     const error = errors[name];
 
     if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         errors: {
           ...prevState.errors,
           [name]: error,
@@ -66,7 +66,7 @@ class LoginForm extends React.Component {
     let session_id;
 
     CallApi.get("/authentication/token/new")
-      .then(data => {
+      .then((data) => {
         return CallApi.post("/authentication/token/validate_with_login", {
           body: {
             username: this.state.username,
@@ -75,14 +75,14 @@ class LoginForm extends React.Component {
           },
         });
       })
-      .then(data => {
+      .then((data) => {
         return CallApi.post("/authentication/session/new", {
           body: {
             request_token: data.request_token,
           },
         });
       })
-      .then(data => {
+      .then((data) => {
         session_id = data.session_id;
 
         this.props.updateSessionId(session_id);
@@ -91,15 +91,16 @@ class LoginForm extends React.Component {
           params: { session_id: session_id },
         });
       })
-      .then(user => {
-        this.props.updateUser(user, session_id);
+      .then((user) => {
+        this.props.updateUser(user);
+        this.props.toggleShowLogin();
         this.setState({
           submitting: false,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log("error", error);
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
           submitting: false,
           errors: {
             base: error.status_message,
@@ -108,12 +109,12 @@ class LoginForm extends React.Component {
       });
   };
 
-  onLogin = e => {
+  onLogin = (e) => {
     e.preventDefault();
     const errors = this.validateFields();
 
     if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         errors: {
           ...prevState.errors,
           ...errors,
@@ -124,7 +125,7 @@ class LoginForm extends React.Component {
     }
   };
 
-  getClassForInput = key =>
+  getClassForInput = (key) =>
     classNames("form-control", {
       invalid: this.state.errors[key],
     });

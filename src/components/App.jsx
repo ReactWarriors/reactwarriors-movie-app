@@ -19,48 +19,44 @@ export default class App extends React.Component {
       favorite: [],
       watchlist: [],
       user: null,
-      session_id: null,
-      showLoginModal: false
+      session_id: cookies.get("session_id") || null,
+      showLoginModal: false,
     };
 
     this.state = this.initialState;
   }
 
   componentDidMount() {
-    const session_id = cookies.get("session_id");
-
-    // console.log("componentDidMount");
-
+    const { session_id } = this.state;
     if (session_id) {
       CallApi.get("/account", {
-        params: { session_id: session_id }
-      }).then(user => {
-        this.updateSessionId(session_id);
+        params: { session_id },
+      }).then((user) => {
         this.updateUser(user, session_id);
-
-        this.uploadFavorite(user, session_id);
-        this.uploadWatchlist(user, session_id);
       });
     }
   }
 
-  updateUser = (user, session_id) => {
-    this.uploadFavorite(user, session_id);
-    this.uploadWatchlist(user, session_id);
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.user && this.state.user) {
+      this.uploadFavorite(this.state.user, this.state.session_id);
+      this.uploadWatchlist(this.state.user, this.state.session_id);
+    }
+  }
 
+  updateUser = (user) => {
     this.setState({
       user,
-      showLoginModal: false
     });
   };
 
-  updateSessionId = session_id => {
+  updateSessionId = (session_id) => {
     cookies.set("session_id", session_id, {
       path: "/",
-      maxAge: 2592000
+      maxAge: 2592000,
     });
     this.setState({
-      session_id
+      session_id,
     });
   };
 
@@ -70,13 +66,13 @@ export default class App extends React.Component {
       session_id: null,
       user: null,
       favorite: [],
-      watchlist: []
+      watchlist: [],
     });
   };
 
   toggleShowLogin = () => {
-    this.setState(prevState => ({
-      showLoginModal: !prevState.showLoginModal
+    this.setState((prevState) => ({
+      showLoginModal: !prevState.showLoginModal,
     }));
   };
 
@@ -84,11 +80,11 @@ export default class App extends React.Component {
     CallApi.get(`/account/${user.id}/favorite/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
+        language: "ru-RU",
+      },
+    }).then((data) => {
       this.setState({
-        favorite: data.results
+        favorite: data.results,
       });
     });
   };
@@ -99,11 +95,11 @@ export default class App extends React.Component {
     CallApi.get(`/account/${user.id}/watchlist/movies`, {
       params: {
         session_id: session_id,
-        language: "ru-RU"
-      }
-    }).then(data => {
+        language: "ru-RU",
+      },
+    }).then((data) => {
       this.setState({
-        watchlist: data.results
+        watchlist: data.results,
       });
     });
   };
@@ -114,7 +110,7 @@ export default class App extends React.Component {
       favorite,
       watchlist,
       session_id,
-      showLoginModal
+      showLoginModal,
     } = this.state;
 
     return (
